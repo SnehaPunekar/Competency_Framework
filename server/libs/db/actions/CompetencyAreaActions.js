@@ -1,0 +1,62 @@
+const mysql = require('mysql');
+const db = mysql.createPool({
+    host : 'localhost',
+    user : 'root',
+    password : '',
+    database : 'competency_framework',
+    dateStrings: 'date',
+});
+class CompetencyArea{
+
+    constructor(){
+
+    }
+
+ GetCompetencyArea = async function(){
+     let output = [];
+     return new Promise(function (resolve, reject) {
+   db.query('SELECT Area_id,AreaName FROM Competency_Area;', (err,result)=>{
+        if(err){
+             console.log(err);
+            return reject(err);
+        }
+        
+        else{
+            if(result.length > 0 ){
+                output = result;
+                
+            }
+            else{
+                console.log('No data found!');
+            }
+            return resolve(result);
+        }
+        
+    });
+    })
+ }
+
+ AddCompetencyArea = async function(AreaName){
+    return new Promise(function (resolve, reject){
+        db.query('INSERT INTO Competency_Area(AreaName) VALUES (?)',[AreaName],
+    (error,result)=>{
+        if(error){
+            console.log(error);
+            return reject(err);
+        }
+        else{
+            if(result.length > 0){
+                console.log(result);
+            }
+            else{
+                console.log('No data');
+            }
+            return resolve(result);
+        }
+    });
+    })
+ }
+
+}
+
+module.exports = CompetencyArea;
