@@ -5,17 +5,21 @@ import React from 'react';
 import { useState , useEffect} from 'react';
 import Axios from 'axios';
 
-
 function AddCompetencyArea() {
 
     const [AreaName,SetAreaName]=useState('');
 
     const addcompetencyarea = ()=>{
-        Axios.post('http://localhost:3001/AddCompetencyArea',{
-          AreaName:AreaName
-        }).then(res => {
-            setChange(!change);
-        })
+        if(!AreaName)
+        {
+            alert("Please enter the Competency Area Name");
+        }else{
+            Axios.post('http://localhost:3001/AddCompetencyArea',{
+                AreaName:AreaName
+            }).then(res => {
+                setChange(!change);
+            });
+        }        
     }
 
     const[names,setNames] = useState([]);

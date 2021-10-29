@@ -78,17 +78,21 @@ export default function AddCompetencyDescriptor() {
   
     let a = [];
 
-    const AddDesc = ()=>{
-      Axios.post('http://localhost:3001/AddDescriptor',{
-        value:value,
-        desc: desc,
-        role : role,
-        track : track,
-        status : status
-      }).then(res=>{
-        setDescriptor(!descriptor);
-        console.log(res);
-      })
+    const AddDesc = ()=>{ 
+      if(!value && !desc && !role && !track && !status){
+        alert('Please fill all the fields');
+      }else{
+        Axios.post('http://localhost:3001/AddDescriptor',{
+          value:value,
+          desc: desc,
+          role : role,
+          track : track,
+          status : status
+        }).then(res=>{
+          setDescriptor(!descriptor);
+          console.log(res);
+        });
+      }      
     }
 
     return (

@@ -1,22 +1,32 @@
 import '../../assests/css/ChangePassword.css';
 import React from 'react';
 import Axios from 'axios';
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 
 function AddTemplate() {
 
     const[tempName,setTempName] = useState('');
     const[change,setChange]=useState(false)
 
-    const AddTemplateName = ()=> {
-                 Axios.post('http://localhost:3001/addTemplateName',
-                 {tempName:tempName,
-               }).then(res => {
-        
-                   setChange(!change);
+    const[tempnames,setTempNames] = useState([]); 
+    useEffect(() => {
+        Axios.get('http://localhost:3001/getTemplateNames')
+        .then(response =>{
+            setTempNames(response.data.data);
+        })
+    }, []);
 
-               })
-           }
+    const AddTemplateName = ()=> {
+        if(!tempName){
+            alert('Please fill the field');
+        }else{
+            Axios.post('http://localhost:3001/addTemplateName',
+                {tempName:tempName,
+            }).then(res => {
+                setChange(!change);
+            });
+        }               
+    }
     return (
         <div className="content">
             <center>
@@ -37,17 +47,17 @@ function AddTemplate() {
             <h3>List of Template Names</h3>            
             <table id="templateName">
                 <tr><th>Sr. No.</th><th>Template Name</th></tr>
-                {/* {
-                    ratings.map((value)=>{  
+                {
+                    tempnames.map((value)=>{  
                         return(
-                            <tr><td>{value.rating_id}</td><td>{value.rating_name}</td><td>{value.description}</td></tr> 
-                        ) */}
-                    {/* })
-                } */}
+                            <tr><td>{value.Temp_id}</td><td>{value.TempName}</td></tr> 
+                        )
+                    })
+                }
             </table><br/><br/><br/><br/>
             </center><br/>
         </div>
     )
 }
 
-export default AddTemplate
+export default AddTemplate;

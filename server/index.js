@@ -159,11 +159,10 @@ app.post('/addTemplate', async(request,response)=>{
 })
 
 app.post('/assignTemplate',async (request,response)=>{
-
     const tempId = request.body.tempId;
     const reviewCId = request.body.reviewCId;
     const empId = request.body.empId;
-    let out = await new AdminServices().addAssignTemp(AreaNamtempId,reviewCId,key);
+    let out = await new AdminServices().addAssignTemp(tempId,reviewCId,empId);
     response.json({data:out}); 
 });
 

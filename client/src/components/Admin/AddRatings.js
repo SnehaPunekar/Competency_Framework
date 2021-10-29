@@ -12,14 +12,18 @@ function AddRatings() {
     const[ratings, setRatings] = useState([]);    
 
     const addRatings = ()=>{
-        Axios.post('http://localhost:3001/addRatings',
-        {
-            ratingName:ratingSymbol,
-            ratingDesc:ratingDesc
-        }
-        ).then(res =>{
-            setChange(!change);
-        })
+        if(!ratingSymbol && !ratingDesc){
+            alert('Please fill all the fields');
+        }else{
+            Axios.post('http://localhost:3001/addRatings',
+            {
+                ratingName:ratingSymbol,
+                ratingDesc:ratingDesc
+            }
+            ).then(res =>{
+                setChange(!change);
+            });
+        }        
     }
 
     useEffect(() => {

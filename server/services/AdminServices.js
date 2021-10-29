@@ -16,7 +16,7 @@ class AdminServices{
         this.getCompetencyDescriptor = new CompetencyDescriptor();
         this.getRating = new Rating();
         this.getReview = new Review();
-        this.AssignTemp = new AssignTemp();
+        this.getAssignTemp = new AssignTemp();
         this.getTemplateName = new TemplateName();
         this.getSelfAssessment = new SelfAssessment();
         this.getLeadAssessment = new LeadAssessment();
@@ -79,6 +79,11 @@ class AdminServices{
 
     addTemplate = async function(tid,s){
         let response = await this.getTemplateName.AddTemplate(tid,s);
+        return response;
+    }
+
+    addAssignTemp = async function (tempId,reviewCId,empId) {
+        let response = await this.getAssignTemp.AddAssignTemp(tempId,reviewCId,empId);
         return response;
     }
 

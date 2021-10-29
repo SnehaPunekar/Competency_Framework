@@ -1,11 +1,7 @@
 import '../../assests/css/ChangePassword.css';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-// import Switch from '@material-ui/core/Switch';
 import Axios from 'axios';
-
-
-
   
 function ReviewCycle() {
 
@@ -15,22 +11,11 @@ function ReviewCycle() {
   const[change,setChange] = useState(false);
   const[reviewDetails,setReviewDetails] = useState([]);
   const[checked,setChecked] = useState(false);
-  // const Switches = ()=> {
-  //   const [state, setState] = React.useState({
-  //     checkedA: true,
-  //     checkedB: true,
-  //   });
   
-  // const handleChange = (event) => {
-  //   setState({ ...state, [event.target.name]: event.target.checked });
-  // };
-
-
   const addReview = ()=>{
-    if(reviewName.length == 0 || start.length == 0 || end.length == 0){
-      alert("Insufficient Info.")
-    }
-    else{
+    if(!reviewName && !start && !end){
+      alert('Please fill all the fields');
+    }else{
       Axios.post('http://localhost:3001/addReview',{
         reviewName:reviewName,
         start:start,

@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 function CreateTemplate() {
   let a = [];
-  let descId = []
+  let descId = [];
   const[tempnames,setTempNames] = useState([]); 
   const[value, setValue ] = useState(0);
   const[change,setChange] = useState(false);
@@ -60,7 +60,7 @@ function CreateTemplate() {
       .then(response =>{
           setTempNames(response.data.data);
       })
-  }, [])
+    }, []);
 
   useEffect(() => {
            Axios.get('http://localhost:3001/getCompetencyAreaNames')
@@ -81,23 +81,24 @@ function CreateTemplate() {
 
 
     const getDescriptorByRole = ()=>{
-      console.log("Inside Fuction getDescriptorByRole");
-      Axios.post('http://localhost:3001/getDescriptorByRole',{
-        role : value
-      }).then(res =>{
-        console.log("In Response");
-        if(res.data){
-          console.log(res.data.data);
-           setDetails(res.data.data);
-          console.log(details);
-          alert('Descriptors fetched.');
-        }
-      })      
+      if(!value)
+      {        
+        alert('Please fill the field');
+      }else{
+        //console.log("Inside Fuction getDescriptorByRole");
+        Axios.post('http://localhost:3001/getDescriptorByRole',{
+          role : value
+        }).then(res =>{
+          console.log("In Response");
+          if(res.data){
+            console.log(res.data.data);
+            setDetails(res.data.data);
+            console.log(details);
+            alert('Descriptors fetched.');
+          }
+        });
+      }      
     }
-
-
-
-
     return (
         <div className="content">
             <center>

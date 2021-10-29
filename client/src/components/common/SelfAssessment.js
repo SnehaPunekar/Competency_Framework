@@ -37,7 +37,7 @@ function SelfAssessment() {
             review_cycle_id : review_id,
             emp_id : localStorage.getItem('id'),
         }).then((response) => {
-            //console.log(response);
+           // console.log(response);
             SetTemplate(response.data.data);
             // if(response.data.success === true){
             //    // console.log()
