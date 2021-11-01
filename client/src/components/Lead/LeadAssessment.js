@@ -54,18 +54,27 @@ function LeadAssessment() {
     }
 
     const SubmitAssessment = () => {
-        console.log(assessmentArr);
-        Axios.post('http://localhost:3001/leadAssessment/insert', {
-            review_id : review_id,
-            emp_id : emp_id,
-            assessmentArr : assessmentArr,
-        }).then((response) => {
-            if(response.data.data.success === true){
-                alert("Lead Assessment submited Successfully....");
-            }else{
-                alert("Error");
+        let flag = 0;
+        assessmentArr.forEach(val => {
+            if(!val.rating || !val.comment){
+                flag = 1;
             }
-        })
+        });
+        if(flag == 1){            
+            alert("Please fill all the fields");
+        }else{
+            Axios.post('http://localhost:3001/leadAssessment/insert', {
+                review_id : review_id,
+                emp_id : emp_id,
+                assessmentArr : assessmentArr,
+            }).then((response) => {
+                if(response.data.data.success === true){
+                    alert("Lead Assessment submited Successfully....");
+                }else{
+                    alert("Error");
+                }
+            });
+        }
     }
     
     let assessmentArr = [];

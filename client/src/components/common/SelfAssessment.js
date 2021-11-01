@@ -49,7 +49,13 @@ function SelfAssessment() {
     let assessmentArr = [];
     
     const SubmitAssessment = () =>{
-        if(!assessmentArr && template.length != assessmentArr.length){
+        let flag = 0;
+        assessmentArr.forEach(val => {
+            if(!val.rating || !val.comment){
+                flag = 1;
+            }
+        });
+        if(flag == 1){            
             alert("Please fill all the fields");
         }else{
             Axios.post('http://localhost:3001/selfAssessment/insert', {
@@ -84,7 +90,8 @@ function SelfAssessment() {
                             review.map((val)=>{  
                             return(<option value={val.review_cycle_id}>{val.review_cycle_name}</option>)
                             })
-                        }   
+
+                        }  
                     </select>
                 </div>
                
@@ -112,7 +119,7 @@ function SelfAssessment() {
                                                     })
                                                 }
                                             </select></td>                 
-                                        <td><textarea type='text' name='selfComment' onChange = {e=> {element.comment = e.target.value;}} required/>                             
+                                        <td><textarea type='text' name='selfComment' onChange = {e=> {element.comment = e.target.value;}}/>                             
                                         <h6>{assessmentArr.push(element)}</h6></td>             
                                         <td class='unselected'>{val.leadRating}</td>
                                         <td class='unselected'>{val.leadComment}</td>

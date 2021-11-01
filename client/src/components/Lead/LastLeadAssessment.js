@@ -6,7 +6,7 @@ import Axios from 'axios';
 function LeadAssessment() {
     const[review, SetReview] = useState([]);
     useEffect(() => {
-        Axios.get('http://localhost:3001/selfAssessment/getReview')
+        Axios.get('http://localhost:3001/getReview')
         .then(response =>{
             SetReview(response.data.data);
         })

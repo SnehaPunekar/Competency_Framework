@@ -128,11 +128,11 @@ function CreateTemplate() {
                       <option value="role_1">Select Role</option>
                       {
                         roles.map((value)=>{  
-                        return(
-                            <option value={value.role_id}>{value.role_name}</option>
-                        )
-                    })
-                }
+                            return(
+                                <option value={value.role_id}>{value.role_name}</option>
+                            )
+                        })
+                      }
                 </select>
                 {console.log(value)}
               </div>
@@ -175,7 +175,7 @@ function CreateTemplate() {
                 rows={a}
                 columns={columns}
                 pageSize={5}
-                checkboxSelection
+                checkboxSelection = {true}
                 disableSelectionOnClick
                 onSelectionModelChange={(id) => {
                 id.map(v=>{
