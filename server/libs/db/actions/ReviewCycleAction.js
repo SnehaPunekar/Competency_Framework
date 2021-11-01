@@ -36,26 +36,23 @@ class ReviewCycles{
     }
     
     AddReviewCycle = async function(reviewName,start,end){
-            return new Promise(function (resolve, reject){
-                db.query('INSERT INTO review_cycle(review_cycle_name, start_date, end_date) VALUES (?,?,?)',
-    [reviewName,start,end],
-    (error,result)=>{
-        if(error){
-            console.log(error);
-            return reject(err);
-        }
-        else{
-            if(result.length > 0){
-                console.log(result);
-                // response.json({data:result, success:true});
-            }
-            else{
-                console.log('No data');
-            }
-            return resolve(result);
-            }
+        return new Promise(function (resolve, reject){
+            db.query('INSERT INTO review_cycle(review_cycle_name, start_date, end_date) VALUES (?,?,?)',
+            [reviewName,start,end], (error,result)=>{
+                if(error){
+                    console.log(error);
+                    return reject(err);
+                }else{
+                    if(result.length > 0){
+                        console.log(result);
+                        // response.json({data:result, success:true});
+                    }else{
+                        console.log('No data');
+                    }
+                    return resolve(result);
+                }
+            });
         });
-     })
     }
 } 
 

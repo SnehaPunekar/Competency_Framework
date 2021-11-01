@@ -1,4 +1,4 @@
-import '../../assests/css/ChangePassword.css';
+import '../../assests/css/Style.css';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import Axios from 'axios';
@@ -13,7 +13,7 @@ function ReviewCycle() {
   const[checked,setChecked] = useState(false);
   
   const addReview = ()=>{
-    if(!reviewName && !start && !end){
+    if(!reviewName || !start || !end){
       alert('Please fill all the fields');
     }else{
       Axios.post('http://localhost:3001/addReview',{

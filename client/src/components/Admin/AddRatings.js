@@ -1,4 +1,4 @@
-import '../../assests/css/ChangePassword.css';
+import '../../assests/css/Style.css';
 import React from 'react';
 import {useState, useEffect} from 'react';
 import Axios from 'axios';
@@ -12,7 +12,7 @@ function AddRatings() {
     const[ratings, setRatings] = useState([]);    
 
     const addRatings = ()=>{
-        if(!ratingSymbol && !ratingDesc){
+        if(!ratingSymbol || !ratingDesc){
             alert('Please fill all the fields');
         }else{
             Axios.post('http://localhost:3001/addRatings',

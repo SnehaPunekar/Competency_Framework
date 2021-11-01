@@ -1,4 +1,4 @@
-import '../../assests/css/ChangePassword.css';
+import '../../assests/css/Style.css';
 import React from 'react'
 import { useState, useEffect } from 'react';
 import Axios from 'axios';  
@@ -6,7 +6,7 @@ function SelfAssessment() {
     
     const[review, SetReview] = useState([]);
     useEffect(() => {
-        Axios.get('http://localhost:3001/getReview')
+        Axios.get('http://localhost:3001/selfAssessment/getReview')
         .then(response =>{
             SetReview(response.data.data);
         })
@@ -31,45 +31,49 @@ function SelfAssessment() {
     
     const [review_id , SetReview_id] = useState('');  
     const [template, SetTemplate] = useState([]);
-
+    // const [errorMessage, SetErrorMessage] = useState('');
+  
     const SearchTemplate = ()=>{       
-        Axios.post('http://localhost:3001/selfAssessment/getTemplate', {
-            review_cycle_id : review_id,
-            emp_id : localStorage.getItem('id'),
-        }).then((response) => {
-           // console.log(response);
-            SetTemplate(response.data.data);
-            // if(response.data.success === true){
-            //    // console.log()
-            //     SetTemplate(response.data.data);
-            // }else{                
-            //     alert("Sorry Record not found..!")
-            // }
-        })                    
+        if(!review_id){
+            alert("Please select Review Cycle");
+        }else{
+            Axios.post('http://localhost:3001/selfAssessment/getTemplate', {
+                review_cycle_id : review_id,
+                emp_id : localStorage.getItem('id'),
+            }).then((response) => {
+                SetTemplate(response.data.data);
+            });
+        }                    
     }
      
     let assessmentArr = [];
     
     const SubmitAssessment = () =>{
-        //console.log(assessmentArr);
-        Axios.post('http://localhost:3001/selfAssessment/insert', {
-            review_id : review_id,
-            emp_id : localStorage.getItem('id'),
-            assessmentArr : assessmentArr,
-        }).then((response) => {
-            //console.log(response);
-            if(response.data.data.success === true){
-                alert("Self Assessment submited Successfully....");
-            }else{
-                alert("Error");
-            }
-        })
+        if(!assessmentArr && template.length != assessmentArr.length){
+            alert("Please fill all the fields");
+        }else{
+            Axios.post('http://localhost:3001/selfAssessment/insert', {
+                review_id : review_id,
+                emp_id : localStorage.getItem('id'),
+                assessmentArr : assessmentArr,
+            }).then((response) => {
+                //console.log(response);
+                if(response.data.data.success === true){
+                    alert("Self Assessment submited Successfully....");
+                }else{
+                    alert("Unable to submit Self Assessment");
+                }
+            });
+        }
     }
 
     return (
         <div className="content"><br/><br/>
             <center><h1>Self Assessment</h1>
-             <div class="row">
+
+            {/* {errorMessage && <div className="error"> {errorMessage} </div>} */}
+
+            <div class="row">
                 <div class="col-25">
                     <label for="review">Review Cycle</label>
                 </div>
@@ -92,31 +96,29 @@ function SelfAssessment() {
             <table id="assessment">
                 <tr><th>Competency Area</th><th>Competency Descriptior</th><th>Employee Rating</th><th>Self Comment</th><th>Lead Rating</th><th>Lead Comment</th></tr>
                 {
-                    template.map((val) => {
-                        var element = {};
-                        element.id = val.did;                        
-                        return <tr>
-                        {
-                            competencyName.map((val1) => {
-                                if(val.cid === val1.Area_id){                                    
-                                   return(<td>{val1.AreaName}</td>) 
-                                }
-                            })
-                        }
-                        <td>{val.des}</td>
-                        {/* <td>{val.selfRating}</td><td>{val.selfComment}</td> */}
-                        <td><select name='selfRating' onChange = {e=> {element.rating = e.target.value}}>
-                            <option>Select</option>
-                            {
-                                rating.map((val)=>{  
-                                return(<option value={val.rating_name}>{val.rating_name}</option>)
-                                })
-                            }
-                        </select>                 
-                        </td><td><textarea type='text' name='selfComment' onChange = {e=> {element.comment = e.target.value;}}/>                             
-                        <h6>{assessmentArr.push(element)} </h6>               
-                        </td>                       
-                        <td class='unselected'>{val.leadRating}</td><td class='unselected'>{val.leadComment}</td></tr> 
+                    competencyName.map((val1) => {
+                        return template.map((val) => {  
+                            if(val1.Area_id === val.cid){                                           
+                                var element = {};
+                                element.id = val.did;                         
+                                return <tr>
+                                        <td>{val1.AreaName}</td> 
+                                        <td>{val.des}</td>
+                                        <td><select name='selfRating' onChange = {e=> {element.rating = e.target.value}}>
+                                                <option>Select</option>
+                                                {
+                                                    rating.map((val)=>{  
+                                                    return(<option value={val.rating_name}>{val.rating_name}</option>)
+                                                    })
+                                                }
+                                            </select></td>                 
+                                        <td><textarea type='text' name='selfComment' onChange = {e=> {element.comment = e.target.value;}} required/>                             
+                                        <h6>{assessmentArr.push(element)}</h6></td>             
+                                        <td class='unselected'>{val.leadRating}</td>
+                                        <td class='unselected'>{val.leadComment}</td>
+                                    </tr>           
+                            }  
+                        })
                     })
                 }          
             </table>            

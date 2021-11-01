@@ -86,6 +86,11 @@ class AdminServices{
         let response = await this.getAssignTemp.AddAssignTemp(tempId,reviewCId,empId);
         return response;
     }
+    
+    getActiveReviewCycle = async function(){
+        let response = await this.getSelfAssessment.GetActiveReviewCycle();
+        return response;
+    }
 
     getAllSelfAssessment = async function (review_id, emp_id) {
         let response = await this.getSelfAssessment.GetSelfAssessment(review_id, emp_id);

@@ -1,4 +1,4 @@
-import '../../assests/css/ChangePassword.css';
+import '../../assests/css/Style.css';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { DataGrid } from '@material-ui/data-grid';

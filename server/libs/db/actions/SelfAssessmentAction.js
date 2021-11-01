@@ -14,6 +14,27 @@ class SelfAssessment{
 
     }
 
+    GetActiveReviewCycle = async function(){
+        let output = [];
+        return new Promise(function (resolve, reject) {
+            db.query("SELECT review_cycle_id, review_cycle_name FROM review_cycle Where active = 1;",(err,result)=>{
+                if(err){
+                    console.log(err);
+                    return reject(err);
+                }
+                else{
+                    if(result.length > 0 ){
+                        output = result;
+                    }
+                    else{
+                        console.log('No data found!');
+                    }
+                    return resolve(result);
+                }
+            });
+        })
+    }
+    
     GetSelfAssessment = async function(review_id, emp_id){
         let output = [];
         return new Promise(function (resolve, reject) {

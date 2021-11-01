@@ -1,4 +1,4 @@
-import '../../assests/css/ChangePassword.css';
+import '../../assests/css/Style.css';
 import React from 'react'
 import { useState, useEffect } from 'react';
 import Axios from 'axios'; 
@@ -6,7 +6,7 @@ import Axios from 'axios';
 function LeadAssessment() {
     const[review, SetReview] = useState([]);
     useEffect(() => {
-        Axios.get('http://localhost:3001/getReview')
+        Axios.get('http://localhost:3001/selfAssessment/getReview')
         .then(response =>{
             SetReview(response.data.data);
         })
@@ -33,12 +33,16 @@ function LeadAssessment() {
     const [emp_id, SetEmp_id] = useState('');
     const [template, SetTemplate] = useState([]);
     const SearchTemplate = ()=>{
-        Axios.post('http://localhost:3001/leadAssessment/getTemplate', {
-            review_cycle_id : review_id,
-            emp_id : emp_id,
-        }).then((response) => {
-            SetTemplate(response.data.data);            
-        })                    
+        if(!review_id || !emp_id){
+            alert("Please Select Review Cycle and Employee");
+        }else{
+            Axios.post('http://localhost:3001/leadAssessment/getTemplate', {
+                review_cycle_id : review_id,
+                emp_id : emp_id,
+            }).then((response) => {
+                SetTemplate(response.data.data);            
+            });
+        }                    
     }
     
     return (
@@ -76,33 +80,19 @@ function LeadAssessment() {
             <table id="lead_assessment">
                 <tr><th>Competency Area</th><th>Competency Descriptor</th><th>Self Rating</th><th>Self Comment</th><th>Select Lead Rating</th><th>Lead Comment</th></tr>
                 {
-                    template.map((val) => {
-                        // var element = {};
-                        // element.id = val.did;
-                        return <tr>
-                        {
-                            competencyName.map((val1) => {
-                                if(val.cid === val1.Area_id){                                    
-                                   return(<td>{val1.AreaName}</td>) 
-                                }
-                            })
-                        }
-                        <td>{val.des}</td>                    
-                        <td class='unselected'>{val.selfRating}</td><td class='unselected'>{val.selfComment}</td>
-                         <td>{val.leadRating}</td><td>{val.leadComment}</td> 
-                        {/* <td><select name='leadRating' onChange = {e=> {element.rating = e.target.value}}>
-                            <option> Select</option>
-                            {
-                                rating.map((val)=>{  
-                                return(<option value={val.Rating_Symbol}>{val.Rating_Symbol}</option>)
-                                })
+                    competencyName.map((val1) => {
+                        return template.map((val) => {  
+                            if(val1.Area_id === val.cid){                                    
+                                return <tr>
+                                        <td>{val1.AreaName}</td> 
+                                        <td>{val.des}</td>
+                                        <td class='unselected'>{val.selfRating}</td>
+                                        <td class='unselected'>{val.selfComment}</td>
+                                        <td>{val.leadRating}</td>
+                                        <td>{val.leadComment}</td>
+                                    </tr>           
                             }
-                        </select>                 
-                        </td> */}
-                        {/* <td><input type='text' name='lead_Comment' onChange = {e=> {element.comment = e.target.value;}}/>                             
-                        {assessmentArr.push(element)}  
-                        </td> */}
-                        </tr> 
+                        })
                     })
                 }
                 </table><br/>

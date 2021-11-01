@@ -1,6 +1,4 @@
-// import '..../assests/css/ChangePassword.css';
-import '../../assests/css/ChangePassword.css';
-// import 'C:/Users/Sneha/Desktop/Competency Framework/client/src/assests/css/ChangePassword.css'
+import '../../assests/css/Style.css';
 import React from 'react';
 import { useState , useEffect} from 'react';
 import Axios from 'axios';

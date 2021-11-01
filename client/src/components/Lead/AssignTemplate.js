@@ -1,5 +1,4 @@
-// import '../Login/ChangePassword.css';
-import '../../assests/css/ChangePassword.css';
+import '../../assests/css/Style.css';
 import React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 import { useState,useEffect } from 'react';

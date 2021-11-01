@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../assests/css/ChangePassword.css';
+import '../../assests/css/Style.css';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -68,9 +68,6 @@ function CreateTemplate() {
             setNames(response.data.data);
            })
        }, [])
-
-  
-  //     },[change])
 
       useEffect(() => {
         Axios.get('http://localhost:3001/getRole')

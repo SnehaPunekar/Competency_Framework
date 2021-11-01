@@ -1,4 +1,4 @@
-import '../../assests/css/ChangePassword.css';
+import '../../assests/css/Style.css';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
@@ -79,7 +79,7 @@ export default function AddCompetencyDescriptor() {
     let a = [];
 
     const AddDesc = ()=>{ 
-      if(!value && !desc && !role && !track && !status){
+      if(!value || !desc || !role || !track || !status){
         alert('Please fill all the fields');
       }else{
         Axios.post('http://localhost:3001/AddDescriptor',{

@@ -1,4 +1,4 @@
-import '../../assests/css/ChangePassword.css';
+import '../../assests/css/Style.css';
 import React from 'react';
 import Axios from 'axios';
 import {useState, useEffect} from 'react'

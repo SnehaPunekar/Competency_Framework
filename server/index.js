@@ -201,6 +201,11 @@ app.post('/getTemplateDescriptor',(req,res)=>{
     });
 })
 
+app.get('/selfAssessment/getReview',async (request,response)=>{
+    let out = await new AdminServices().getActiveReviewCycle();
+    response.json({data:out}); 
+});
+
 app.post("/selfAssessment/getTemplate", async (request, response) => {
     const review_id = request.body.review_cycle_id;
     const emp_id = request.body.emp_id; 
