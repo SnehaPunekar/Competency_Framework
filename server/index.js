@@ -1,18 +1,10 @@
+const db = require('./config/config');
+const AdminServices =  require('./services/AdminServices.js');
 const express = require('express');
 const cors = require('cors')
 const app = express();
-const mysql = require('mysql');
-const AdminServices =  require('./services/AdminServices.js');
 app.use(cors());
 app.use(express.json());
-
-const db = mysql.createPool({
-    host : 'localhost',
-    user : 'root',
-    password : '',
-    database : 'competency_framework',
-    dateStrings: 'date',
-});
 
 app.post('/login',(request,response)=>{
     const username = request.body.username;

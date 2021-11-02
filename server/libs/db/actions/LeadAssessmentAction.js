@@ -1,12 +1,4 @@
-const { response } = require('express');
-const mysql = require('mysql');
-const db = mysql.createPool({
-    host : 'localhost',
-    user : 'root',
-    password : '',
-    database : 'competency_framework',
-    dateStrings: 'date',
-});
+const db = require('../../../config/config');
 
 class SelfAssessment{
 
