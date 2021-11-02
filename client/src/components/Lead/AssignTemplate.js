@@ -29,7 +29,7 @@ function AssignTemplate() {
   const[empNames,setEmpNames] = useState([]);
   const[change,setChange] = useState(false);
   const[value,setValue] = useState('');
-  const[tempValue,setTempValue] = useState('');
+  const[tempValue, setTempValue] = useState(0);
   const[empId,setEmpId] = useState([])
 
   useEffect(() => {
@@ -40,7 +40,7 @@ function AssignTemplate() {
 }, [])
 
 useEffect(() => {
-  Axios.get('http://localhost:3001/getReview')
+  Axios.get('http://localhost:3001/selfAssessment/getReview')
   .then(response =>{
       setReviewNames(response.data.data);
   })
@@ -95,9 +95,9 @@ useEffect(()=>{
                     onChange={e=> setTempValue(e.target.value)}>
                         <option value="selecttemplates">Select Templates</option>
                         {
-                        TempNames.map((value)=>{  
+                        TempNames.map((val)=>{  
                         return(
-                            <option value={value.Temp_id}>{value.TempName}</option>
+                            <option value={val.Temp_id}>{val.TempName}</option>
                             )
                           })
                         }  

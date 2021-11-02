@@ -35,7 +35,8 @@ function CreateTemplate() {
   let a = [];
   let descId = [];
   const[tempnames,setTempNames] = useState([]); 
-  const[value, setValue ] = useState(0);
+  const[tempValue, setTempValue ] = useState(0);
+  const[roleValue, setRoleValue ] = useState(0);
   const[change,setChange] = useState(false);
   const[details,setDetails] = useState([]);
   const[names,setNames] =useState([]);
@@ -46,10 +47,11 @@ function CreateTemplate() {
 
     const AddCompDesc = ()=>{
         Axios.post('http://localhost:3001/addTemplate',{
-          tid:value,
+          tid:tempValue,
           descId :descId
         }).then(response =>{
-          if(response.data.success){
+          console.log(response);
+          if(response.data.data.success){
             alert('Records Inserted Successfully!');
           }
         })      
@@ -78,13 +80,13 @@ function CreateTemplate() {
 
 
     const getDescriptorByRole = ()=>{
-      if(!value)
+      if(!roleValue)
       {        
         alert('Please fill the field');
       }else{
         //console.log("Inside Fuction getDescriptorByRole");
         Axios.post('http://localhost:3001/getDescriptorByRole',{
-          role : value
+          role : roleValue
         }).then(res =>{
           console.log("In Response");
           if(res.data){
@@ -106,7 +108,7 @@ function CreateTemplate() {
               </div>
               <div class="col-75">
                   <select id="template_name" name="template_name"
-                   onChange={e=> setValue(e.target.value)}>
+                   onChange={e=> setTempValue(e.target.value)}>
                       <option value="template_1">Select Template Name </option>
                       {
                         tempnames.map((value)=>{  
@@ -124,7 +126,7 @@ function CreateTemplate() {
               </div>
               <div class="col-75">
                   <select id="role_name" name="role_name"
-                   onChange={e=> setValue(e.target.value)}>
+                   onChange={e=> setRoleValue(e.target.value)}>
                       <option value="role_1">Select Role</option>
                       {
                         roles.map((value)=>{  
@@ -134,7 +136,6 @@ function CreateTemplate() {
                         })
                       }
                 </select>
-                {console.log(value)}
               </div>
               <div class="roleSearch">
                 <div class="col-25">

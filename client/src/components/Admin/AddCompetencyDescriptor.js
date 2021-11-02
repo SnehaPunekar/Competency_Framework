@@ -145,7 +145,7 @@ export default function AddCompetencyDescriptor() {
             </div>
             <div class="col-75">
               <select id="track" name="track" onChange={e=> setTrack(e.target.value)} >
-                <option value="track"> Select Status </option>
+                <option value="track"> Select Track </option>
                 <option value="CRM_QA_Track"> CRM QA Track </option>                  
                 <option value="CRM_DEV_Track"> CRM DEV Track </option>  
               </select>     

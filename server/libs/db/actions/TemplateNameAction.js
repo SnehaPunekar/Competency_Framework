@@ -62,7 +62,7 @@ AddTemplate = async function(tid,s){
     //  console.log(tempName);
     return new Promise(function (resolve, reject){
         s.forEach(key => {
-            db.query('INSERT INTO comp_temp VALUES (?,?)',[tid,key],(err,result)=>{
+            db.query('INSERT INTO comp_temp(Temp_id, Desc_id) VALUES (?,?)',[tid,key],(err,result)=>{
                 if(err){
                     console.log(err);
                     return reject(err);
@@ -70,7 +70,7 @@ AddTemplate = async function(tid,s){
                 else{
                     //console.log(res)
                     if(result.length > 0){
-                        console.log(result);
+                        console.log({data:result, success: true});
                     }
                     else{
                         console.log('No data found');

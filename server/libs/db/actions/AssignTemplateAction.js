@@ -18,7 +18,7 @@ class AssignTemplate{
         return new Promise(function (resolve, reject){
             empId.map((key) => {
                 db.query('INSERT INTO assign_template(review_cycle_id, Temp_id, emp_id) VALUES (?,?,?)',
-                [tempId,reviewCId,key], (error,result)=>{
+                [reviewCId,tempId,key], (error,result)=>{
                     if(error){
                         console.log(error);
                         return reject(error);
