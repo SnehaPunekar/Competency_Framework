@@ -9,7 +9,7 @@ function SelfAssessment() {
         Axios.get('http://localhost:3001/getReview')
         .then(response =>{
             SetReview(response.data.data);
-        })
+        })  
     }, [])
     
     const[competencyName, SetCompetencyName] = useState([]);

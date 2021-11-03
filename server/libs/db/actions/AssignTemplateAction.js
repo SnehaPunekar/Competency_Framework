@@ -6,6 +6,27 @@ class AssignTemplate{
 
     }
 
+    GetEmpNames = async function () {
+        let output = [];
+        return new Promise(function (resolve, reject) {
+            db.query('SELECT Emp_id,first_name,last_name FROM Employee;',(err,result)=>{
+                if(err){
+                    console.log(err);
+                    return reject(err);
+                }
+                else{
+                    if(result.length > 0 ){
+                        output = result;
+                    }
+                    else{
+                        console.log('No data found!');
+                    }
+                    return resolve(result);
+                }
+            });  
+        });
+    }   
+    
     AddAssignTemp = async function(tempId,reviewCId,empId){
         console.log(tempId,reviewCId,empId);
         return new Promise(function (resolve, reject){
@@ -23,7 +44,7 @@ class AssignTemplate{
                         else{
                             console.log('No data');
                         }
-                        return resolve(result);
+                        return resolve({data:result, success: true});
                     }
                 });
             });

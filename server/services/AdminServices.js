@@ -17,7 +17,7 @@ class AdminServices{
         this.getRating = new Rating();
         this.getReview = new Review();
         this.getAssignTemp = new AssignTemp();
-        this.getTemplateName = new TemplateName();
+        this.getTemplate = new TemplateName();
         this.getSelfAssessment = new SelfAssessment();
         this.getLeadAssessment = new LeadAssessment();
     }
@@ -68,17 +68,32 @@ class AdminServices{
     }
     
     getAllTemplateName = async function(){
-        let response = await this.getTemplateName.GetTemplateName();
+        let response = await this.getTemplate.GetTemplateName();
         return response;
     }
 
     addTemplateName = async function(tempName){
-        let response = await this.getTemplateName.AddTemplateName(tempName);
+        let response = await this.getTemplate.AddTemplateName(tempName);
         return response;
     }
 
     addTemplate = async function(tid,s){
-        let response = await this.getTemplateName.AddTemplate(tid,s);
+        let response = await this.getTemplate.AddTemplate(tid,s);
+        return response;
+    }
+
+    getAllTemplateDescriptor = async function(temp_id){
+        let response = await this.getTemplate.GetTemplateDescriptor(temp_id);
+        return response;
+    }
+
+    getAllDescriptorByRole = async function(roleId){
+        let response = await this.getTemplate.GetDescriptorByRole(roleId);
+        return response;
+    }
+
+    getAllEmpNames = async function(){
+        let response = await this.getAssignTemp.GetEmpNames();
         return response;
     }
 

@@ -31,7 +31,6 @@ function SelfAssessment() {
     
     const [review_id , SetReview_id] = useState('');  
     const [template, SetTemplate] = useState([]);
-    // const [errorMessage, SetErrorMessage] = useState('');
   
     const SearchTemplate = ()=>{       
         if(!review_id){
@@ -41,7 +40,12 @@ function SelfAssessment() {
                 review_cycle_id : review_id,
                 emp_id : localStorage.getItem('id'),
             }).then((response) => {
-                SetTemplate(response.data.data);
+                if(response.data.data.success === true)
+                {
+                    SetTemplate(response.data.data.data);
+                }else{
+                    alert("Self assessment not assigned");
+                }
             });
         }                    
     }

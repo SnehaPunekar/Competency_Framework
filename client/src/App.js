@@ -4,9 +4,9 @@ import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom
 import AddCompetencyArea from './components/Admin/AddCompetencyArea';
 import AddCompetencyDescriptor from './components/Admin/AddCompetencyDescriptor'
 import Navbarmenu from './components/Navbar/Navbarmenu';
-import CreateTemplate from './components/common/CreateTemplate';
+import CreateTemplate from './components/Admin/CreateTemplate';
 import ViewTemplate from './components/common/ViewTemplate';
-import AssignTemplate from './components/Lead/AssignTemplate';
+import AssignTemplate from './components/Admin/AssignTemplate';
 import AddRatings from './components/Admin/AddRatings';
 import ReviewCycle from './components/Admin/ReviewCycle';
 import SelfAssessment from './components/common/SelfAssessment';
@@ -25,11 +25,11 @@ function App() {
     <Router>
       <Switch>
         <Route path='/login' component={LoginPage}/>
+        <Route path='/ChangePassword' component={ChangePassword}/>
         {! (localStorage.getItem('id')) && <Redirect push to='/login'></Redirect>}
         {
           localStorage.getItem('id') && localStorage.getItem('role') ==='Admin' &&
             <div>             
-                <Route path='/ChangePassword' component={ChangePassword}/>
                 <Navbarmenu />
                
                 <Route path='/AddCompetencyArea' component={AddCompetencyArea}/>
@@ -52,8 +52,6 @@ function App() {
            <div>             
                <Route path='/ChangePassword' component={ChangePassword}/>
                <NavbarLead />
-                                       
-               
                <Route path='/selfAssessment' component={SelfAssessment}/>
                <Route path='/lastselfassessment' component={LastSelfAssessment}/>
                <Route path='/leadAssessment' component={LeadAssessment}/>

@@ -42,7 +42,7 @@ class CompetencyDescriptor{
                     else{
                         console.log('No data found!');
                     }
-                    return resolve(result);
+                    return resolve({data:result, success: true});
                 }
             });
         });

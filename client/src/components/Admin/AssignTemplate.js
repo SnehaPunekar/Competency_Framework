@@ -60,7 +60,11 @@ useEffect(()=>{
       empId:empId 
     })
     .then(res=>{
-      console.log(res)
+      if(res.data.data.success === true){
+          alert('Template Assign Successfully');
+      }else{
+          alert("Unable to Assign Template");
+      }
     })
   }
 

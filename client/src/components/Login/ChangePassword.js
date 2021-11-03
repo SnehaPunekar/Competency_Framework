@@ -27,9 +27,10 @@ function ChangePassword() {
             flogin:1,
             Emp_id:localStorage.getItem('id')
         }).then((res) => {
-            if(res.data.success){
-            alert('Password Change Successful!\n Please Log-in again to Continue');
-            window.location.href = '/login';
+            console.log(res);
+            if(res.data.data.success){
+                alert('Password Change Successful!\n Please Log-in again to Continue');
+                window.location.href = '/login';
             }
             else{
                 alert("Failure");

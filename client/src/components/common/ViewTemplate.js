@@ -6,20 +6,20 @@ import { useState, useEffect } from 'react';
 import Axios from 'axios';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 120,type: 'rightAligned',},
+  { field: 'id', headerName: 'ID', width: 100,type: 'rightAligned',},
   {
     field: 'AreaName',
     headerName: 'AreaName',
-    width: 200,
+    width: 150,
     sortable:true,
     editable: false,
   },
   {
     field: 'descriptor',
     headerName: 'Descriptor',
-    width: 600,
+    width: 800,
     sortable:true,
-    editable: false,
+    editable: true,
   },
 ];
 

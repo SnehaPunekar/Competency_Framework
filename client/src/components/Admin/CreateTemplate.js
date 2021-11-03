@@ -18,7 +18,7 @@ const columns = [
     headerName: 'Descriptor',
     width: 800,
     sortable:true,
-    editable: false,
+    editable: true,
   },
 ];
 
@@ -51,8 +51,10 @@ function CreateTemplate() {
           descId :descId
         }).then(response =>{
           console.log(response);
-          if(response.data.data.success){
-            alert('Records Inserted Successfully!');
+          if(response.data.data.success === true){
+              alert('Template Created Successfully');
+          }else{
+              alert("Unable to Create Template");
           }
         })      
     }
@@ -84,7 +86,6 @@ function CreateTemplate() {
       {        
         alert('Please fill the field');
       }else{
-        //console.log("Inside Fuction getDescriptorByRole");
         Axios.post('http://localhost:3001/getDescriptorByRole',{
           role : roleValue
         }).then(res =>{

@@ -35,7 +35,7 @@ class SelfAssessment{
                 const descSelect = "SELECT Desc_id, Description, Area_id FROM competency_descriptor WHERE Desc_id = ?";
                 if(err){
                     console.log(err);
-                    return reject(err);
+                    return reject({error:err, success: false});
                 }else{
                     if(results.length > 0){
                         let template = [];
@@ -58,13 +58,12 @@ class SelfAssessment{
                                         });
                                         if(i == results.length - 1){   
                                             output = template;
-                                            return resolve(output);
+                                            return resolve({data:output, success: true});
                                         }
                                     }
                                 }                        
                             });                
                         }
-                       // return resolve(output);
                     }else{
                         const sqlSelect = "SELECT Temp_id FROM assign_template WHERE review_cycle_id = ? AND emp_id = ?";
                         const descIdSelect = "SELECT Desc_id FROM comp_temp WHERE Temp_id = ?";
@@ -85,7 +84,7 @@ class SelfAssessment{
                                                     }); 
                                                     if(i == descArr.length-1){  
                                                         output = final;
-                                                        return resolve(output);
+                                                        return resolve({data:output, success: true});
                                                     }
                                                  }else{  console.log('error');   }                            
                                             })   
@@ -95,7 +94,6 @@ class SelfAssessment{
                             }else{  console.log('error'); }            
                         });                         
                     }
-                    //return resolve(output);
                 }
             });
         })
@@ -131,7 +129,6 @@ class SelfAssessment{
                             (error, result) => {             
                                 if(i == assessmentArr.length-1){                                     
                                     return resolve({data:result, success: true});
-                                    // res.json({err:error, success:true});  
                             }      
                         });
                     }

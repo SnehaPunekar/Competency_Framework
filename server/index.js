@@ -1,50 +1,27 @@
 const db = require('./config/config');
 const AdminServices =  require('./services/AdminServices.js');
+const LoginServices = require('./services/LoginServices.js');
 const express = require('express');
 const cors = require('cors')
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.post('/login',(request,response)=>{
+app.post('/login', async (request,response)=>{
     const username = request.body.username;
     const password = request.body.password;
 
-    db.query('SELECT Emp_id,first_name,last_name,username,password,role,flogin FROM employee where username = ? AND password = ?',
-     [username,password],
-     (error,result)=>{
-        if(error){
-            console.log(error);
-            response.json({err:error, success:false});
-        }
-        else{
-            if(result.length > 0){
-                console.log(result);
-                response.json({data:result, success:true});
-            }
-            else{
-                response.json({success:false});
-            }
-        }
-    });
+    let out = await new LoginServices().getLoginDetail(username, password);
+    response.json({data:out});     
 });
 
-app.post('/setPassword', (request,response)=>{
-
+app.post('/setPassword', async (request,response)=>{
     const pass = request.body.pass;
     const flogin = request.body.flogin;
     const Emp_id = request.body.Emp_id;
 
-    db.query('UPDATE employee SET password = ?, flogin = ? WHERE Emp_id = ? ',[pass,flogin,parseInt(Emp_id)],
-    (error,result)=>{
-        if(error){
-            console.log(error);
-            response.json({err:error, success:false});
-        }
-        else{
-            response.json({success:true});
-        }
-    }); 
+    let out = await new LoginServices().setPasswordDetail(pass, flogin, Emp_id);
+    response.json({data:out});  
 });
 
 app.post('/addCompetencyArea', async (request,response)=>{
@@ -79,26 +56,11 @@ app.get('/getDescriptor', async (request,response)=>{
     response.json({data:out});  
 });
 
-app.post('/getDescriptorByRole',(req,res)=>{
-    const roleId = req.body.role;
-    console.log(roleId);
-    let ans = [];
-    db.query('SELECT Desc_id,Description, Area_id, Role_id, Track, Status FROM competency_descriptor where role_id=?;',[parseInt(roleId)],(err,result)=>{
-        if(err){
-            console.log(err);
-        }
-        else{
-            if(result.length > 0 ){       
-               // console.log(result);
-                res.json({data:result});
-            
-            }
-            else{
-                console.log('No data found!');
-            }
-        }
-    });
-})
+app.post('/getDescriptorByRole', async (request, response)=>{
+    const roleId = request.body.role;
+    let out = await new AdminServices().getAllDescriptorByRole(roleId);
+    response.json({data:out}); 
+});
 
 app.post('/addRatings',async (request,response)=>{
     const ratingName = request.body.ratingName;
@@ -158,39 +120,15 @@ app.post('/assignTemplate',async (request,response)=>{
     response.json({data:out}); 
 });
 
-app.get('/getEmpNames',(req,res)=>{
-    db.query('SELECT Emp_id,first_name,last_name FROM Employee;',(err,result)=>{
-        if(err){
-            console.log(err);
-        }
-        else{
-            if(result.length > 0 ){
-                res.json({data:result});
-            }
-            else{
-                console.log('No data found!');
-            }
-        }
-    });
+app.get('/getEmpNames', async (request,response)=>{
+    let out = await new AdminServices().getAllEmpNames();
+    response.json({data:out})
 });
 
-app.post('/getTemplateDescriptor',(req,res)=>{
-
-    const temp_id = req.body.temp_id;
-    db.query('Select AreaName,Description, ct.Desc_id from comp_temp ct, competency_descriptor cd, competency_area ca where ct.Desc_id = cd.Desc_id AND cd.Area_id = ca.Area_id AND Temp_id= ? ',[parseInt(temp_id)],(err,result)=>{
-        if(err){
-            console.log(err);
-        }
-        else{
-            if(result.length > 0 ){
-                res.json({data:result, success:true});
-                console.log(result)
-            }
-            else{
-                console.log('No data found!');
-            }
-        }
-    });
+app.post('/getTemplateDescriptor', async (request,response)=>{
+    const temp_id = request.body.temp_id;
+    let out = await new AdminServices().getAllTemplateDescriptor(temp_id);
+    response.json({data:out});
 })
 
 app.get('/selfAssessment/getReview',async (request,response)=>{

@@ -11,23 +11,23 @@ import { useState,useEffect } from 'react';
 import Axios from 'axios';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 120 },
+  { field: 'id', headerName: 'ID', width: 100 },
   {
     field: 'descriptor',
     headerName: 'Descriptor',
-    width: 750,
+    width: 700,
     sortable:true,
-    editable: false,
+    editable:true,
   },
   { field: 'role', 
   headerName: 'Role', 
-  width: 170 },
+  width: 150 },
   { field: 'track', 
   headerName: 'Track', 
-  width: 170 },
+  width: 160 },
   { field: 'status', 
   headerName: 'Status', 
-  width: 150 },
+  width: 130 },
 ];
   
 const useStyles = makeStyles((theme) => ({
@@ -89,8 +89,13 @@ export default function AddCompetencyDescriptor() {
           track : track,
           status : status
         }).then(res=>{
-          setDescriptor(!descriptor);
           console.log(res);
+          if(res.data.data.success === true){
+              setDescriptor(!descriptor);
+              alert("Descriptor added Successfully....");
+          }else{
+              alert("Unable to add Descriptor");
+          }
         });
       }      
     }
@@ -199,6 +204,7 @@ export default function AddCompetencyDescriptor() {
                           columns={columns}
                           pageSize={5}
                           disableSelectionOnClick
+
                         />
                       </div>
                     </AccordionDetails>
