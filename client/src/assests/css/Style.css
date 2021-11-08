@@ -26,13 +26,19 @@
   right: 0px;
 }
 
-/* body {
-  margin: 40px;
-} */
+h1{
+  font-size: 30px;
+}
+
+h3{
+  font-size: 23px;
+}
 
 label {
-  font-size: 20px;
+  font-size: 23px;
   align-self: flex-end;
+  margin-top: -20px;
+  align-content: left;
 }
 
 option {
@@ -54,6 +60,7 @@ option {
   width: 25%;
   margin-top: 6px;
   margin-bottom: 3px;
+  /* font-size: 20px; */
 }
 
 /* Floating column for inputs: 75% width */
@@ -211,3 +218,58 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+/*responsive*/
+
+@media (min-width: 480px) {
+  .content{
+    height: auto;
+  }
+    .col-25 {
+      width: 23%;
+      margin-left: 7px;
+    }
+    /* .col-75 {
+      float: left;
+      width: 73%;
+      margin-top: 6px;
+      margin-right: 10px;
+    }*/
+    h1{
+      font-size: 25px;
+    }
+    
+    h3{
+      font-size: 20px;
+    }
+    label{
+      font-size: 17px;
+    }
+  }
+ 
+ 
+ @media (min-width: 576px) {
+  .content{
+    min-height:100vh;
+  }
+ }
+ 
+ @media (min-width: 768px) {
+  .content{
+    min-height:100vh;
+  }
+  
+ }
+ 
+ @media (min-width: 992px) {
+  .content{
+    min-height:100vh;
+  }
+   
+ }
+ 
+ @media (min-width: 1200px) {
+  .content{
+    min-height:100vh;
+  }
+ }

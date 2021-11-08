@@ -2,22 +2,11 @@
   height: 100%;
   margin: 0;
 }
-/* @media (min-width: 992px) {
-  .back{
-    display: block;
-    width: 100%;
-    height: 615px;
-    object-fit: cover;    
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
-  }
-} */
+
 .back {
   display: block;
-  width: 100%;
-  height: 615px;
+  min-width: 100vw;
+  height: 100vh;
   object-fit: cover;
   background-attachment: fixed;
   background-repeat: no-repeat;
@@ -112,3 +101,92 @@ h1 {
 .login-box a:hover {
   color: #39dc79;
 }
+
+/*responsive*/
+@media (min-width: 480px) {
+ .back {
+    width: 100%;
+    min-height: 100vh;
+  }
+  .outerbox{
+    height: 100%; 
+    position:relative;
+  }
+  .avatar{
+    top: -30px;
+  }
+}
+
+@media (min-width: 576px) {
+  .back {
+   width: 100%;
+   min-height: 100vh;
+  } 
+  .outerbox{
+    height: 100%; 
+    position:relative;
+  } 
+  .avatar{
+    top: -30px;
+   } 
+}
+
+@media (min-width: 768px) {
+  .back {
+    width: 768px;
+    min-height: 100vh;
+  } 
+  .outerbox{
+    height: 100%; 
+    position:relative;
+  } 
+  .avatar{
+    top: -30px;
+  }
+}
+
+@media (min-width: 992px) {
+  .back {
+    width: 100%;
+    min-height: 100vh;
+  }
+   .outerbox{
+     position:relative;
+   }
+   .avatar{
+    top: -30px;
+   }
+}
+
+@media (min-width: 1200px) {
+  .back {
+   width: 1200px;
+   min-height: 100vh;
+  } 
+  .outerbox{
+      height: 100%; 
+      position:relative;
+   } 
+   .avatar{
+    top: -30px;
+   } 
+}
+
+/* @media (min-width: 1600px) {
+  .back {
+   width: 1600px;
+   min-height: 100vh;
+  } 
+  .outerbox{
+      height: 100%; 
+      position:relative;
+   } 
+   .avatar{
+    top: -30px;
+   } 
+} */
+
+
+  
+
+
