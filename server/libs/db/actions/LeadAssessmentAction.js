@@ -15,8 +15,7 @@ class SelfAssessment{
                     return reject(err);
                 }else{
                     const descSelect = "SELECT Desc_id, Description, Area_id FROM competency_descriptor WHERE Desc_id = ?";
-                    if(results.length > 0){
-                    
+                    if(results.length > 0){                    
                         let template = [];
                         for(let i = 0; i < results.length; i++){                
                             let elements = {};
@@ -34,13 +33,16 @@ class SelfAssessment{
                                     });
                                     if(i == results.length - 1){  
                                         output = template;                                    
-                                        return resolve(output);
+                                        return resolve({data:output, success: true});
                                         //res.json({data:template, success:true}) 
                                     }
                                 }else{   console.log('error'); }                    
                             });                
                         }
-                    }else{    console.log('error');   }
+                    }else{    
+                        console.log('error');   
+                        return resolve({success: false});
+                    }
                 }                
             });
         });

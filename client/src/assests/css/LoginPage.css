@@ -2,7 +2,18 @@
   height: 100%;
   margin: 0;
 }
-
+/* @media (min-width: 992px) {
+  .back{
+    display: block;
+    width: 100%;
+    height: 615px;
+    object-fit: cover;    
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  }
+} */
 .back {
   display: block;
   width: 100%;

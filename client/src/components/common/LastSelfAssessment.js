@@ -24,7 +24,25 @@ function SelfAssessment() {
     const [review_id , SetReview_id] = useState('');  
     const [emp_id, SetEmp_id] = useState('');
     const [template, SetTemplate] = useState([]);
-
+    
+    // const[change,setChange] = useState(false);
+    // useEffect(() => {
+    //     if(review_id){
+    //         Axios.post('http://localhost:3001/selfAssessment/getTemplate', {
+    //             review_cycle_id : review_id,
+    //             emp_id : localStorage.getItem('id'),
+    //         }).then((response) => {
+    //             if(response.data.data.success === true)
+    //             {
+    //                 SetTemplate(response.data.data.data);
+    //             }else{
+    //                 alert("Self assessment not assigned");
+    //             }
+    //         }); 
+    //     }else{
+    //         alert("Please Select Review Cycle");
+    //     }
+    // }, [change])
     const SearchTemplate = ()=>{   
         if(!review_id){
             alert("Please Select Review Cycle");
@@ -33,7 +51,12 @@ function SelfAssessment() {
                 review_cycle_id : review_id,
                 emp_id : localStorage.getItem('id'),
             }).then((response) => {
-                SetTemplate(response.data.data);
+                if(response.data.data.success === true)
+                {
+                    SetTemplate(response.data.data.data);
+                }else{
+                    alert("Self assessment not assigned");
+                }
             }); 
         }                  
     }

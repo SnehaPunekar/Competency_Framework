@@ -48,7 +48,12 @@ function LeadAssessment() {
                 review_cycle_id : review_id,
                 emp_id : emp_id,
             }).then((response) => {
-                SetTemplate(response.data.data);
+                if(response.data.data.success === true)
+                {
+                    SetTemplate(response.data.data.data);
+                }else{
+                    alert("Self assessment not yet performed by employee");
+                }
             })  
         }                  
     }

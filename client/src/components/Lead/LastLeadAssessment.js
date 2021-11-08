@@ -40,14 +40,19 @@ function LeadAssessment() {
                 review_cycle_id : review_id,
                 emp_id : emp_id,
             }).then((response) => {
-                SetTemplate(response.data.data);            
+                if(response.data.data.success === true)
+                {
+                    SetTemplate(response.data.data.data);
+                }else{
+                    alert("Self assessment not yet performed by employee");
+                }           
             });
         }                    
     }
     
     return (
         <div className="content"><br/><br/>
-            <center><h1>Lead Assessment</h1> 
+            <center><h1>View Lead Assessment</h1> 
             <div class="row">
                 <div class="col-25">
                     <label for="review">Review Cycle</label>

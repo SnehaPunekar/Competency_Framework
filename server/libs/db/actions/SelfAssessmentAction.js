@@ -28,6 +28,7 @@ class SelfAssessment{
     }
     
     GetSelfAssessment = async function(review_id, emp_id){
+        let flag = 0;
         let output = [];
         return new Promise(function (resolve, reject) {
             db.query("SELECT Desc_id, self_rating, self_comment, lead_rating, lead_comment FROM assessment WHERE review_cycle_id = ? AND emp_id = ?",
@@ -58,13 +59,14 @@ class SelfAssessment{
                                         });
                                         if(i == results.length - 1){   
                                             output = template;
+                                            flag = 1;
                                             return resolve({data:output, success: true});
                                         }
                                     }
                                 }                        
                             });                
                         }
-                    }else{
+                    }else if(results.length == 1){
                         const sqlSelect = "SELECT Temp_id FROM assign_template WHERE review_cycle_id = ? AND emp_id = ?";
                         const descIdSelect = "SELECT Desc_id FROM comp_temp WHERE Temp_id = ?";
                         let final = [];
@@ -84,6 +86,7 @@ class SelfAssessment{
                                                     }); 
                                                     if(i == descArr.length-1){  
                                                         output = final;
+                                                        flag = 1;
                                                         return resolve({data:output, success: true});
                                                     }
                                                  }else{  console.log('error');   }                            
@@ -93,10 +96,15 @@ class SelfAssessment{
                                 });
                             }else{  console.log('error'); }            
                         });                         
+                    }else{
+                        if(flag != 1){
+                            return resolve({success: false});
+                        }
                     }
                 }
             });
-        })
+            
+        });
     }
   
     AddSelfAssessment = async function(review_id, emp_id, assessmentArr){

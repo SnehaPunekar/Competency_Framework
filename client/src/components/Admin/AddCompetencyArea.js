@@ -29,6 +29,7 @@ function AddCompetencyArea() {
             setNames(response.data.data);
         })
     }, [change])
+    
     return (
         <div className="content">
             <center>
