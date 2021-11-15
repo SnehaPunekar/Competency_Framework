@@ -66,7 +66,7 @@ class SelfAssessment{
                                 }                        
                             });                
                         }
-                    }else if(results.length == 1){
+                    }else if(results.length == 0){
                         const sqlSelect = "SELECT Temp_id FROM assign_template WHERE review_cycle_id = ? AND emp_id = ?";
                         const descIdSelect = "SELECT Desc_id FROM comp_temp WHERE Temp_id = ?";
                         let final = [];

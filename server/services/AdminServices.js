@@ -7,6 +7,7 @@ const TemplateName = require('../libs/db/actions/TemplateNameAction');
 const AssignTemp = require('../libs/db/actions/AssignTemplateAction');
 const SelfAssessment = require('../libs/db/actions/SelfAssessmentAction');
 const LeadAssessment = require('../libs/db/actions/LeadAssessmentAction');
+const Dashboard = require('../libs/db/actions/DashboardAction');
 
 class AdminServices{
 
@@ -20,6 +21,7 @@ class AdminServices{
         this.getTemplate = new TemplateName();
         this.getSelfAssessment = new SelfAssessment();
         this.getLeadAssessment = new LeadAssessment();
+        this.dashboard = new Dashboard();
     }
 
     getAllCompetencyAreas = async function() {
@@ -117,6 +119,11 @@ class AdminServices{
         return response;
     }
 
+    getEmployee = async function (leadName) {
+        let response = await this.getLeadAssessment.GetEmployee(leadName);
+        return response;
+    }
+
     getAllLeadAssessment = async function (review_id, emp_id) {
         let response = await this.getLeadAssessment.GetLeadAssessment(review_id, emp_id);
         return response;
@@ -124,6 +131,11 @@ class AdminServices{
 
     addLeadAssessment = async function (review_id, emp_id, assessmentArr) {
         let response = await this.getLeadAssessment.AddLeadAssessment(review_id, emp_id, assessmentArr);
+        return response;
+    }
+
+    getRatingValue = async function () {
+        let response = await this.dashboard.GetRatingValue();
         return response;
     }
 }

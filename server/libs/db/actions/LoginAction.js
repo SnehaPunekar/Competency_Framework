@@ -18,10 +18,11 @@ class LoginAction{
                 }else{
                     if(result.length > 0){
                         output = result;
+                        return resolve({data:result, success:true});
                     }else{
                         console.log('no data');
+                        return resolve({data:result, success:false});
                     }
-                    return resolve({data:result, success:true});
                 }
             });
         });

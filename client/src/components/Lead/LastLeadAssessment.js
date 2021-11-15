@@ -16,7 +16,7 @@ function LeadAssessment() {
     useEffect(()=>{
         Axios.post('http://localhost:3001/leadAssessment/getEmployee',{leadName : localStorage.getItem('first_name')}
         ).then(response =>{
-            SetEmployee(response.data);
+            SetEmployee(response.data.data);
         })
     },[]);
     

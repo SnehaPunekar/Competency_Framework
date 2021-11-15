@@ -11,6 +11,13 @@
   padding: 0;
 }
 
+.barName {
+  float: left;
+  /* float: right; */
+  text-align: right;
+  margin-right:90px ;
+}
+
 .wrap {
   display: grid;
   /* grid-gap: 10px; */
@@ -29,7 +36,9 @@
 h1{
   font-size: 30px;
 }
-
+h2{
+  margin-left: 200px;
+}
 h3{
   font-size: 23px;
 }
@@ -76,6 +85,17 @@ option {
   margin-top: 6px;
 }
 
+.col-20 {
+  float: left;
+  width: 20%;
+  margin-top: 6px;
+}
+
+.col-70 {
+  float: left;
+  width: 70%;
+  margin-top: 6px;
+}
 /* Floating column for inputs: 75% width */
 .col-90 {
   float: left;

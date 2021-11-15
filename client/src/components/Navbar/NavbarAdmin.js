@@ -87,6 +87,7 @@ const Navbarmenu = () => {
                                 <li> <NavLink onClick={toggleClass} activeClassName='is-active'  to={`/LastSelfAssessment`}> View Self Assessment </NavLink> </li>            
                             </ul>
                         </li>
+                        <li className="menu-item " ><NavLink onClick={toggleClass} activeClassName='is-active' to={`/Dashboard`}> Dashboard </NavLink> </li>
                         <li className="menu-item " ><NavLink onClick={toggleClass} activeClassName='is-active' to={`/Logout`}> Logout </NavLink> </li>
                     </ul>
                     </nav>     

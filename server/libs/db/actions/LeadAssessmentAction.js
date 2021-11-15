@@ -6,6 +6,27 @@ class SelfAssessment{
 
     }
 
+    GetEmployee = async function (leadName) {
+        let output = [];
+        return new Promise(function (resolve, reject) {
+            db.query("SELECT emp_id, first_name FROM employee WHERE lead_name = ?;",[leadName], (err, result) => {
+                if(err){
+                    console.log(err);
+                    return reject(err);
+                }else{
+                    if(result.length > 0 ){
+                        // res.json({data:result});
+                        output = result;                    
+                    }
+                    else{
+                        console.log('No data found!');
+                    }
+                    return resolve(result);
+                }
+            });
+        });
+    }
+
     GetLeadAssessment = async function(review_id, emp_id){
         let output = [];
         return new Promise(function (resolve, reject) {            

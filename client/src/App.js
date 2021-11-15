@@ -3,7 +3,7 @@ import ChangePassword from './components/Login/ChangePassword';
 import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
 import AddCompetencyArea from './components/Admin/AddCompetencyArea';
 import AddCompetencyDescriptor from './components/Admin/AddCompetencyDescriptor'
-import Navbarmenu from './components/Navbar/Navbarmenu';
+import Navbarmenu from './components/Navbar/NavbarAdmin';
 import CreateTemplate from './components/Admin/CreateTemplate';
 import ViewTemplate from './components/common/ViewTemplate';
 import AssignTemplate from './components/Admin/AssignTemplate';
@@ -17,6 +17,7 @@ import LastSelfAssessment from './components/common/LastSelfAssessment';
 import NotFound from './components/common/NotFound';
 import NavbarLead from './components/Navbar/NavbarLead';
 import NavbarEmployee from './components/Navbar/NavbarEmployee';
+import Dashboard from './components/Admin/Dashboard';
 
 function App() {
 
@@ -44,6 +45,7 @@ function App() {
                 
                 <Route path='/selfAssessment' component={SelfAssessment}/>
                 <Route path='/lastselfassessment' component={LastSelfAssessment}/>
+                <Route path='/Dashboard' component={Dashboard}/>
                 <Route path='/Logout' render={()=>{ localStorage.clear(); window.location.reload()}} />
             </div> 
          }

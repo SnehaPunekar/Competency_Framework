@@ -1,4 +1,5 @@
 const db = require('./config/config');
+//const ratingValue = require('./config/config');
 const AdminServices =  require('./services/AdminServices.js');
 const LoginServices = require('./services/LoginServices.js');
 const express = require('express');
@@ -170,15 +171,18 @@ app.post("/leadAssessment/insert", async (request, response) => {
     response.json({data:out}); 
 });
 
-app.post("/leadAssessment/getEmployee", (req, res) => {
-    const leadName = req.body.leadName;
-    const selectEmp = "SELECT emp_id, first_name FROM employee WHERE lead_name = ?;";
-    db.query(selectEmp,[leadName], (err, result) => {
-         if(result.length > 0){
-            res.send(result);
-        }
-    })
+app.post("/leadAssessment/getEmployee", async (request, response) => {
+    const leadName = request.body.leadName;
+
+    let out = await new AdminServices().getEmployee(leadName);
+    response.json({data:out});     
 });
+
+app.get('/getCompetencyAreaRating', async (request, response)=>{
+
+    let out = await new AdminServices().getRatingValue();
+    response.json({data:out}); 
+})
 
 app.listen(3001, ()=>{
     console.log(`Listening on port 3001`);
