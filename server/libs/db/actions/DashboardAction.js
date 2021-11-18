@@ -108,7 +108,7 @@ class DashboardAction{
     GetTotalEmp = async function () {
         let output = [];
         return new Promise(function (resolve, reject) {
-            db.query("SELECT emp_id, first_name FROM employee;", (err, result) => {
+            db.query("SELECT emp_id, first_name, last_name FROM employee;", (err, result) => {
                 if(err){
                     console.log(err);
                     return reject(err);

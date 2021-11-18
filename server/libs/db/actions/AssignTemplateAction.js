@@ -9,7 +9,11 @@ class AssignTemplate{
     GetEmpNames = async function (reviewCId, tempId) {
         let output = [];
         return new Promise(function (resolve, reject) {
-            db.query('SELECT Emp_id,first_name,last_name FROM Employee;',(err,empId)=>{
+            /*
+            'SELECT DISTINCT at.emp_id, first_name, last_name FROM assign_template at, employee e WHERE e.emp_id != at.emp_id AND review_cycle_id = ? AND Temp_id = ?;', 
+            [parseInt(reviewCId), parseInt(tempId)], 
+            */
+            db.query('SELECT Emp_id,first_name,last_name FROM Employee;', (err,empId)=>{
                 if(err){
                     console.log(err);
                     return reject(err);
@@ -83,6 +87,25 @@ class AssignTemplate{
                 });
             });
         });        
+    }
+    
+    ViewAssignedTemplate = async function (reviewCId) {
+        let output = [];
+        return new Promise(function (resolve, reject) {
+            db.query('SELECT at.emp_id, first_name, last_name, TempName FROM assign_template at, employee e, template t where at.emp_id = e.emp_id AND at.Temp_id = t.Temp_id AND review_cycle_id= ? '
+            ,[parseInt(reviewCId)], (error,result)=>{                
+                if(error){
+                    console.log(error);
+                    return reject(error);
+                }
+                else{
+                    if(result.length > 0){
+                        console.log(result);  
+                        return resolve(result);                      
+                    }                    
+                }            
+            });
+        });
     }  
 }
     

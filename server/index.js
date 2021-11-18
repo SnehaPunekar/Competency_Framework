@@ -1,5 +1,4 @@
 const db = require('./config/config');
-//const ratingValue = require('./config/config');
 const AdminServices =  require('./services/AdminServices.js');
 const LoginServices = require('./services/LoginServices.js');
 const express = require('express');
@@ -66,14 +65,14 @@ app.post('/getDescriptorByRole', async (request, response)=>{
 app.post('/addRatings',async (request,response)=>{
     const ratingName = request.body.ratingName;
     const ratingDesc = request.body.ratingDesc;
-  //  console.log(ratingName,ratingDesc);
+
     let out = await new AdminServices().addRating(ratingName, ratingDesc);
     response.json({data:out}); 
 });
 
 app.get('/getRatingDetails',async (request, response)=>{
     let out = await new AdminServices().getAllRating();
-   // console.log(out);
+   
     response.json({data:out}); 
 });
 
@@ -82,45 +81,36 @@ app.post('/addReview',async (request,response)=>{
     const start = request.body.start;
     const end = request.body.end;
     const status = request.body.status;
+    
     let out = await new AdminServices().addReview(reviewName,start,end,status);
     response.json({data:out}); 
 });
 
 app.get('/getReview',async (request,response)=>{
     let out = await new AdminServices().getAllReview();
-     response.json({data:out}); 
+    response.json({data:out}); 
 });
 
 app.get('/getTemplateNames',async(request,response)=>{
     let out = await new AdminServices().getAllTemplateName();
-     response.json({data:out}); 
+    response.json({data:out}); 
 });
 
 app.post('/addTemplateName', async(request,response)=>{
-
     const tempName = request.body.tempName;
+
     let out = await new AdminServices().addTemplateName(tempName);
     response.json({data:out})
 });
 
 app.post('/addTemplate', async(request,response)=>{
-
     const tid = request.body.tid;
     const idArray = request.body.descId;
     const s = new Set(idArray)
-    console.log(tid);
-    console.log(s);
+
     let out = await new AdminServices().addTemplate(tid,s);
     response.json({data:out})
 })
-
-app.post('/assignTemplate',async (request,response)=>{
-    const tempId = request.body.tempId;
-    const reviewCId = request.body.reviewCId;
-    const empId = request.body.empId;
-    let out = await new AdminServices().addAssignTemp(tempId,reviewCId,empId);
-    response.json({data:out}); 
-});
 
 app.post('/getEmpNames', async (request,response)=>{
     const tempId = request.body.tempId;
@@ -130,8 +120,25 @@ app.post('/getEmpNames', async (request,response)=>{
     response.json({data:out})
 });
 
+app.post('/assignTemplate',async (request,response)=>{
+    const tempId = request.body.tempId;
+    const reviewCId = request.body.reviewCId;
+    const empId = request.body.empId;
+
+    let out = await new AdminServices().addAssignTemp(tempId,reviewCId,empId);
+    response.json({data:out}); 
+});
+
+app.post('/getEmpNamesByTemplate', async (request,response)=>{
+    const reviewCId = request.body.reviewCId;
+
+    let out = await new AdminServices().getEmpNamesByTemplate(reviewCId);
+    response.json({data:out}); 
+});
+
 app.post('/getTemplateDescriptor', async (request,response)=>{
     const temp_id = request.body.temp_id;
+
     let out = await new AdminServices().getAllTemplateDescriptor(temp_id);
     response.json({data:out});
 })
@@ -183,29 +190,28 @@ app.post("/leadAssessment/getEmployee", async (request, response) => {
 });
 
 app.get('/getCompetencyAreaRating', async (request, response)=>{
-
     let out = await new AdminServices().getRatingValue();
     response.json({data:out}); 
 })
 
 app.get('/getTotalEmployees',async (request,response)=>{
     let out = await new AdminServices().getTotalEmployee();
-     response.json({data:out}); 
+    response.json({data:out}); 
 });
 
 app.get('/getTotalSelfAssessment',async (request,response)=>{
     let out = await new AdminServices().getTotalSelfAssessment();
-     response.json({data:out}); 
+    response.json({data:out}); 
 });
 
 app.get('/getTotalLeads',async (request,response)=>{
     let out = await new AdminServices().getTotalLead();
-     response.json({data:out}); 
+    response.json({data:out}); 
 });
 
 app.get('/getTotalLeadAssessment',async (request,response)=>{
     let out = await new AdminServices().getTotalLeadAssessment();
-     response.json({data:out}); 
+    response.json({data:out}); 
 });
 
 app.listen(3001, ()=>{

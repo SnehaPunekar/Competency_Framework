@@ -104,6 +104,11 @@ class AdminServices{
         return response;
     }
     
+    getEmpNamesByTemplate = async function (reviewCId) {
+        let response = await this.getAssignTemp.ViewAssignedTemplate(reviewCId);
+        return response;
+    }
+
     getActiveReviewCycle = async function(){
         let response = await this.getSelfAssessment.GetActiveReviewCycle();
         return response;

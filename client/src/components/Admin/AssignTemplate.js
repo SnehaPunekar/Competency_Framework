@@ -77,7 +77,7 @@ function AssignTemplate() {
             <center><h1>Assign Template</h1>
             <div class="row">
                 <div class="col-25">
-                    <label for="cycles">Select review cycle</label>                                
+                    <label for="cycles">Select Review Cycle</label>                                
                 </div>
                 <div class="col-75">
                     <select id="level" name="level" 
@@ -98,14 +98,14 @@ function AssignTemplate() {
             </div>
             <div class="row">
                 <div class="col-25">
-                    <label for="templates">Select templates</label>  
+                    <label for="templates">Select Template</label>  
                 </div>
                 <div class="col-75">
                     <select id="templates" name="templates"
                     onChange={ e=> {setChange(true)
                         setTempValue(e.target.value)}
                       }>
-                        <option value="selecttemplates">Select Templates</option>
+                        <option value="selecttemplates">Select Template</option>
                         {
                         TempNames.map((val)=>{  
                         return(
