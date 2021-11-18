@@ -9,7 +9,7 @@ class ReviewCycles{
     GetReviewCycle = async function(){
         let output = [];
         return new Promise(function (resolve, reject) {
-            db.query('SELECT review_cycle_id,review_cycle_name,start_date,end_date FROM review_cycle;',(err,result)=>{
+            db.query('SELECT review_cycle_id, review_cycle_name, start_date, end_date, active FROM review_cycle;',(err,result)=>{
                 if(err){
                     console.log(err);
                     return reject(err);
@@ -28,9 +28,9 @@ class ReviewCycles{
         })
     }
     
-    AddReviewCycle = async function(reviewName,start,end){
+    AddReviewCycle = async function(reviewName, start, end, status){
         return new Promise(function (resolve, reject){
-            db.query('INSERT INTO review_cycle(review_cycle_name, start_date, end_date) VALUES (?,?,?)',
+            db.query('INSERT INTO review_cycle(review_cycle_name, start_date, end_date, active) VALUES (?,?,?,?)',
             [reviewName,start,end], (error,result)=>{
                 if(error){
                     console.log(error);

@@ -64,8 +64,8 @@ class AdminServices{
         return response;
     }
 
-    addReview = async function(reviewName,start,end){
-        let response = await this.getReview.AddReviewCycle(reviewName,start,end);
+    addReview = async function(reviewName,start,end,status){
+        let response = await this.getReview.AddReviewCycle(reviewName,start,end,status);
         return response;
     }
     
@@ -94,8 +94,8 @@ class AdminServices{
         return response;
     }
 
-    getAllEmpNames = async function(){
-        let response = await this.getAssignTemp.GetEmpNames();
+    getAllEmpNames = async function(reviewCId, tempId){
+        let response = await this.getAssignTemp.GetEmpNames(reviewCId, tempId);
         return response;
     }
 
@@ -138,5 +138,26 @@ class AdminServices{
         let response = await this.dashboard.GetRatingValue();
         return response;
     }
+
+    getTotalEmployee = async function () {
+        let response = await this.dashboard.GetTotalEmp();
+        return response;
+    }
+
+    getTotalSelfAssessment = async function () {
+        let response = await this.dashboard.GetSelfAssessmentCount();
+        return response;
+    }
+
+    getTotalLead = async function () {
+        let response = await this.dashboard.GetTotalLead();
+        return response;
+    }
+
+    getTotalLeadAssessment = async function () {
+        let response = await this.dashboard.GetLeadAssessmentCount();
+        return response;
+    }
+
 }
 module.exports = AdminServices;

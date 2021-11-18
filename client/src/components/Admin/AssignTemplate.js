@@ -37,21 +37,25 @@ function AssignTemplate() {
     .then(response =>{
         setTempNames(response.data.data);
     })
-}, [])
+  }, [])
 
-useEffect(() => {
-  Axios.get('http://localhost:3001/selfAssessment/getReview')
-  .then(response =>{
-      setReviewNames(response.data.data);
-  })
-}, [])
+  useEffect(() => {
+    Axios.get('http://localhost:3001/selfAssessment/getReview')
+    .then(response =>{
+        setReviewNames(response.data.data);
+    })
+  }, [])
 
-useEffect(()=>{
-  Axios.get('http://localhost:3001/getEmpNames')
-  .then(response =>{
-     setEmpNames(response.data.data);
-   })
-},[change])
+  useEffect(()=>{
+    if(change){
+      Axios.post('http://localhost:3001/getEmpNames',{
+      reviewCId:value,
+      tempId:tempValue,})
+    .then(response =>{
+      setEmpNames(response.data.data);
+    });
+    }  
+  },[value,tempValue]);
 
   const assign = ()=>{
     Axios.post('http://localhost:3001/assignTemplate',{
@@ -77,7 +81,9 @@ useEffect(()=>{
                 </div>
                 <div class="col-75">
                     <select id="level" name="level" 
-                     onChange={e=> setValue(e.target.value)}>
+                     onChange={e=> { 
+                      setChange(true)
+                      setValue(e.target.value)}}>
                         <option value="cycle">Select Review Cycle</option>
                         {
                         reviewNames.map((value)=>{  
@@ -96,7 +102,9 @@ useEffect(()=>{
                 </div>
                 <div class="col-75">
                     <select id="templates" name="templates"
-                    onChange={e=> setTempValue(e.target.value)}>
+                    onChange={ e=> {setChange(true)
+                        setTempValue(e.target.value)}
+                      }>
                         <option value="selecttemplates">Select Templates</option>
                         {
                         TempNames.map((val)=>{  
@@ -111,7 +119,7 @@ useEffect(()=>{
             </div>
 
            
- <h3>Select the employees</h3>  
+ <h3>Select the employees</h3> 
     {
       empNames.map(value => {
         let b = {

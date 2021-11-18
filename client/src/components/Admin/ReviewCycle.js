@@ -19,7 +19,8 @@ function ReviewCycle() {
       Axios.post('http://localhost:3001/addReview',{
         reviewName:reviewName,
         start:start,
-        end:end
+        end:end,
+        status:1
       }).then(res => {
         setChange(!change);
       });
@@ -77,12 +78,21 @@ function ReviewCycle() {
             <tr><th>Sr. No.</th><th>Review Cycle Name</th><th>Start Date</th><th>End Date</th><th>Status</th></tr>
             {
             reviewDetails.map((val) => {
+              if(val.active == 1){
                 return <tr><td>{val.review_cycle_id}</td><td>{val.review_cycle_name}</td><td>{val.start_date}</td><td>{val.end_date}</td>
-                <td><label class="switch">
-                <input type="checkbox" checked={checked} onClick={!checked}/>
+                <td><label class="switch">                  
+                    <input type="checkbox" checked={!checked} onClick={!checked}/>
+                    <span class="slider round"></span>
+                </label>
+                </td></tr>     
+              }else{
+                return <tr><td>{val.review_cycle_id}</td><td>{val.review_cycle_name}</td><td>{val.start_date}</td><td>{val.end_date}</td>
+                <td><label class="switch">                  
+                  <input type="checkbox" checked={checked} onClick={!checked}/>  
                 <span class="slider round"></span>
               </label>
-              </td></tr>              
+              </td></tr>    
+              }                        
             })}
         </table>
               </center><br/>

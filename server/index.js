@@ -81,7 +81,8 @@ app.post('/addReview',async (request,response)=>{
     const reviewName = request.body.reviewName;
     const start = request.body.start;
     const end = request.body.end;
-    let out = await new AdminServices().addReview(reviewName,start,end);
+    const status = request.body.status;
+    let out = await new AdminServices().addReview(reviewName,start,end,status);
     response.json({data:out}); 
 });
 
@@ -121,8 +122,11 @@ app.post('/assignTemplate',async (request,response)=>{
     response.json({data:out}); 
 });
 
-app.get('/getEmpNames', async (request,response)=>{
-    let out = await new AdminServices().getAllEmpNames();
+app.post('/getEmpNames', async (request,response)=>{
+    const tempId = request.body.tempId;
+    const reviewCId = request.body.reviewCId;
+
+    let out = await new AdminServices().getAllEmpNames(reviewCId, tempId);
     response.json({data:out})
 });
 
@@ -183,6 +187,26 @@ app.get('/getCompetencyAreaRating', async (request, response)=>{
     let out = await new AdminServices().getRatingValue();
     response.json({data:out}); 
 })
+
+app.get('/getTotalEmployees',async (request,response)=>{
+    let out = await new AdminServices().getTotalEmployee();
+     response.json({data:out}); 
+});
+
+app.get('/getTotalSelfAssessment',async (request,response)=>{
+    let out = await new AdminServices().getTotalSelfAssessment();
+     response.json({data:out}); 
+});
+
+app.get('/getTotalLeads',async (request,response)=>{
+    let out = await new AdminServices().getTotalLead();
+     response.json({data:out}); 
+});
+
+app.get('/getTotalLeadAssessment',async (request,response)=>{
+    let out = await new AdminServices().getTotalLeadAssessment();
+     response.json({data:out}); 
+});
 
 app.listen(3001, ()=>{
     console.log(`Listening on port 3001`);

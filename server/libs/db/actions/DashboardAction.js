@@ -1,6 +1,7 @@
 const db = require('../../../config/config');
 
 class DashboardAction{
+    EmpCount = 0;
 
     constructor(){
 
@@ -68,7 +69,7 @@ class DashboardAction{
                                             //console.log('final:',final);
                                             for(let j = 0; j < final.length; j++)
                                             {
-                                               let element = {};
+                                                let element = {};
                                                 db.query("SELECT AreaName FROM Competency_Area WHERE Area_id = ?;", [final[j].cid], (err2, res2) => {  
                                                     if(err2){
                                                         console.log(err2);
@@ -80,7 +81,7 @@ class DashboardAction{
                                                             element.Lead = final[j].avgLead;
                                                             finalOutput.push(element);
                                                             if(j == final.length-1){                                                        
-                                                                console.log("finalOutput:",finalOutput);                                                                
+                                                              //  console.log("finalOutput:",finalOutput);                                                                
                                                                 return resolve(finalOutput);
                                                                // response.json({data : finalOutput});
                                                             }
@@ -103,6 +104,111 @@ class DashboardAction{
             });
         })
     }
+
+    GetTotalEmp = async function () {
+        let output = [];
+        return new Promise(function (resolve, reject) {
+            db.query("SELECT emp_id, first_name FROM employee;", (err, result) => {
+                if(err){
+                    console.log(err);
+                    return reject(err);
+                }else{
+                    if(result.length > 0 ){
+                        output = result.length;              
+                    }
+                    else{
+                        console.log('No data found!');
+                    }
+                    return resolve(result.length);
+                }
+            });
+        });
+    }
+
+    GetSelfAssessmentCount = async function () {
+        let output = [];
+        return new Promise(function (resolve, reject) {
+            db.query("SELECT review_cycle_id FROM review_cycle WHERE active = 1;", (err, result) => {
+                if(err){
+                    console.log(err);
+                    return reject(err);
+                }else{
+                    if(result.length > 0 ){
+                        db.query("SELECT DISTINCT emp_id FROM assessment WHERE review_cycle_id = ?;", [result[0].review_cycle_id], (err1, res1) => {
+                            if(err1){
+                                console.log(err1);
+                                return reject(err1);
+                            }else{
+                                if(res1.length > 0 ){
+                                    output = res1.length;
+                                }
+                                else{
+                                    console.log('No data found!');
+                                }
+                                return resolve(res1.length);
+                            }
+                        });                        
+                    }
+                    else{
+                        console.log('No data found!');
+                    }
+                }
+            });
+        });
+    }
+
+    GetTotalLead = async function () {
+        let output = [];
+        return new Promise(function (resolve, reject) {
+            db.query("SELECT emp_id, first_name FROM employee WHERE role = 'Lead';", (err, result) => {
+                if(err){
+                    console.log(err);
+                    return reject(err);
+                }else{
+                    if(result.length > 0 ){
+                        output = result.length;                    
+                    }
+                    else{
+                        console.log('No data found!');
+                    }
+                    return resolve(result.length);
+                }
+            });
+        });
+    }
+
+    GetLeadAssessmentCount = async function () {
+        let output = [];
+        return new Promise(function (resolve, reject) {
+            db.query("SELECT review_cycle_id FROM review_cycle WHERE active = 1;", (err, result) => {
+                if(err){
+                    console.log(err);
+                    return reject(err);
+                }else{
+                    if(result.length > 0 ){
+                        db.query("SELECT DISTINCT emp_id FROM assessment WHERE review_cycle_id = ? AND lead_rating != '';", [result[0].review_cycle_id], (err1, res1) => {
+                            if(err1){
+                                console.log(err1);
+                                return reject(err1);
+                            }else{
+                                if(res1.length > 0 ){                                 
+                                    output = res1.length;
+                                }
+                                else{
+                                    console.log('No data found!');
+                                }
+                                return resolve(res1.length);
+                            }
+                        });                        
+                    }
+                    else{
+                        console.log('No data found!');
+                    }
+                }
+            });
+        });
+    }
+
 }
 
 module.exports = DashboardAction;
