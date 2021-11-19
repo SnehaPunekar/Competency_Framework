@@ -16,7 +16,7 @@ const columns = [
   {
     field: 'descriptor',
     headerName: 'Descriptor',
-    width: 800,
+    width: 920,
     sortable:true,
     editable: true,
   },

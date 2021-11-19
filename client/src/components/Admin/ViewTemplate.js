@@ -94,48 +94,6 @@ export default function ViewTemplate() {
             </div>
         </div>
       <br/><br/><br/>
-      {/* <div className={classes.root}>
-        {
-                    names.map((value)=>{ 
-                      a=[];  
-                        return(
-                <Accordion>
-                    <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                    >
-                    <Typography className={classes.heading}>{value.AreaName}</Typography>
-                    </AccordionSummary>
-                    {console.log(details)}
-                    {
-                  details.map(value1=>{
-                  if(value1.AreaName === value.AreaName){
-                    let b={
-                      id:value1.Desc_id,
-                      descriptor:value1.Description,
-                    }
-                    a.push(b);
-                    //console.log(a)
-                  }
-                }) 
-              }
-                    <AccordionDetails>
-                    <div style={{ height: 400, width: '100%', backgroundColor: 'white' }}>
-                        <DataGrid
-                        rows={a}
-                        columns={columns}
-                        pageSize={5}
-                        disableSelectionOnClick
-                        />
-                    </div>
-                    </AccordionDetails>
-                </Accordion> 
-              )
-            }
-          )
-        }              
-      </div>  */}
       {
       details.map(value => {
         let b = {

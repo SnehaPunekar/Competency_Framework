@@ -55,7 +55,7 @@ function AssignTemplate() {
       setEmpNames(response.data.data);
     });
     }  
-  },[value,tempValue]);
+  },[tempValue]);
 
   const assign = ()=>{
     Axios.post('http://localhost:3001/assignTemplate',{

@@ -89,17 +89,17 @@ class SelfAssessment{
                                                         flag = 1;
                                                         return resolve({data:output, success: true});
                                                     }
-                                                 }else{  console.log('error');   }                            
+                                                }                           
                                             })   
                                         }      
-                                    }else{  console.log('error'); }  
+                                    } 
                                 });
-                            }else{  console.log('error'); }            
+                            }else{
+                                if(flag != 1){
+                                    return resolve({success: false});
+                                }
+                            }          
                         });                         
-                    }else{
-                        if(flag != 1){
-                            return resolve({success: false});
-                        }
                     }
                 }
             });

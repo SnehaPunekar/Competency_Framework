@@ -123,10 +123,10 @@ export default function AddCompetencyDescriptor() {
             <label for="competencydescriptor">Competency Descriptor</label>
           </div>
           <div class="col-75">
-            <input type="text" id="competencydescriptor" name="competencydescriptor" placeholder="Competency Descriptor" 
-                onChange={e=>{
-                  setDesc(e.target.value)
-                }} required/>
+            <textarea type='text' id="competencydescriptor" name='competencydescriptor' placeholder="Competency Descriptor" 
+              onChange={e=>{
+                setDesc(e.target.value)
+            }} required/> 
           </div>
         </div>
         <div class="row">

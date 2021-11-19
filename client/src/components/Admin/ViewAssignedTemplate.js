@@ -35,7 +35,7 @@ function AssignTemplate() {
 
     const[reviewNames,setReviewNames] = useState([]);
     useEffect(() => {
-        Axios.get('http://localhost:3001/selfAssessment/getReview')
+        Axios.get('http://localhost:3001/getReview')
         .then(response =>{
             setReviewNames(response.data.data);
         })
@@ -87,7 +87,7 @@ function AssignTemplate() {
                     a.push(b);
                 })
             }
-            <div style={{ height: 400, width: '85%', background:'white' }}>
+            <div style={{ height: 370, width: '85%', background:'white' }}>
                 <DataGrid
                     rows={a}
                     columns={columns}
@@ -95,7 +95,8 @@ function AssignTemplate() {
                     disableSelectionOnClick
                     
                 />
-            </div>       
+            </div> 
+            <br/>      
             </center>
         </div>
     )

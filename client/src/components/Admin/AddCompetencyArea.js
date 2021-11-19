@@ -14,7 +14,7 @@ function AddCompetencyArea() {
         }else{
             Axios.post('http://localhost:3001/AddCompetencyArea',{
                 AreaName:AreaName
-            }).then(res => {
+            }).then(response => {
                 setChange(!change);
             });
         }        

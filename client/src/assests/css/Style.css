@@ -132,6 +132,7 @@ button {
 input[type="text"],
 input[type="date"],
 input[type="password"],
+textarea[id = "competencydescriptor"],
 select {
   width: 70%;
   padding: 12px;
@@ -141,6 +142,11 @@ select {
   margin-top: 6px;
   margin-bottom: 16px;
   resize: vertical;
+}
+
+textarea {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: medium;
 }
 
 table {
@@ -286,8 +292,7 @@ input:checked + .slider:before {
  @media (min-width: 768px) {
   .content{
     min-height:100vh;
-  }
-  
+  }  
  }
  
  @media (min-width: 992px) {

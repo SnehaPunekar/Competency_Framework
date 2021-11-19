@@ -121,9 +121,9 @@ export default function Dashboard() {
                     {TotalEmp}
                   </Typography>
                 </div>
-                <div class="col-15">
+                {/* <div class="col-15">
                   <AutorenewRoundedIcon sx={{ position: 'absolute'}} sx={{ right: '20px' }} color="primary" sx={{ bgcolor: blue[200] }} fontSize="large" />       
-                </div>    
+                </div>     */}
               </CardContent>
             </Card>
           </div>
@@ -153,9 +153,9 @@ export default function Dashboard() {
                   {TotalLead}
                 </Typography> 
               </div>              
-              <div class="col-15">
+              {/* <div class="col-15">
                 <AutorenewRoundedIcon  color="primary" sx={{ bgcolor: blue[200] }} fontSize="large" /> 
-              </div>      
+              </div>       */}
             </CardContent>
           </Card>
           </div>
