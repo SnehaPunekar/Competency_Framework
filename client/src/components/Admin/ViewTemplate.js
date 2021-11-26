@@ -63,8 +63,12 @@ export default function ViewTemplate() {
       Axios.post('http://localhost:3001/getTemplateDescriptor',
           {temp_id:value,
         }).then(response =>{
-            setDetails(response.data.data);
-        })
+          if(response.data.data.success === true){  
+            setDetails(response.data.data.data);//setAssignTemplate(response.data.data.data);
+          }else{
+            setDetails([]);
+          }            
+        });
     }
   },[value])
 
@@ -80,8 +84,8 @@ export default function ViewTemplate() {
             <div class="col-75">
                 <select id="competency_area" name="competency_area"
                  onChange={e=>{ 
-                  setChange(true)
-                   setValue(e.target.value)}} >
+                  setChange(true);
+                   setValue(e.target.value);}} >
                     <option value="competency">Select Template Name</option>
                     {
                     TempNames.map((value)=>{  

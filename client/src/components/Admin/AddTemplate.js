@@ -3,19 +3,11 @@ import React from 'react';
 import Axios from 'axios';
 import {useState, useEffect} from 'react'
 
-function AddTemplate() {
-
-    const[tempName,setTempName] = useState('');
-    const[change,setChange]=useState(false)
-
-    const[tempnames,setTempNames] = useState([]); 
-    useEffect(() => {
-        Axios.get('http://localhost:3001/getTemplateNames')
-        .then(response =>{
-            setTempNames(response.data.data);
-        })
-    }, []);
-
+function AddTemplate() {   
+      
+    const[tempName, setTempName] = useState('');
+    const[change, setChange] = useState(false);
+    
     const AddTemplateName = ()=> {
         if(!tempName){
             alert('Please fill the field');
@@ -27,6 +19,15 @@ function AddTemplate() {
             });
         }               
     }
+
+    const[tempnames, setTempNames] = useState([]); 
+    useEffect(() => {
+        Axios.get('http://localhost:3001/getTemplateNames')
+        .then(response =>{
+            setTempNames(response.data.data);
+        })
+    }, [change]);
+    
     return (
         <div className="content">
             <center>

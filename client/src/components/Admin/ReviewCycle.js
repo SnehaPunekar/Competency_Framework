@@ -2,16 +2,34 @@ import '../../assests/css/Style.css';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import Axios from 'axios';
-  
-function ReviewCycle() {
 
+function ReviewCycle() {
+  const[statusList, setStatusList] = useState([]);
+ let statusListtemp = [];
+  let a = [];
   const[reviewName,SetReviewName] = useState('');
   const[start,SetStart] = useState('');
   const[end,SetEnd] = useState('');
   const[change,setChange] = useState(false);
   const[reviewDetails,setReviewDetails] = useState([]);
-  const[checked,setChecked] = useState(false);
-  
+
+  const[change1,setChange1] = useState(false);
+  const[reviewId, setReviewId] = useState('');
+  const[status, setStatus] = useState('');
+
+  const[checked, setChecked] = useState(false);
+    
+  const toggler = (e) => {
+    console.log('hey');
+    setReviewId(e.target.id);
+    (e.target.checked) ? setStatus(1) : setStatus(0);
+    setChange(true);
+  }
+
+  // useEffect(() => {
+  //   console.log(reviewId, status);
+  // }, [reviewId, status]) 
+
   const addReview = ()=>{
     if(!reviewName || !start || !end){
       alert('Please fill all the fields');
@@ -28,11 +46,20 @@ function ReviewCycle() {
   };
 
   useEffect(() => {
-    Axios.get('http://localhost:3001/getReview')
-    .then(response =>{
-      setReviewDetails(response.data.data);
-    })
-}, [change])
+    if(reviewId){
+      console.log('set');
+      setChange(false);
+      Axios.post('http://localhost:3001/updateReview',{reviewIdTemp : reviewId, statusTemp : status})
+      .then(response =>{
+        setReviewDetails(response.data.data);        
+      });
+    }else{
+      Axios.get('http://localhost:3001/getReview')
+      .then(response =>{
+        setReviewDetails(response.data.data);
+      })     
+    }    
+  }, [change])
 
   return (
     <div className="content">
@@ -73,29 +100,26 @@ function ReviewCycle() {
           </div>
         </div>
         <button onClick={addReview}>Save</button><br/>
-        <h3>List of Review Cycle</h3>    
+        <h3>List of Review Cycle</h3>  
         <table>
             <tr><th>Sr. No.</th><th>Review Cycle Name</th><th>Start Date</th><th>End Date</th><th>Status</th></tr>
             {
-            reviewDetails.map((val) => {
-              if(val.active == 1){
-                return <tr><td>{val.review_cycle_id}</td><td>{val.review_cycle_name}</td><td>{val.start_date}</td><td>{val.end_date}</td>
+              reviewDetails.map((val) => {      
+                return <tr><td>{val.review_cycle_id}</td>
+                <td>{val.review_cycle_name}</td>
+                <td>{val.start_date}</td>
+                <td>{val.end_date}</td>
                 <td><label class="switch">                  
-                    <input type="checkbox" checked={!checked} onClick={!checked}/>
+                    <input type="checkbox" 
+                      id={val.review_cycle_id} 
+                      checked={ Boolean(val.active) } 
+                      onChange={ toggler } />
                     <span class="slider round"></span>
                 </label>
-                </td></tr>     
-              }else{
-                return <tr><td>{val.review_cycle_id}</td><td>{val.review_cycle_name}</td><td>{val.start_date}</td><td>{val.end_date}</td>
-                <td><label class="switch">                  
-                  <input type="checkbox" checked={checked} onClick={!checked}/>  
-                <span class="slider round"></span>
-              </label>
-              </td></tr>    
-              }                        
+                </td></tr>    
             })}
         </table>
-              </center><br/>
+      </center><br/>
     </div>
   );
 }

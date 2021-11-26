@@ -64,6 +64,11 @@ class AdminServices{
         return response;
     }
 
+    updateAllReview = async function(reviewId, status){
+        let response = await this.getReview.UpdateReviewCycle(reviewId, status);
+        return response;
+    }
+
     addReview = async function(reviewName,start,end,status){
         let response = await this.getReview.AddReviewCycle(reviewName,start,end,status);
         return response;

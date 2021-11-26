@@ -2,6 +2,7 @@ import '../../assests/css/Style.css';
 import React from 'react'
 import { useState, useEffect } from 'react';
 import Axios from 'axios';  
+
 function SelfAssessment() {
     
     const[review, SetReview] = useState([]);
@@ -25,24 +26,6 @@ function SelfAssessment() {
     const [emp_id, SetEmp_id] = useState('');
     const [template, SetTemplate] = useState([]);
     
-    // const[change,setChange] = useState(false);
-    // useEffect(() => {
-    //     if(review_id){
-    //         Axios.post('http://localhost:3001/selfAssessment/getTemplate', {
-    //             review_cycle_id : review_id,
-    //             emp_id : localStorage.getItem('id'),
-    //         }).then((response) => {
-    //             if(response.data.data.success === true)
-    //             {
-    //                 SetTemplate(response.data.data.data);
-    //             }else{
-    //                 alert("Self assessment not assigned");
-    //             }
-    //         }); 
-    //     }else{
-    //         alert("Please Select Review Cycle");
-    //     }
-    // }, [change])
     const SearchTemplate = ()=>{   
         if(!review_id){
             alert("Please Select Review Cycle");
@@ -56,6 +39,7 @@ function SelfAssessment() {
                     SetTemplate(response.data.data.data);
                 }else{
                     alert("Self assessment not assigned");
+                    SetTemplate([]);
                 }
             }); 
         }                  
@@ -88,8 +72,7 @@ function SelfAssessment() {
                 <tr><th>Competency Area</th><th>Competency Descriptior</th><th>Employee Rating</th><th>Self Comment</th><th>Lead Rating</th><th>Lead Comment</th></tr>
                 {
                     competencyName.map((val1) => {
-                        return template.map((val) => {                       
-                                               
+                        return template.map((val) => {      
                             if(val1.Area_id === val.cid){                                    
                                 return <tr>
                                         <td>{val1.AreaName}</td> 
@@ -99,8 +82,7 @@ function SelfAssessment() {
                                         <td class='unselected'>{val.leadRating}</td>
                                         <td class='unselected'>{val.leadComment}</td>
                                     </tr>           
-                            }                                                         
-                            
+                            }                                                                                     
                         })
                     })
                 }          
@@ -111,6 +93,6 @@ function SelfAssessment() {
     )
 }
 
-export default SelfAssessment
+export default SelfAssessment;
 
 

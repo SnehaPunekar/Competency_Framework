@@ -31,7 +31,8 @@ function LeadAssessment() {
 
     const [review_id , SetReview_id] = useState('');  
     const [emp_id, SetEmp_id] = useState('');
-    const [template, SetTemplate] = useState([]);
+    const [template, SetLeadTemplate] = useState([]);
+    
     const SearchTemplate = ()=>{
         if(!review_id || !emp_id){
             alert("Please Select Review Cycle and Employee");
@@ -42,9 +43,10 @@ function LeadAssessment() {
             }).then((response) => {
                 if(response.data.data.success === true)
                 {
-                    SetTemplate(response.data.data.data);
+                    SetLeadTemplate(response.data.data.data);
                 }else{
                     alert("Self assessment not yet performed by employee");
+                    SetLeadTemplate([]);
                 }           
             });
         }                    

@@ -91,6 +91,14 @@ app.get('/getReview',async (request,response)=>{
     response.json({data:out}); 
 });
 
+app.post('/updateReview',async (request,response)=>{
+    const reviewId = request.body.reviewIdTemp;
+    const status = request.body.statusTemp;
+
+    let out = await new AdminServices().updateAllReview(reviewId, status);
+    response.json({data:out}); 
+});
+
 app.get('/getTemplateNames',async(request,response)=>{
     let out = await new AdminServices().getAllTemplateName();
     response.json({data:out}); 

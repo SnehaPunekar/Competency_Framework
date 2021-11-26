@@ -100,7 +100,9 @@ class AssignTemplate{
                 }
                 else{
                     if(result.length > 0){  
-                        return resolve(result);                      
+                        return resolve({data : result, success : true});                      
+                    }else{                        
+                        return resolve({success : false});
                     }                    
                 }            
             });

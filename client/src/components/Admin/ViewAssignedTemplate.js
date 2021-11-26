@@ -47,7 +47,11 @@ function AssignTemplate() {
           Axios.post('http://localhost:3001/getEmpNamesByTemplate',{
           reviewCId:reviewId,})
         .then(response =>{
-            setAssignTemplate(response.data.data);
+            if(response.data.data.success === true){  
+              setAssignTemplate(response.data.data.data);
+            }else{
+              setAssignTemplate([]);
+            }
         });
         }  
     },[reviewId]);
@@ -62,7 +66,7 @@ function AssignTemplate() {
                 <div class="col-75">
                     <select id="level" name="level" 
                      onChange={e=> { 
-                      setChange(true)
+                      setChange(true);
                       setReviewId(e.target.value)}}>
                         <option value="cycle">Select Review Cycle</option>
                         {
@@ -73,7 +77,6 @@ function AssignTemplate() {
                           })
                         }                     
                     </select>
-                    {console.log(reviewId)}
                 </div>
             </div>
             {

@@ -165,7 +165,8 @@ export default function Dashboard() {
               <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                 Completed Assessment
               </Typography>
-              <Typography variant="h5" component="div">                
+              <Typography variant="h5" component="div">   
+              {console.log(TotalLeadAssessment, TotalLead)}             
                 {Math.round((TotalLeadAssessment / TotalLead) * 100)}%
               </Typography> 
               {/* <i class="cis-percent"></i> */}

@@ -70,18 +70,17 @@ class TemplateName{
     GetTemplateDescriptor = async function(temp_id){
         let output = [];
         return new Promise(function (resolve, reject){
-            db.query('Select AreaName,Description, ct.Desc_id from comp_temp ct, competency_descriptor cd, competency_area ca where ct.Desc_id = cd.Desc_id AND cd.Area_id = ca.Area_id AND Temp_id= ? ',[parseInt(temp_id)],(err,result)=>{
+            db.query('Select AreaName, Description, ct.Desc_id from comp_temp ct, competency_descriptor cd, competency_area ca where ct.Desc_id = cd.Desc_id AND cd.Area_id = ca.Area_id AND Temp_id= ? ',[parseInt(temp_id)],(err,result)=>{
                 if(err){
                     console.log(err);
                     return reject(err);
                 }
                 else{
-                    if(result.length > 0 ){
-                        output = result;
-                    }else{
-                        console.log('No data found!');
+                    if(result.length > 0){  
+                        return resolve({data : result, success : true});                      
+                    }else{                        
+                        return resolve({success : false});
                     }
-                    return resolve(result);
                 }
             });
         });
@@ -90,7 +89,7 @@ class TemplateName{
     GetDescriptorByRole = async function(roleId){
         let output = [];
         return new Promise(function (resolve, reject){
-            db.query('SELECT Desc_id,Description, Area_id, Role_id, Track, Status FROM competency_descriptor where role_id=?;',[parseInt(roleId)],(err,result)=>{
+            db.query('SELECT Desc_id, Description, Area_id, Role_id, Track, Status FROM competency_descriptor where role_id=?;',[parseInt(roleId)],(err,result)=>{
                 if(err){
                     console.log(err);
                     return reject(err);
