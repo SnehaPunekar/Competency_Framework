@@ -15,19 +15,13 @@ const columns = [
   {
     field: 'descriptor',
     headerName: 'Descriptor',
-    width: 700,
+    width: 660,
     sortable:true,
     editable:true,
   },
-  { field: 'role', 
-  headerName: 'Role', 
-  width: 150 },
-  { field: 'track', 
-  headerName: 'Track', 
-  width: 160 },
-  { field: 'status', 
-  headerName: 'Status', 
-  width: 130 },
+  { field: 'role', headerName: 'Role', width: 110 },
+  { field: 'track', headerName: 'Track', width: 130 },
+  { field: 'status', headerName: 'Status', width: 120 },
 ];
   
 const useStyles = makeStyles((theme) => ({
@@ -64,7 +58,6 @@ export default function AddCompetencyDescriptor() {
         setDetails(response.data.data);
       })
     },[descriptor])
-
     
     const[roleName, setRoleNames] = useState([]);
     useEffect(() => {
@@ -176,7 +169,6 @@ export default function AddCompetencyDescriptor() {
               names.map((value)=>{   
                 a = []
                 return(
-                   
                   <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
                       <Typography className={classes.heading}>{value.AreaName}</Typography>
@@ -200,12 +192,10 @@ export default function AddCompetencyDescriptor() {
                     <AccordionDetails>
                       <div style={{ height: 400, width: '100%', backgroundColor: 'white' }}>
                         <DataGrid
-                          rows={a}
-                          columns={columns}
-                          pageSize={5}
-                          disableSelectionOnClick
-
-                        />
+                          rows = {a}
+                          columns = {columns}
+                          pageSize = {5}
+                          disableSelectionOnClick/>
                       </div>
                     </AccordionDetails>
                   </Accordion>

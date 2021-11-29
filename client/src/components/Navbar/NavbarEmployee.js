@@ -31,7 +31,7 @@ const NavbarEmployee = () => {
     <header className="header__middle">
         <div className="container">
             <div className="row">
-                {/* Add Logo  */}
+                {/* Add Logo  */} 
                 <div className="header__middle__logo">
                      <NavLink exact activeClassName='is-active' to="/">
                         <img src={logo} className="logo"

@@ -168,8 +168,9 @@ app.post("/selfAssessment/insert", async(request, response) => {
     const review_id = request.body.review_id;
     const emp_id = request.body.emp_id;
     const assessmentArr = request.body.assessmentArr;
+    const draft = request.body.draft;
     
-    let out = await new AdminServices().addSelfAssessment(review_id, emp_id, assessmentArr);
+    let out = await new AdminServices().addSelfAssessment(review_id, emp_id, assessmentArr, draft);
     response.json({data:out});    
 });
 

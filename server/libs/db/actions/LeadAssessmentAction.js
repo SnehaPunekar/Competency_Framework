@@ -30,7 +30,7 @@ class SelfAssessment{
     GetLeadAssessment = async function(review_id, emp_id){
         let output = [];
         return new Promise(function (resolve, reject) {            
-            db.query("SELECT Desc_id, self_rating, self_comment, lead_rating, lead_comment FROM assessment WHERE review_cycle_id = ? AND emp_id = ?",
+            db.query("SELECT Desc_id, self_rating, self_comment, lead_rating, lead_comment FROM assessment WHERE review_cycle_id = ? AND emp_id = ? AND draft = 1;",
             [review_id, emp_id], (err, results) => {                
                 if(err){                    
                     return reject(err);
@@ -57,11 +57,11 @@ class SelfAssessment{
                                         return resolve({data:output, success: true});
                                         //res.json({data:template, success:true}) 
                                     }
-                                }else{   console.log('error'); }                    
+                                }                   
                             });                
                         }
                     }else{    
-                        console.log('error');   
+                        //console.log('error');   
                         return resolve({success: false});
                     }
                 }                

@@ -112,6 +112,11 @@ option {
 }
 /* Floating column for inputs: 75% width */
 
+.inline-button {
+  display: inline-block;
+  margin-right: 50px;
+}
+
 .roleSearch{
   margin-top: 7px;
   float: right;
