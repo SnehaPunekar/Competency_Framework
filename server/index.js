@@ -174,6 +174,14 @@ app.post("/selfAssessment/insert", async(request, response) => {
     response.json({data:out});    
 });
 
+app.post("/selfAssessment/viewTemplate", async (request, response) => {
+    const review_id = request.body.review_cycle_id;
+    const emp_id = request.body.emp_id; 
+
+    let out = await new AdminServices().ViewAllSelfAssessment(review_id, emp_id);
+    response.json({data:out}); 
+});
+
 app.post("/leadAssessment/getTemplate", async (request, response) => {
     const review_id = request.body.review_cycle_id;
     const emp_id = request.body.emp_id;    

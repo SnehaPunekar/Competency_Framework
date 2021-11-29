@@ -30,13 +30,16 @@ function SelfAssessment() {
         if(!review_id){
             alert("Please Select Review Cycle");
         }else{
-            Axios.post('http://localhost:3001/selfAssessment/getTemplate', {
+            Axios.post('http://localhost:3001/selfAssessment/ViewTemplate', {
                 review_cycle_id : review_id,
                 emp_id : localStorage.getItem('id'),
             }).then((response) => {
                 if(response.data.data.success === true)
                 {
                     SetTemplate(response.data.data.data);
+                }else if(response.data.data.update === true){
+                    alert("Please submit your assessment to view here");
+                    SetTemplate([]);
                 }else{
                     alert("Self assessment not assigned");
                     SetTemplate([]);

@@ -32,17 +32,16 @@ class SelfAssessment{
         let output = [];
         return new Promise(function (resolve, reject) {
             db.query("SELECT Desc_id, self_rating, self_comment, draft, lead_rating, lead_comment FROM assessment WHERE review_cycle_id = ? AND emp_id = ?",
-            [review_id, emp_id], (err, results) => {
-                
+            [review_id, emp_id], (err, results) => {                
                 const descSelect = "SELECT Desc_id, Description, Area_id FROM competency_descriptor WHERE Desc_id = ?";
                 if(err){
                     console.log(err);
                     return reject({error:err, success: false});
-                }else{
-                    if(results[0].draft == 1){
-                        return resolve({update : true});
-                    }
+                }else{                    
                     if(results.length > 0){
+                        if(results[0].draft == 1){
+                            return resolve({update : true});
+                        }
                         let template = [];
                         for(let i = 0; i < results.length; i++){                
                             let elements = {};
@@ -110,43 +109,100 @@ class SelfAssessment{
             
         });
     }
+
+    ViewSelfAssessment = async function(review_id, emp_id){
+        let flag = 0;
+        let output = [];
+        return new Promise(function (resolve, reject) {
+            db.query("SELECT Desc_id, self_rating, self_comment, draft, lead_rating, lead_comment FROM assessment WHERE review_cycle_id = ? AND emp_id = ?",
+            [review_id, emp_id], (err, results) => {                
+                const descSelect = "SELECT Desc_id, Description, Area_id FROM competency_descriptor WHERE Desc_id = ?";
+                if(err){
+                    console.log(err);
+                    return reject({error:err, success: false});
+                }else{                    
+                    if(results.length > 0){
+                        if(results[0].draft == 0) {
+                            return resolve({update : true});
+                        }
+                        let template = [];
+                        for(let i = 0; i < results.length; i++){   
+                            if(results[i].draft == 1) {
+                                let elements = {};
+                                db.query(descSelect, [results[i].Desc_id], (err2, res2) => {                    
+                                    if(err2){
+                                        console.log(err2);
+                                    }else{
+                                        if(res2.length > 0){
+                                            res2.forEach(function(items) {
+                                                elements.cid = items.Area_id;
+                                                elements.did = items.Desc_id;
+                                                elements.des = items.Description;    
+                                                elements.selfRating = results[i].self_rating;
+                                                elements.selfComment = results[i].self_comment;
+                                                elements.leadRating = results[i].lead_rating;
+                                                elements.leadComment = results[i].lead_comment;
+                                                template.push(elements);                                               
+                                            });
+                                            if(i == results.length - 1){   
+                                                output = template;
+                                                flag = 1;
+                                                return resolve({data:output, success: true});
+                                            }
+                                        }
+                                    }                        
+                                });
+                            }                
+                        }
+                    }else{
+                        return resolve({success: false});
+                    }
+                }
+            });
+        });
+    }
   
     AddSelfAssessment = async function(review_id, emp_id, assessmentArr, draft){
         return new Promise(function (resolve, reject){           
-            db.query("SELECT Desc_id, draft FROM assessment WHERE review_cycle_id = ? AND emp_id = ?", [review_id, emp_id], (err, result) => {
-                if(result.length > 0 && !err){
-                    if(result[0].draft === 1){
-                        return resolve({success: false});  
-                    }else{                    
-                        const updateSql = "UPDATE assessment SET self_rating = ?, self_comment = ?, draft = ? WHERE Desc_id = ? AND (review_cycle_id = ? AND emp_id = ?)";
-                        for(let i = 0; i < assessmentArr.length; i++)
-                        {
-                            if(typeof(assessmentArr[i].rating) != "undefined" && typeof(assessmentArr[i].comment) != "undefined"){                    
-                                db.query(updateSql, [assessmentArr[i].rating, assessmentArr[i].comment, draft, assessmentArr[i].id, review_id, emp_id], (e, r) =>{ 
-                                    if(e) {console.log(e);
-                                        return reject(error);
-                                    }else{
-                                        if(r.length < 0){ 
-                                            console.log('no data');
+            db.query("SELECT Desc_id, draft FROM assessment WHERE review_cycle_id = ? AND emp_id = ?", 
+            [review_id, emp_id], (err, result) => {
+                if(err){
+                    return reject({error:err, success: false});
+                }else{                 
+                    if(result.length > 0){
+                        if(result[0].draft === 1){
+                            return resolve({success: false});  
+                        }else{                    
+                            const updateSql = "UPDATE assessment SET self_rating = ?, self_comment = ?, draft = ? WHERE Desc_id = ? AND (review_cycle_id = ? AND emp_id = ?)";
+                            for(let i = 0; i < assessmentArr.length; i++)
+                            {
+                                if(typeof(assessmentArr[i].rating) != "undefined" && typeof(assessmentArr[i].comment) != "undefined"){                    
+                                    db.query(updateSql, [assessmentArr[i].rating, assessmentArr[i].comment, draft, assessmentArr[i].id, review_id, emp_id], (e, r) =>{ 
+                                        if(e) {console.log(e);
+                                            return reject(error);
+                                        }else{
+                                            if(r.length < 0){ 
+                                                console.log('no data');
+                                            }
                                         }
-                                    }
-                                })
-                            }
-                            if(i == assessmentArr.length - 1){
-                                return resolve({data:result, success: true});
+                                    })
+                                }
+                                if(i == assessmentArr.length - 1){
+                                    return resolve({data:result, success: true});
+                                }
                             }
                         }
-                    }
-                }else {
-                    const sqlInsert = "INSERT INTO assessment(review_cycle_id, emp_id, Desc_id, self_rating, self_comment, draft) VALUES (?, ?, ?, ?, ?, ?)"; 
-                    for(let i = 0; i < assessmentArr.length; i++)
-                    {
-                        db.query(sqlInsert, [review_id, emp_id, assessmentArr[i].id, assessmentArr[i].rating, assessmentArr[i].comment], 
-                            (error, result) => {             
-                                if(i == assessmentArr.length-1){                                     
-                                    return resolve({data:result, success: true});
-                            }      
-                        });
+                    }else {
+                        const sqlInsert = "INSERT INTO assessment(review_cycle_id, emp_id, Desc_id, self_rating, self_comment, draft) VALUES (?, ?, ?, ?, ?, ?)"; 
+                        for(let i = 0; i < assessmentArr.length; i++)
+                        {
+                            db.query(sqlInsert, [review_id, emp_id, assessmentArr[i].id, assessmentArr[i].rating, assessmentArr[i].comment, draft], 
+                                (error, result) => {             
+                                    if(i == assessmentArr.length-1){                                     
+                                        return resolve({data:result, success: true});
+                                }      
+                            });
+                        }
                     }
                 }
             });

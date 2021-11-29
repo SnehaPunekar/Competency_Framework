@@ -124,6 +124,11 @@ class AdminServices{
         return response;
     }
 
+    ViewAllSelfAssessment = async function (review_id, emp_id) {
+        let response = await this.getSelfAssessment.ViewSelfAssessment(review_id, emp_id);
+        return response;
+    }
+
     addSelfAssessment = async function (review_id, emp_id, assessmentArr, draft) {
         let response = await this.getSelfAssessment.AddSelfAssessment(review_id, emp_id, assessmentArr, draft);
         return response;
