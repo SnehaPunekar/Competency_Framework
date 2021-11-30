@@ -9,7 +9,7 @@ class DashboardAction{
 
     GetRatingValue = async function(){
         let output = [];
-        const query = "SELECT Desc_id, self_rating, lead_rating FROM assessment;"
+        const query = "SELECT Desc_id, self_rating, lead_rating FROM assessment WHERE draft = 1;"
         const ratingValue = [{name : 'A', value : 20}, 
                             {name : 'B', value : 15}, 
                             {name : 'C', value : 10}, 
@@ -25,7 +25,7 @@ class DashboardAction{
                 else{
                     if(result.length > 0 ){
                         const descSelect = "SELECT Area_id FROM competency_descriptor WHERE Desc_id = ?";
-                        for(let i = 0; i < result.length; i++){ 
+                        for(let i = 0; i < result.length; i++){                             
                             let avgEmp = 0, countEmp = 0;    
                             let avgLead = 0, countLead = 0;                   
                             db.query(descSelect, [result[i].Desc_id], (err1, res1) => {  
@@ -123,7 +123,7 @@ class DashboardAction{
     }
 
     GetSelfAssessmentCount = async function () {
-        let output = 0;
+        let output = 0, output1 = 0, output2 = 0;
         return new Promise(function (resolve, reject) {
             db.query("SELECT review_cycle_id FROM review_cycle WHERE active = 1;", (err, result) => {
                 if(err){
@@ -132,16 +132,28 @@ class DashboardAction{
                 }else{
                     if(result.length > 0 ){
                         for(let i = 0; i < result.length; i++){
-                            db.query("SELECT DISTINCT emp_id FROM assessment WHERE review_cycle_id = ?;", 
+                            db.query("SELECT DISTINCT emp_id FROM assign_template WHERE review_cycle_id = ?;", 
                             [result[i].review_cycle_id], (err1, res1) => {
                                 if(err1){
                                     console.log(err1);
                                     return reject(err1);
                                 }else{
                                     if(res1.length > 0 ){
-                                        output += res1.length;
+                                        output1 += res1.length;
                                     }
-                                    if(i == result.length - 1){                                        
+                                }
+                            });
+                            db.query("SELECT DISTINCT emp_id FROM assessment WHERE review_cycle_id = ? AND draft = 1;", 
+                            [result[i].review_cycle_id], (err2, res2) => {
+                                if(err2){
+                                    console.log(err2);
+                                    return reject(err2);
+                                }else{
+                                    if(res2.length > 0 ){
+                                        output2 += res2.length;
+                                    }
+                                    if(i == result.length - 1){  
+                                        output = (output2 / output1) * 100;                                                                                
                                         return resolve(output);
                                     }
                                 }
@@ -174,7 +186,7 @@ class DashboardAction{
     }
 
     GetLeadAssessmentCount = async function () {
-        let output = 0;
+        let output1 = 0, output2 = 0, output = 0;
         return new Promise(function (resolve, reject) {
             db.query("SELECT review_cycle_id FROM review_cycle WHERE active = 1;", (err, result) => {
                 if(err){
@@ -183,20 +195,32 @@ class DashboardAction{
                 }else{
                     if(result.length > 0 ){
                         for(let i = 0; i < result.length; i++) {
-                            db.query("SELECT DISTINCT emp_id FROM assessment WHERE review_cycle_id = ? AND lead_rating != '';",
+                            db.query("SELECT DISTINCT emp_id FROM assessment WHERE review_cycle_id = ? AND lead_rating != '' AND draft = 1 AND lead_draft = 1;",
                             [result[i].review_cycle_id], (err1, res1) => {
                                 if(err1){
                                     console.log(err1);
                                     return reject(err1);
                                 }else{
                                     if(res1.length > 0 ){                                 
-                                        output += res1.length;
+                                        output1 += res1.length;
+                                    }                                    
+                                }
+                            }); 
+                            db.query("SELECT DISTINCT emp_id FROM assessment WHERE review_cycle_id = ? AND draft = 1;",
+                            [result[i].review_cycle_id], (err2, res2) => {
+                                if(err2){
+                                    console.log(err2);
+                                    return reject(err2);
+                                }else{
+                                    if(res2.length > 0 ){                                 
+                                        output2 += res2.length;
                                     }
-                                    if(i == result.length-1){                                        
+                                    if(i == result.length-1){       
+                                        output = (output1 / output2) * 100;                            
                                         return resolve(output);
                                     }
                                 }
-                            });                
+                            });
                         }
                     }
                     else{

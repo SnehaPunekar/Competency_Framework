@@ -52,11 +52,41 @@ function LeadAssessment() {
                 if(response.data.data.success === true)
                 {
                     SetTemplate(response.data.data.data);
+                }else if(response.data.data.update === true){
+                    alert("Your Lead assessment is already submitted");
+                    SetTemplate([]);
                 }else{
                     alert("Self assessment not yet performed by employee");
+                    SetTemplate([]);
                 }
             })  
         }                  
+    }
+
+    const SaveAssessment = () => {
+        let flag = 0;
+        assessmentArr.forEach(val => {
+            if(!val.rating || !val.comment){
+                flag = 1;
+            }
+        });
+        if(flag == 1){            
+            alert("Please fill all the fields");
+        }else{
+            Axios.post('http://localhost:3001/leadAssessment/insert', {
+                review_id : review_id,
+                emp_id : emp_id,
+                assessmentArr : assessmentArr,
+                lead_draft : 0,
+            }).then((response) => {
+                if(response.data.data.success === true){
+                    alert("Lead Assessment Saved Temporarily");
+                    SetTemplate([]);                  
+                }else{
+                    alert("Unable to save Lead Assessment");
+                }
+            });
+        }
     }
 
     const SubmitAssessment = () => {
@@ -73,11 +103,13 @@ function LeadAssessment() {
                 review_id : review_id,
                 emp_id : emp_id,
                 assessmentArr : assessmentArr,
+                lead_draft : 1,
             }).then((response) => {
                 if(response.data.data.success === true){
                     alert("Lead Assessment submited Successfully....");
+                    SetTemplate([]);                  
                 }else{
-                    alert("Error");
+                    alert("Unable to submit Lead Assessment");
                 }
             });
         }
@@ -125,13 +157,18 @@ function LeadAssessment() {
                                             
                             if(val1.Area_id === val.cid){                                           
                                 var element = {};
-                                element.id = val.did;                         
+                                element.id = val.did;  
+                                if(val.leadRating && val.leadComment)
+                                {
+                                    element.rating = val.leadRating;
+                                    element.comment = val.leadComment;
+                                }                       
                                 return <tr>
                                         <td>{val1.AreaName}</td> 
                                         <td>{val.des}</td>
                                         <td class='unselected'>{val.selfRating}</td>
                                         <td class='unselected'>{val.selfComment}</td>
-                                        <td><select name='leadRating' onChange = {e=> {element.rating = e.target.value}}>
+                                        <td><select name='leadRating' defaultValue={val.leadRating} onChange = {e=> {element.rating = e.target.value}}>
                                             <option>Select</option>
                                             {
                                                 rating.map((val)=>{  
@@ -139,7 +176,7 @@ function LeadAssessment() {
                                                 })
                                             }
                                         </select></td>                 
-                                        <td><textarea type='text' name='lead_Comment' onChange = {e=> {element.comment = e.target.value;}}/>                             
+                                        <td><textarea type='text' name='lead_Comment' defaultValue={val.leadComment} onChange = {e=> {element.comment = e.target.value;}}/>                             
                                         <h6>{assessmentArr.push(element)} </h6> </td>
                                     </tr>           
                             }  
@@ -147,7 +184,8 @@ function LeadAssessment() {
                     })
                 }
                 </table><br/>
-		    <button onClick={SubmitAssessment}>Save</button><br/><br/>            
+                <button className="inline-button " onClick={SaveAssessment} display="inline-block">Save as Draft</button>
+                <button className="inline-button " onClick={SubmitAssessment} display="inline-block">Submit</button>         
             </center>
         </div>
     )

@@ -37,13 +37,16 @@ function LeadAssessment() {
         if(!review_id || !emp_id){
             alert("Please Select Review Cycle and Employee");
         }else{
-            Axios.post('http://localhost:3001/leadAssessment/getTemplate', {
+            Axios.post('http://localhost:3001/leadAssessment/viewTemplate', {
                 review_cycle_id : review_id,
                 emp_id : emp_id,
             }).then((response) => {
                 if(response.data.data.success === true)
                 {
                     SetLeadTemplate(response.data.data.data);
+                }else if(response.data.data.update === true){
+                    alert("Please submit your lead assessment to view here");
+                    SetLeadTemplate([]);
                 }else{
                     alert("Self assessment not yet performed by employee");
                     SetLeadTemplate([]);

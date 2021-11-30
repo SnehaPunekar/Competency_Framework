@@ -45,8 +45,10 @@ function SelfAssessment() {
                     SetTemplate(response.data.data.data);
                 }else if(response.data.data.update === true){
                     alert("Your Self assessment is already submitted");
+                    SetTemplate([]);
                 }else{
                     alert("Self assessment not assigned");
+                    SetTemplate([]);
                 }
             });
         }                    
@@ -71,8 +73,9 @@ function SelfAssessment() {
                 //console.log(response);
                 if(response.data.data.success === true){
                     alert("Self Assessment Saved Temporarily");
+                    SetTemplate([]);
                 }else{
-                    alert("Unable to submit Self Assessment");
+                    alert("Unable to save Self Assessment");
                 }
             });
         }
@@ -99,6 +102,7 @@ function SelfAssessment() {
                 //console.log(response);
                 if(response.data.data.success === true){
                     alert("Self Assessment submited Successfully....");
+                    SetTemplate([]);
                 }else{
                     alert("Unable to submit Self Assessment");
                 }
@@ -149,7 +153,7 @@ function SelfAssessment() {
                             return <tr>
                                 <td>{val1.AreaName}</td> 
                                 <td>{val.des}</td> 
-                                <td><select name='selfRating' value={val.selfRating} onChange = {e=> {element.rating = e.target.value}}>
+                                <td><select name='selfRating' defaultValue={val.selfRating} onChange = {e=> {element.rating = e.target.value}}>
                                     <option>Select</option>
                                     {
                                         rating.map((v)=>{  
@@ -157,7 +161,7 @@ function SelfAssessment() {
                                         })
                                     }
                                     </select></td>                 
-                                <td><textarea type='text' value={val.selfComment} name='selfComment' onChange = {e=> {element.comment = e.target.value;}}/>                             
+                                <td><textarea type='text' defaultValue={val.selfComment} name='selfComment' onChange = {e=> {element.comment = e.target.value;}}/>                             
                                 <h6>{assessmentArr.push(element)}</h6></td>             
                                 <td class='unselected'>{val.leadRating}</td>
                                 <td class='unselected'>{val.leadComment}</td>

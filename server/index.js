@@ -194,9 +194,18 @@ app.post("/leadAssessment/insert", async (request, response) => {
     const review_id = request.body.review_id;
     const emp_id = request.body.emp_id;
     const assessmentArr = request.body.assessmentArr;
-    
-    let out = await new AdminServices().addLeadAssessment(review_id, emp_id, assessmentArr);
+    const lead_draft = request.body.lead_draft;
+
+    let out = await new AdminServices().addLeadAssessment(review_id, emp_id, assessmentArr, lead_draft);
     response.json({data:out}); 
+});
+
+app.post("/leadAssessment/viewTemplate", async (request, response) => {
+    const review_id = request.body.review_cycle_id;
+    const emp_id = request.body.emp_id;    
+    
+    let out = await new AdminServices().ViewAllLeadAssessment(review_id, emp_id);
+    response.json({data:out});  
 });
 
 app.post("/leadAssessment/getEmployee", async (request, response) => {

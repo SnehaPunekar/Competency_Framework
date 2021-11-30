@@ -144,8 +144,13 @@ class AdminServices{
         return response;
     }
 
-    addLeadAssessment = async function (review_id, emp_id, assessmentArr) {
-        let response = await this.getLeadAssessment.AddLeadAssessment(review_id, emp_id, assessmentArr);
+    ViewAllLeadAssessment = async function (review_id, emp_id) {
+        let response = await this.getLeadAssessment.ViewLeadAssessment(review_id, emp_id);
+        return response;
+    }
+
+    addLeadAssessment = async function (review_id, emp_id, assessmentArr, lead_draft) {
+        let response = await this.getLeadAssessment.AddLeadAssessment(review_id, emp_id, assessmentArr, lead_draft);
         return response;
     }
 

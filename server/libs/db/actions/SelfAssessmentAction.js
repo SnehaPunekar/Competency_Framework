@@ -38,7 +38,7 @@ class SelfAssessment{
                     console.log(err);
                     return reject({error:err, success: false});
                 }else{                    
-                    if(results.length > 0){
+                    if(results.length > 0){ 
                         if(results[0].draft == 1){
                             return resolve({update : true});
                         }
@@ -114,7 +114,7 @@ class SelfAssessment{
         let flag = 0;
         let output = [];
         return new Promise(function (resolve, reject) {
-            db.query("SELECT Desc_id, self_rating, self_comment, draft, lead_rating, lead_comment FROM assessment WHERE review_cycle_id = ? AND emp_id = ?",
+            db.query("SELECT Desc_id, self_rating, self_comment, draft, lead_rating, lead_comment, lead_draft FROM assessment WHERE review_cycle_id = ? AND emp_id = ?",
             [review_id, emp_id], (err, results) => {                
                 const descSelect = "SELECT Desc_id, Description, Area_id FROM competency_descriptor WHERE Desc_id = ?";
                 if(err){
@@ -140,8 +140,12 @@ class SelfAssessment{
                                                 elements.des = items.Description;    
                                                 elements.selfRating = results[i].self_rating;
                                                 elements.selfComment = results[i].self_comment;
-                                                elements.leadRating = results[i].lead_rating;
-                                                elements.leadComment = results[i].lead_comment;
+                                                if(results[i].lead_draft == 1){
+                                                    elements.leadRating = results[i].lead_rating;
+                                                    elements.leadComment = results[i].lead_comment;                                                    
+                                                }
+                                                // elements.leadRating = results[i].lead_rating;
+                                                // elements.leadComment = results[i].lead_comment;
                                                 template.push(elements);                                               
                                             });
                                             if(i == results.length - 1){   
