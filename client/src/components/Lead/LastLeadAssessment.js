@@ -39,7 +39,7 @@ function LeadAssessment() {
         }else{
             Axios.post('http://localhost:3001/leadAssessment/viewTemplate', {
                 review_cycle_id : review_id,
-                emp_id : emp_id,
+                emp_id : emp_id, 
             }).then((response) => {
                 if(response.data.data.success === true)
                 {
