@@ -138,7 +138,10 @@ function SelfAssessment() {
             </div> 
             <br/><br/>
             <table id="assessment">
-                <tr><th>Competency Area</th><th>Competency Descriptior</th><th>Employee Rating</th><th>Self Comment</th><th>Lead Rating</th><th>Lead Comment</th></tr>
+                <tr><th>Competency Area</th><th>Competency Descriptior</th>
+                <th>Employee Rating</th><th>Self Comment</th>
+                {/* <th>Lead Rating</th><th>Lead Comment</th> */}
+                </tr>
                 {
                 competencyName.map((val1) => {
                     return template.map((val) => {  
@@ -163,8 +166,8 @@ function SelfAssessment() {
                                     </select></td>                 
                                 <td><textarea type='text' defaultValue={val.selfComment} name='selfComment' onChange = {e=> {element.comment = e.target.value;}}/>                             
                                 <h6>{assessmentArr.push(element)}</h6></td>             
-                                <td class='unselected'>{val.leadRating}</td>
-                                <td class='unselected'>{val.leadComment}</td>
+                                {/* <td class='unselected'>{val.leadRating}</td>
+                                <td class='unselected'>{val.leadComment}</td> */}
                                 </tr>           
                             }  
                         })

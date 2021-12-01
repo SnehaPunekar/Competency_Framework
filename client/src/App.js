@@ -27,12 +27,12 @@ function App() {
     <Router>
       <Switch>
         <Route path='/login' component={LoginPage}/>
+        <Route path='/ChangePassword' component={ChangePassword}/>
         {! (localStorage.getItem('id')) && <Redirect push to='/login'></Redirect>}
         {
           localStorage.getItem('id') && localStorage.getItem('role') ==='Admin' &&
             <div>             
                 <Navbarmenu />
-                <Route path='/ChangePassword' component={ChangePassword}/>
                
                 <Route path='/AddCompetencyArea' component={AddCompetencyArea}/>
                 <Route path='/AddCompetencyDescriptor' component={AddCompetencyDescriptor}/>

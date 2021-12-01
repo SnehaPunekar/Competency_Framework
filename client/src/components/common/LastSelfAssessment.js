@@ -82,8 +82,8 @@ function SelfAssessment() {
                                         <td>{val.des}</td>
                                         <td>{val.selfRating}</td>
                                         <td>{val.selfComment}</td>
-                                        <td class='unselected'>{val.leadRating}</td>
-                                        <td class='unselected'>{val.leadComment}</td>
+                                        <td>{val.leadRating}</td>
+                                        <td>{val.leadComment}</td>
                                     </tr>           
                             }                                                                                     
                         })

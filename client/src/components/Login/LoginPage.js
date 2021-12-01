@@ -21,7 +21,7 @@ function LoginPage() {
       if(res.data.data.success){
         console.log(res.data);
         if(res.data.data.data[0].flogin === 1 && res.data.data.data[0].role === 'Admin'){
-          alert('Admin Login Successful');
+         // alert('Admin Login Successful');
           localStorage.setItem('id',res.data.data.data[0].Emp_id);
           localStorage.setItem('role','Admin');
           localStorage.setItem('first_name',res.data.data.data[0].first_name);
@@ -29,7 +29,7 @@ function LoginPage() {
           window.location.href = '/AddCompetencyArea';
         }
         else if (res.data.data.data[0].flogin === 1 && res.data.data.data[0].role === 'Lead'){
-          alert('Lead Login Successful');
+          //alert('Lead Login Successful');
           localStorage.setItem('id',res.data.data.data[0].Emp_id);
           localStorage.setItem('role','Lead');
           localStorage.setItem('first_name',res.data.data.data[0].first_name);
@@ -37,18 +37,17 @@ function LoginPage() {
           window.location.href = '/leadAssessment';
         }
         else if(res.data.data.data[0].flogin === 1 && res.data.data.data[0].role === 'Developer'){
-          alert('Developer Login Successful');
+          //alert('Developer Login Successful');
           localStorage.setItem('role','Developer');
           localStorage.setItem('id',res.data.data.data[0].Emp_id);
           localStorage.setItem('first_name',res.data.data.data[0].first_name);
           localStorage.setItem('last_name',res.data.data.data[0].last_name);
           window.location.href = '/selfAssessment';
-
         }
         else if(res.data.data.data[0].flogin === 0){
-        alert('First Time Login.\n Please change Password to continue..!!');
-        localStorage.setItem('id',res.data.data.data[0].Emp_id);
-        window.location.href = '/ChangePassword'; 
+          alert('First Time Login.\n Please change Password to continue..!!');
+          localStorage.setItem('id',res.data.data.data[0].Emp_id);
+          window.location.href = '/ChangePassword'; 
         }
       }
       else{

@@ -21,7 +21,7 @@ const columns = [
   },
   { field: 'role', headerName: 'Role', width: 110 },
   { field: 'track', headerName: 'Track', width: 130 },
-  { field: 'status', headerName: 'Status', width: 120 },
+  { field: 'status', headerName: 'Status', width: 120},
 ];
   
 const useStyles = makeStyles((theme) => ({
