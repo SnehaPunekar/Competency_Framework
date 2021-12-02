@@ -41,6 +41,7 @@ class Rating{
                     }else{
                         console.log('No data');
                     }
+                    return resolve(result);
                 }
             });
         })

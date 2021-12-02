@@ -53,8 +53,10 @@ function CreateTemplate() {
           console.log(response);
           if(response.data.data.success === true){
               alert('Template Created Successfully');
+              setDetails([]);
           }else{
               alert("Unable to Create Template");
+              setDetails([]);
           }
         })      
     }

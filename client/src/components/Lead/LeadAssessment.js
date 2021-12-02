@@ -168,7 +168,7 @@ function LeadAssessment() {
                                         <td>{val.des}</td>
                                         <td class='unselected'>{val.selfRating}</td>
                                         <td class='unselected'>{val.selfComment}</td>
-                                        <td><select name='leadRating' defaultValue={val.leadRating} onChange = {e=> {element.rating = e.target.value}}>
+                                        <td width='80px'><select name='leadRating' defaultValue={val.leadRating} onChange = {e=> {element.rating = e.target.value}}>
                                             <option>Select</option>
                                             {
                                                 rating.map((val)=>{  
@@ -186,6 +186,7 @@ function LeadAssessment() {
                 </table><br/>
                 <button className="inline-button " onClick={SaveAssessment} display="inline-block">Save as Draft</button>
                 <button className="inline-button " onClick={SubmitAssessment} display="inline-block">Submit</button>         
+                <br/>
             </center>
         </div>
     )

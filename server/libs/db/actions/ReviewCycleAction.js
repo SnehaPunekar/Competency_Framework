@@ -52,11 +52,11 @@ class ReviewCycles{
 
     AddReviewCycle = async function(reviewName, start, end, status){
         return new Promise(function (resolve, reject){
-            db.query('INSERT INTO review_cycle(review_cycle_name, start_date, end_date, active) VALUES (?,?,?,?)',
-            [reviewName,start,end], (error,result)=>{
+            db.query('INSERT INTO review_cycle(review_cycle_name, start_date, end_date, active) VALUES (?,?,?,?);',
+            [reviewName, start, end, status], (error,result)=>{
                 if(error){
                     console.log(error);
-                    return reject(err);
+                    return reject(error);
                 }else{
                     if(result.length > 0){
                         console.log(result);

@@ -16,11 +16,7 @@ class TemplateName{
                 }
                 else{
                     if(result.length > 0 ){
-                        //res.json({data:result});
                         output = result;
-                    }
-                    else{
-                        console.log('No data found!');
                     }
                     return resolve(result);
                 }
@@ -39,15 +35,13 @@ class TemplateName{
                     if(result.length > 0){
                         console.log(result);
                     }
-                    else{
-                        console.log('No data found');
-                    }
+                    return resolve(result);
                 }
             });
         });
     }
 
-    AddTemplate = async function(tid,s){
+    AddTemplate = async function(tid, s){
         return new Promise(function (resolve, reject){
             s.forEach(key => {
                 db.query('INSERT INTO comp_temp(Temp_id, Desc_id) VALUES (?,?)',[tid,key],(err,result)=>{
@@ -57,8 +51,6 @@ class TemplateName{
                     }else{
                         if(result.length > 0){
                             output = result;
-                        }else{
-                            console.log('No data found');
                         }
                         return resolve({data:result, success: true});
                     }
@@ -97,9 +89,6 @@ class TemplateName{
                 else{
                     if(result.length > 0 ){   
                         output = result;                   
-                    }
-                    else{
-                        console.log('No data found!');
                     }
                     return resolve(result);
                 }

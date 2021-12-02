@@ -108,7 +108,7 @@ export default function ViewTemplate() {
         a.push(b);
       })
     }
-    <div style={{ height: 400, width: '85%', background:'white' }}>
+    <div style={{ height: 385, width: '85%', background:'white' }}>
       <DataGrid
         rows={a}
         columns={columns}

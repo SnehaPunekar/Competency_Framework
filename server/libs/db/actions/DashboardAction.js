@@ -77,8 +77,8 @@ class DashboardAction{
                                                     }else{
                                                         if(res2.length > 0) {
                                                             element.name = res2[0].AreaName;
-                                                            element.Emp = final[j].avgEmp;
-                                                            element.Lead = final[j].avgLead;
+                                                            element.Emp =  Math.round(final[j].avgEmp);
+                                                            element.Lead = Math.round(final[j].avgLead);
                                                             finalOutput.push(element);
                                                             if(j == final.length-1){                                                        
                                                               //  console.log("finalOutput:",finalOutput);                                                                

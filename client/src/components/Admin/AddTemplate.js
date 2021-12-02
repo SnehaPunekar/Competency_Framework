@@ -6,7 +6,6 @@ import {useState, useEffect} from 'react'
 function AddTemplate() {   
       
     const[tempName, setTempName] = useState('');
-    const[change, setChange] = useState(false);
     
     const AddTemplateName = ()=> {
         if(!tempName){
@@ -14,11 +13,13 @@ function AddTemplate() {
         }else{
             Axios.post('http://localhost:3001/addTemplateName',
                 {tempName:tempName,
-            }).then(res => {
+            }).then(response => {
                 setChange(!change);
             });
         }               
     }
+
+    const[change, setChange] = useState(false);
 
     const[tempnames, setTempNames] = useState([]); 
     useEffect(() => {

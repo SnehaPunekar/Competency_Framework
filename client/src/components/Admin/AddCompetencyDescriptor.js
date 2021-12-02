@@ -190,12 +190,18 @@ export default function AddCompetencyDescriptor() {
                       })  
                     }
                     <AccordionDetails>
-                      <div style={{ height: 400, width: '100%', backgroundColor: 'white' }}>
+                      <div style={{ height: 380, width: '100%', backgroundColor: 'white' }}>
                         <DataGrid
                           rows = {a}
                           columns = {columns}
                           pageSize = {5}
-                          disableSelectionOnClick/>
+                          //  disableSelectionOnClick
+                          // onSelectionModelChange={(id) => {
+                          //   alert(id);
+                          //   //setValue();
+                          //   setDesc(descriptor);
+                          // }}
+                          />
                       </div>
                     </AccordionDetails>
                   </Accordion>

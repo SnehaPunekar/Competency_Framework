@@ -6,9 +6,7 @@ import Axios from 'axios';
 function AddRatings() {
 
     const[ratingSymbol, setRatingSymbol] = useState('');
-    const[ratingDesc, setRatingDesc] = useState('');
-    const[change, setChange] = useState(false);
-    
+    const[ratingDesc, setRatingDesc] = useState('');    
     const[ratings, setRatings] = useState([]);    
 
     const addRatings = ()=>{
@@ -20,11 +18,13 @@ function AddRatings() {
                 ratingName:ratingSymbol,
                 ratingDesc:ratingDesc
             }
-            ).then(res =>{
+            ).then(response =>{
                 setChange(!change);
             });
         }        
     }
+
+    const[change, setChange] = useState(false);
 
     useEffect(() => {
         Axios.get('http://localhost:3001/getRatingDetails')
@@ -32,6 +32,7 @@ function AddRatings() {
             console.log('response');
             console.log(response);
             setRatings(response.data.data);
+           // setChange(false);
         })
     }, [change])
 
@@ -46,6 +47,7 @@ function AddRatings() {
                     <input type="text" id="ratingname" name="ratingname" 
                     placeholder="Rating Name" required
                     onChange={(e)=>{
+                      //  setChange(!change);
                     setRatingSymbol(e.target.value);
                       }}/>
                 </div>

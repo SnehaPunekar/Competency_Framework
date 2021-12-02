@@ -107,7 +107,7 @@ export default function Dashboard() {
               </div>
               <div class="col-10"></div>
         </div>
-        </center>
+        </center><br/>
         <h2>Self Assessment</h2>
         <div class="row">
           <div class="col-50">

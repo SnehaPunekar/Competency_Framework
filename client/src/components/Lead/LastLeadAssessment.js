@@ -88,16 +88,17 @@ function LeadAssessment() {
             </div> 
             <br/><br/>          
             <table id="lead_assessment">
-                <tr><th>Competency Area</th><th>Competency Descriptor</th><th>Self Rating</th><th>Self Comment</th><th>Select Lead Rating</th><th>Lead Comment</th></tr>
+                <tr><th>Competency Area</th><th>Competency Descriptor</th><th>Self Rating</th><th>Self Comment</th>
+                <th>Lead Rating</th><th>Lead Comment</th></tr>
                 {
                     competencyName.map((val1) => {
                         return template.map((val) => {  
                             if(val1.Area_id === val.cid){                                    
                                 return <tr>
                                         <td>{val1.AreaName}</td> 
-                                        <td>{val.des}</td>
-                                        <td class='unselected'>{val.selfRating}</td>
-                                        <td class='unselected'>{val.selfComment}</td>
+                                        <td text-align='right'>{val.des}</td>
+                                        <td>{val.selfRating}</td>
+                                        <td>{val.selfComment}</td>
                                         <td>{val.leadRating}</td>
                                         <td>{val.leadComment}</td>
                                     </tr>           
