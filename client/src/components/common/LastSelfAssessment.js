@@ -41,7 +41,7 @@ function SelfAssessment() {
                     alert("Please submit your assessment to view here");
                     SetTemplate([]);
                 }else{
-                    alert("Self assessment not assigned");
+                    alert("Self assessment not performed");
                     SetTemplate([]);
                 }
             }); 
@@ -72,7 +72,7 @@ function SelfAssessment() {
             </div> 
             <br/><br/>
             <table id="assessment">
-                <tr><th>Competency Area</th><th>Competency Descriptior</th><th>Employee Rating</th><th>Self Comment</th><th>Lead Rating</th><th>Lead Comment</th></tr>
+                <tr><th>Competency Area</th><th>Competency Descriptior</th><th>Self Rating</th><th>Self Comment</th><th>Lead Rating</th><th>Lead Comment</th></tr>
                 {
                     competencyName.map((val1) => {
                         return template.map((val) => {      
@@ -89,8 +89,7 @@ function SelfAssessment() {
                         })
                     })
                 }          
-            </table>            
-            <br/> 
+            </table><br/> 
             </center>
         </div>
     )

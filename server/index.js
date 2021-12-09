@@ -104,6 +104,13 @@ app.get('/getTemplateNames',async(request,response)=>{
     response.json({data:out}); 
 });
 
+app.post('/getRoleName',async(request,response)=>{
+    const temp_id = request.body.temp_id;
+
+    let out = await new AdminServices().getRoleName(temp_id);
+    response.json({data:out}); 
+});
+
 app.post('/addTemplateName', async(request,response)=>{
     const tempName = request.body.tempName;
 
@@ -113,10 +120,11 @@ app.post('/addTemplateName', async(request,response)=>{
 
 app.post('/addTemplate', async(request,response)=>{
     const tid = request.body.tid;
+    const roleid = request.body.roleid;
     const idArray = request.body.descId;
     const s = new Set(idArray)
 
-    let out = await new AdminServices().addTemplate(tid,s);
+    let out = await new AdminServices().addTemplate(tid, roleid, s);
     response.json({data:out})
 })
 

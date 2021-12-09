@@ -55,7 +55,7 @@ function AssignTemplate() {
       setEmpNames(response.data.data);
     });
     }  
-  },[tempValue]);
+  },[value, tempValue]);
 
   const assign = ()=>{
     Axios.post('http://localhost:3001/assignTemplate',{
@@ -130,11 +130,11 @@ function AssignTemplate() {
         a.push(b);
       })
     }
-    <div style={{ height: 290, width: '80%', background:'white' }}>
+    <div style={{ height: 650, width: '80%', background:'white' }}>
       <DataGrid
         rows={a}
         columns={columns}
-        pageSize={3}
+        pageSize={10}
         checkboxSelection
         disableSelectionOnClick
         onSelectionModelChange={(id) => {

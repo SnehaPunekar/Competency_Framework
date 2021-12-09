@@ -10,7 +10,6 @@ import { DataGrid } from '@material-ui/data-grid';
 import { useState, useEffect } from 'react';
 import Axios from 'axios';
 
-
 const columns = [
   { field: 'id', headerName: 'ID', width: 120 },
   {
@@ -31,9 +30,12 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: theme.typography.fontWeightRegular,
   },
 }));
+
 function CreateTemplate() {
   let a = [];
   let descId = [];
+  // const[idarr, setIdArr] = useState([]);
+  // const[descId, setDescId] = useState([]);
   const[tempnames,setTempNames] = useState([]); 
   const[tempValue, setTempValue ] = useState(0);
   const[roleValue, setRoleValue ] = useState(0);
@@ -41,165 +43,164 @@ function CreateTemplate() {
   const[details,setDetails] = useState([]);
   const[names,setNames] =useState([]);
   const[roles,setRoles] = useState([]);
+  const classes = useStyles();
 
-
-    const classes = useStyles();
-
-    const AddCompDesc = ()=>{
-        Axios.post('http://localhost:3001/addTemplate',{
-          tid:tempValue,
-          descId :descId
-        }).then(response =>{
-          console.log(response);
-          if(response.data.data.success === true){
-              alert('Template Created Successfully');
-              setDetails([]);
-          }else{
-              alert("Unable to Create Template");
-              setDetails([]);
-          }
-        })      
-    }
-
-    useEffect(() => {
-      Axios.get('http://localhost:3001/getTemplateNames')
-      .then(response =>{
-          setTempNames(response.data.data);
-      })
-    }, []);
+  const AddCompDesc = ()=>{
+    Axios.post('http://localhost:3001/addTemplate',{
+      tid : tempValue,
+      roleid : roleValue,
+      descId : descId
+    }).then(response =>{
+      if(response.data.data.success === true){
+        alert('Template Created Successfully');
+        setDetails([]);
+      }else{
+        alert("Unable to Create Template");
+        setDetails([]);
+      }
+    })      
+  }
 
   useEffect(() => {
-           Axios.get('http://localhost:3001/getCompetencyAreaNames')
-           .then(response =>{
-            setNames(response.data.data);
-           })
-       }, [])
+    Axios.get('http://localhost:3001/getTemplateNames')
+    .then(response =>{
+      setTempNames(response.data.data);
+    })
+  }, []);
 
-      useEffect(() => {
-        Axios.get('http://localhost:3001/getRole')
-        .then(response =>{
-         setRoles(response.data.data);
-        })
-    }, [])
+  useEffect(() => {
+    Axios.get('http://localhost:3001/getCompetencyAreaNames')
+      .then(response =>{
+        setNames(response.data.data);
+    })
+  }, [])
 
+  useEffect(() => {
+    Axios.get('http://localhost:3001/getRole')
+      .then(response =>{
+        setRoles(response.data.data);
+    })
+  }, [])
 
-    const getDescriptorByRole = ()=>{
-      if(!roleValue)
-      {        
-        alert('Please fill the field');
-      }else{
-        Axios.post('http://localhost:3001/getDescriptorByRole',{
-          role : roleValue
-        }).then(res =>{
-          console.log("In Response");
-          if(res.data){
-            console.log(res.data.data);
-            setDetails(res.data.data);
-            console.log(details);
-            alert('Descriptors fetched.');
-          }
-        });
-      }      
-    }
-    return (
-        <div className="content">
-            <center>
-            <h1>Create Template</h1>
-            <div class="row">
-              <div class="col-25">
-                  <label for="template_name">Template Name</label>  
-              </div>
-              <div class="col-75">
-                  <select id="template_name" name="template_name"
-                   onChange={e=> setTempValue(e.target.value)}>
-                      <option value="template_1">Select Template Name </option>
-                      {
-                        tempnames.map((value)=>{  
-                        return(
-                            <option value={value.Temp_id}>{value.TempName}</option>
-                        )
-                    })
-                }
-                  </select>
-              </div>
-            </div> 
-            <div class="row">
-              <div class="col-25">
-                  <label for="role_name">Select Role</label>  
-              </div>
-              <div class="col-75">
-                  <select id="role_name" name="role_name"
-                   onChange={e=> setRoleValue(e.target.value)}>
-                      <option value="role_1">Select Role</option>
-                      {
-                        roles.map((value)=>{  
-                            return(
-                                <option value={value.role_id}>{value.role_name}</option>
-                            )
-                        })
-                      }
-                </select>
-              </div>
-              <div class="roleSearch">
-                <div class="col-25">
-                    <button onClick={getDescriptorByRole}>Search</button>
-                </div>
-              </div>
-              </div>
-              
-
-            <div className={classes.root}>
-             {
-               
-              names.map((value)=>{ 
-                   a = []
-                   return(
-                  <Accordion>
-                   <AccordionSummary
-                     expandIcon={<ExpandMoreIcon />}
-                   aria-controls="panel1a-content"                     
-                   id="panel1a-header"
-                  >
-                 <Typography className={classes.heading}>{value.AreaName}</Typography>
-                   </AccordionSummary>                     {
-                  details.map(value1=>{
-                  // {console.log("Value 001",value1)}
-                  if(value1.Area_id === value.Area_id){
-                  let b = {
-                    id: value1.Desc_id,
-                    descriptor : value1.Description
-                  }
-                  a.push(b);
-                }
-             }) 
-          }
-       <AccordionDetails>
-       <div style={{ height: 400, width: '100%', backgroundColor: 'white' }}>
-          <DataGrid
-                rows={a}
-                columns={columns}
-                pageSize={5}
-                checkboxSelection = {true}
-                disableSelectionOnClick
-                onSelectionModelChange={(id) => {
-                id.map(v=>{
-                     descId.push(v)
-                  })
-              }}
-               />
-              </div>
-         </AccordionDetails>
-           </Accordion>
-        )
+  const getDescriptorByRole = ()=>{
+    if(!roleValue)
+    {        
+      alert('Please fill the field');
+    }else{
+      Axios.post('http://localhost:3001/getDescriptorByRole',{
+        role : roleValue
+      }).then(res =>{
+        if(res.data){
+          setDetails(res.data.data);
+          alert('Descriptors fetched.');
         }
-      )
-    }
-</div>       
-            <br/><br/>
-            <button onClick={AddCompDesc}>Save</button><br/>
-            </center><br/>
+      });
+    }      
+  }
+  
+  return (
+    <div className="content">
+      <center>
+        <h1>Create Template</h1>
+        <div class="row">
+          <div class="col-25">
+            <label for="template_name">Template Name</label>  
+          </div>
+          <div class="col-75">
+            <select id="template_name" name="template_name"
+              onChange={e=> setTempValue(e.target.value)}>
+                <option value="template_1">Select Template Name </option>
+                {
+                  tempnames.map((value)=>{  
+                    return(
+                      <option value={value.Temp_id}>{value.TempName}</option>
+                    )
+                  })
+                }
+            </select>
+          </div>
+        </div> 
+        <div class="row">
+          <div class="col-25">
+            <label for="role_name">Select Role</label>  
+          </div>
+          <div class="col-75">
+            <select id="role_name" name="role_name"
+              onChange={e=> setRoleValue(e.target.value)}>
+                <option value="role_1">Select Role</option>
+                  {
+                    roles.map((value)=>{  
+                      return(
+                        <option value={value.role_id}>{value.role_name}</option>
+                      )
+                    })
+                  }
+            </select>
+          </div>
+          <div class="roleSearch">
+            <div class="col-25">
+              <button onClick={getDescriptorByRole}>Search</button>
+            </div>
+          </div>
         </div>
-    )
+        <div className={classes.root}>
+          {               
+            names.map((value)=>{ 
+              a = [];
+              // descId.concat(idarr);                
+              // console.log('final',descId);
+
+              return(
+                <Accordion>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"                     
+                    id="panel1a-header"
+                  >
+                    <Typography className={classes.heading}>{value.AreaName}</Typography>
+                  </AccordionSummary>                     
+                  {
+                    details.map(value1=>{
+                      // {console.log("Value 001",value1)}
+                        if(value1.Area_id === value.Area_id){
+                          let b = {
+                            id: value1.Desc_id,
+                            descriptor : value1.Description
+                          }
+                          a.push(b);
+                        }
+                      }) 
+                  }
+                  <AccordionDetails>
+                    <div style={{ height: 400, width: '100%', backgroundColor: 'white' }}>
+                      <DataGrid
+                        rows={a}
+                        columns={columns}
+                        pageSize={5}
+                        checkboxSelection = {true}
+                        disableSelectionOnClick
+                        onSelectionModelChange={(id) => {
+                          id.map(v=>{
+                            descId.push(v)
+                          })
+                          // setIdArr(id);
+                        }}
+                      />               
+                    </div>
+                  </AccordionDetails>
+                  {/* { console.log('id',idarr)} */}
+                </Accordion>
+              );                      
+              // descId.concat(idarr);              
+              // console.log('final',idarr);    
+            })
+          }
+        </div>       
+      <br/><br/>
+      <button onClick={AddCompDesc}>Save</button><br/>
+      </center><br/>
+    </div>
+  )
 }
 
 export default CreateTemplate;

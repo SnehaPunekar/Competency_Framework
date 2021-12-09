@@ -69,20 +69,12 @@ class AssignTemplate{
                                     return reject(error1);
                                 }
                                 else{
-                                    if(result1.length > 0){
-                                        return resolve({data:result1, success: true});
-                                    }
-                                    else{
-                                        console.log('No data');
-                                    }
                                     return resolve({data:result1, success: true});
                                 }
                             });
+                        }else{
+                            return resolve({success: false});
                         }
-                        else{
-                            console.log('No data');
-                        }
-                        return resolve({data:result, success: true});
                     }
                 });
             });

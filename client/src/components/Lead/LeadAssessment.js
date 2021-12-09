@@ -64,15 +64,7 @@ function LeadAssessment() {
     }
 
     const SaveAssessment = () => {
-        let flag = 0;
-        assessmentArr.forEach(val => {
-            if(!val.rating || !val.comment){
-                flag = 1;
-            }
-        });
-        if(flag == 1){            
-            alert("Please fill all the fields");
-        }else{
+       
             Axios.post('http://localhost:3001/leadAssessment/insert', {
                 review_id : review_id,
                 emp_id : emp_id,
@@ -86,7 +78,7 @@ function LeadAssessment() {
                     alert("Unable to save Lead Assessment");
                 }
             });
-        }
+       
     }
 
     const SubmitAssessment = () => {
@@ -158,7 +150,7 @@ function LeadAssessment() {
                             if(val1.Area_id === val.cid){                                           
                                 var element = {};
                                 element.id = val.did;  
-                                if(val.leadRating && val.leadComment)
+                                if(val.leadRating || val.leadComment)
                                 {
                                     element.rating = val.leadRating;
                                     element.comment = val.leadComment;

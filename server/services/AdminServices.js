@@ -79,13 +79,18 @@ class AdminServices{
         return response;
     }
 
+    getRoleName = async function(temp_id){
+        let response = await this.getTemplate.GetRoleName(temp_id);
+        return response;
+    }
+
     addTemplateName = async function(tempName){
         let response = await this.getTemplate.AddTemplateName(tempName);
         return response;
     }
 
-    addTemplate = async function(tid,s){
-        let response = await this.getTemplate.AddTemplate(tid,s);
+    addTemplate = async function(tid, roleid, s){
+        let response = await this.getTemplate.AddTemplate(tid, roleid, s);
         return response;
     }
 

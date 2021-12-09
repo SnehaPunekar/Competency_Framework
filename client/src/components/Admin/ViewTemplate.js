@@ -6,19 +6,19 @@ import { useState, useEffect } from 'react';
 import Axios from 'axios';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 100,type: 'rightAligned',},
+  { field: 'id', headerName: 'ID', width: 100, type: 'rightAligned'},
   {
     field: 'AreaName',
     headerName: 'AreaName',
     width: 150,
-    sortable:true,
+    sortable: true,
     editable: false,
   },
   {
     field: 'descriptor',
     headerName: 'Descriptor',
     width: 800,
-    sortable:true,
+    sortable: true,
     editable: true,
   },
 ];
@@ -32,14 +32,14 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: theme.typography.fontWeightRegular,
   },
 }));
-export default function ViewTemplate() {
 
-  const classes = useStyles();
-  
+export default function ViewTemplate() {
+  const classes = useStyles();  
   let a =[];
   let arr = [];
   const[TempNames,setTempNames] = useState([]);
   const[value,setValue] = useState('');
+  const[roleName, setRoleName] = useState('');
   const[names,setNames] = useState([]);
   const[details,setDetails] = useState([]);
   const[change,setChange] = useState(false);
@@ -49,19 +49,30 @@ export default function ViewTemplate() {
     .then(response =>{
         setTempNames(response.data.data);
     })
-}, [])
+  }, [change])
 
   useEffect(() => {
-  Axios.get('http://localhost:3001/getCompetencyAreaNames')
-  .then(response =>{
-   setNames(response.data.data);
-  })
-}, [value])
+    Axios.get('http://localhost:3001/getCompetencyAreaNames')
+    .then(response =>{
+      setNames(response.data.data);
+    })
+  }, [value])
+
+  useEffect(() => {
+    if(change){
+    Axios.post('http://localhost:3001/getRoleName',{temp_id:value})
+    .then(response =>{
+      if(response.data.data.success === true){  
+        setRoleName(response.data.data.data);
+      }else{
+        setRoleName('');
+      }         
+    })}
+  }, [value])
 
   useEffect(()=>{
     if(change){
-      Axios.post('http://localhost:3001/getTemplateDescriptor',
-          {temp_id:value,
+      Axios.post('http://localhost:3001/getTemplateDescriptor', {temp_id:value,
         }).then(response =>{
           if(response.data.data.success === true){  
             setDetails(response.data.data.data);//setAssignTemplate(response.data.data.data);
@@ -75,50 +86,55 @@ export default function ViewTemplate() {
   return (
     <div className="content">
       <center>
-      <h1>View Template</h1>
+        <h1>View Template</h1>
         <br/><br/>      
-      <div class="row">
+          <div class="row">
             <div class="col-25">
                 <label for="competency_area">Template Name</label>  
             </div>
             <div class="col-75">
-                <select id="competency_area" name="competency_area"
-                 onChange={e=>{ 
-                  setChange(true);
-                   setValue(e.target.value);}} >
-                    <option value="competency">Select Template Name</option>
-                    {
+              <select id="competency_area" name="competency_area"
+                onChange={e=>{ 
+                setChange(true);
+                setValue(e.target.value);}} >
+                <option value="competency">Select Template Name</option>
+                  {
                     TempNames.map((value)=>{  
-                        return(
-                            <option value={value.Temp_id}>{value.TempName}</option>
-                        )
+                      return(
+                        <option value={value.Temp_id}>{value.TempName}</option>
+                      )
                     })
-                }
-                </select>
+                  }
+              </select>
             </div>
-        </div>
-      <br/><br/><br/>
-      {
-      details.map(value => {
-        let b = {
-          id: value.Desc_id,
-          AreaName : value.AreaName,
-          descriptor:value.Description
-        }
-        a.push(b);
-      })
-    }
-    <div style={{ height: 385, width: '85%', background:'white' }}>
-      <DataGrid
-        rows={a}
-        columns={columns}
-        pageSize={5}
-        disableSelectionOnClick
-        
-      />
-      </div>
-
-    </center><br/>
+          </div>
+          <div class="row">
+            <div class="col-25">
+              <label for="competency_area">Role Name</label>  
+            </div>
+            <div class="col-25">
+              <label for="competency_area">{roleName}</label> 
+            </div>
+          </div>
+          <br/><br/>
+          {
+            details.map(value => {  
+              let b = {
+                id: value.Desc_id,
+                AreaName : value.AreaName,
+                descriptor:value.Description
+              }
+              a.push(b);
+            })
+          }
+          <div style={{ height: 385, width: '85%', background:'white' }}>
+            <DataGrid
+              rows={a}
+              columns={columns}
+              pageSize={5}
+              disableSelectionOnClick/>
+          </div>
+      </center><br/>
     </div>
   );
 }

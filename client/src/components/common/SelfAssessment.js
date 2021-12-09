@@ -55,30 +55,19 @@ function SelfAssessment() {
     }
      
     const SaveAssessment = () =>{
-        let flag = 0;
-        assessmentArr.forEach(val => {
-            if(!val.rating || !val.comment){
-                flag = 1;
+        Axios.post('http://localhost:3001/selfAssessment/insert', {
+            review_id : review_id,
+            emp_id : localStorage.getItem('id'),
+            assessmentArr : assessmentArr,
+            draft : 0,
+        }).then((response) => {
+            if(response.data.data.success === true){
+                alert("Self Assessment Saved Temporarily");
+                SetTemplate([]);
+            }else{
+                alert("Unable to save Self Assessment");
             }
         });
-        if(flag == 1){            
-            alert("Please fill all the fields");
-        }else{
-            Axios.post('http://localhost:3001/selfAssessment/insert', {
-                review_id : review_id,
-                emp_id : localStorage.getItem('id'),
-                assessmentArr : assessmentArr,
-                draft : 0,
-            }).then((response) => {
-                //console.log(response);
-                if(response.data.data.success === true){
-                    alert("Self Assessment Saved Temporarily");
-                    SetTemplate([]);
-                }else{
-                    alert("Unable to save Self Assessment");
-                }
-            });
-        }
     }
 
     let assessmentArr = [];
@@ -86,7 +75,7 @@ function SelfAssessment() {
     const SubmitAssessment = () =>{
         let flag = 0;
         assessmentArr.forEach(val => {
-            if(!val.rating || !val.comment){
+            if(val.rating == '' || val.rating == 'S' || val.comment == ''){
                 flag = 1;
             }
         });
@@ -99,7 +88,6 @@ function SelfAssessment() {
                 assessmentArr : assessmentArr,
                 draft : 1,
             }).then((response) => {
-                //console.log(response);
                 if(response.data.data.success === true){
                     alert("Self Assessment submited Successfully....");
                     SetTemplate([]);
@@ -114,8 +102,6 @@ function SelfAssessment() {
         <div className="content"><br/><br/>
             <center><h1>Self Assessment</h1>
 
-            {/* {errorMessage && <div className="error"> {errorMessage} </div>} */}
-
             <div class="row">
                 <div class="col-25">
                     <label for="review">Review Cycle</label>
@@ -127,11 +113,9 @@ function SelfAssessment() {
                             review.map((val)=>{  
                             return(<option value={val.review_cycle_id}>{val.review_cycle_name}</option>)
                             })
-
                         }  
                     </select>
-                </div>
-               
+                </div>               
                 <div class="col-25">
                     <button onClick={SearchTemplate}>Search</button>  
                 </div>
@@ -139,25 +123,28 @@ function SelfAssessment() {
             <br/><br/>
             <table id="assessment">
                 <tr><th>Competency Area</th><th>Competency Descriptior</th>
-                <th>Employee Rating</th><th>Self Comment</th>
-                {/* <th>Lead Rating</th><th>Lead Comment</th> */}
+                <th width='150px'>Self Rating</th><th>Self Comment</th>
                 </tr>
                 {
                 competencyName.map((val1) => {
                     return template.map((val) => {  
                         if(val1.Area_id === val.cid){                                           
                             var element = {};
-                            element.id = val.did;   
-                            if(val.selfRating && val.selfComment)
+                            element.id = val.did;  
+                            element.rating = '';
+                            element.comment = '';
+
+                            if(val.selfRating || val.selfComment)
                             {
                                 element.rating = val.selfRating;
                                 element.comment = val.selfComment;
-                            }                      
+                            }
+                                 
                             return <tr>
                                 <td>{val1.AreaName}</td> 
                                 <td>{val.des}</td> 
                                 <td><select name='selfRating' defaultValue={val.selfRating} onChange = {e=> {element.rating = e.target.value}}>
-                                    <option>Select</option>
+                                    <option value='S'>Select</option>
                                     {
                                         rating.map((v)=>{  
                                         return(<option value={v.rating_name}>{v.rating_name}</option>)
@@ -165,19 +152,14 @@ function SelfAssessment() {
                                     }
                                     </select></td>                 
                                 <td><textarea type='text' defaultValue={val.selfComment} name='selfComment' onChange = {e=> {element.comment = e.target.value;}}/>                             
-                                <h6>{assessmentArr.push(element)}</h6></td>             
-                                {/* <td class='unselected'>{val.leadRating}</td>
-                                <td class='unselected'>{val.leadComment}</td> */}
+                                <h6>{assessmentArr.push(element)}</h6></td>       
                                 </tr>           
                             }  
                         })
                     })
                 }          
-            </table>            
-            <br/>
-            
+            </table><br/>            
             <button className="inline-button " onClick={SaveAssessment} display="inline-block">Save as Draft</button>
-            
             <button className="inline-button " onClick={SubmitAssessment} display="inline-block">Submit</button>
             <br/><br/><br/><br/><br/> 
             </center>
@@ -186,5 +168,3 @@ function SelfAssessment() {
 }
 
 export default SelfAssessment;
-
-

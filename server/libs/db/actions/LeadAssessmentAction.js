@@ -127,9 +127,9 @@ class SelfAssessment{
                         const updateSql = "UPDATE assessment SET lead_rating = ?, lead_comment = ?, lead_draft = ? WHERE Desc_id = ? AND (review_cycle_id = ? AND emp_id = ?)";
                         for(let i = 0; i < assessmentArr.length; i++)
                         {
-                            if(typeof(assessmentArr[i].rating) != "undefined" && typeof(assessmentArr[i].comment) != "undefined"){                    
+                            //if(typeof(assessmentArr[i].rating) != "undefined" && typeof(assessmentArr[i].comment) != "undefined"){                    
                                 db.query(updateSql, [assessmentArr[i].rating, assessmentArr[i].comment, lead_draft, assessmentArr[i].id, review_id, emp_id], (e, r) =>{ })
-                            }
+                           // }
                             if(i == assessmentArr.length - 1){                            
                                 return resolve({data:result, success: true});
                             }
