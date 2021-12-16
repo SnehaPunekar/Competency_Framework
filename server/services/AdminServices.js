@@ -104,8 +104,8 @@ class AdminServices{
         return response;
     }
 
-    getAllEmpNames = async function(reviewCId, tempId){
-        let response = await this.getAssignTemp.GetEmpNames(reviewCId, tempId);
+    getAllEmpNames = async function(roleId){
+        let response = await this.getAssignTemp.GetEmpNames(roleId);
         return response;
     }
 
@@ -159,8 +159,8 @@ class AdminServices{
         return response;
     }
 
-    getRatingValue = async function () {
-        let response = await this.dashboard.GetRatingValue();
+    getRatingValue = async function (roleId, reviewId) {
+        let response = await this.dashboard.GetRatingValue(roleId, reviewId);
         return response;
     }
 

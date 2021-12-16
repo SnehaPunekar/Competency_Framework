@@ -6,14 +6,15 @@ class AssignTemplate{
 
     }
 
-    GetEmpNames = async function (reviewCId, tempId) {
+    GetEmpNames = async function (roleId) {
         let output = [];
         return new Promise(function (resolve, reject) {
             /*
             'SELECT DISTINCT at.emp_id, first_name, last_name FROM assign_template at, employee e WHERE e.emp_id != at.emp_id AND review_cycle_id = ? AND Temp_id = ?;', 
             [parseInt(reviewCId), parseInt(tempId)], 
             */
-            db.query('SELECT emp_id, first_name, last_name FROM Employee;', (err, empId)=>{
+            db.query('SELECT emp_id, first_name, last_name FROM Employee WHERE role_id = ?;', 
+            [roleId], (err, empId)=>{
                 if(err){
                     console.log(err);
                     return reject(err);
@@ -21,29 +22,30 @@ class AssignTemplate{
                 else{
                     if(empId.length > 0 ){
                         for(let i = 0; i < empId.length; i++) {
-                            db.query('SELECT * FROM assign_template WHERE review_cycle_id = ? AND (Temp_id = ? AND emp_id = ?);',
-                            [reviewCId, tempId, empId[i].emp_id], (error, result)=>{
-                                if(error){
-                                    console.log(error);
-                                    return reject(error);
-                                }
-                                else{
-                                    if(result.length == 0){
+                        //     db.query('SELECT * FROM assign_template WHERE review_cycle_id = ? AND (Temp_id = ? AND emp_id = ?);',
+                        //     [reviewCId, tempId, empId[i].emp_id], (error, result)=>{
+                        //         if(error){
+                        //             console.log(error);
+                        //             return reject(error);
+                        //         }
+                        //         else{
+                        //             if(result.length == 0){
                                         let element = {};
                                         element.Emp_id = empId[i].emp_id;
                                         element.first_name = empId[i].first_name;
                                         element.last_name = empId[i].last_name;
                                         output.push(element);
-                                    }
+                        //             }
                                     if( i == empId.length - 1){
                                         return resolve(output);
                                     }
-                                }
-                            });
+                        //         }
+                        //     });
                         }
                     }
                     else{
-                        console.log('No data found!');
+                        return resolve(output);
+                        //                 console.log('No data found!');
                     }
                 }
             });  

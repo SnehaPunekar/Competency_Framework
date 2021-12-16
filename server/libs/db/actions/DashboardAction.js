@@ -7,22 +7,44 @@ class DashboardAction{
 
     }
 
-    GetRatingValue = async function(){
+    GetRatingValue = async function(roleId, reviewId){
         let output = [];
-        const query = "SELECT Desc_id, self_rating, lead_rating FROM assessment WHERE draft = 1;"
+        const query1 = "SELECT Desc_id, self_rating, lead_rating FROM assessment WHERE draft = 1;";
+        const query2 = "SELECT Desc_id, self_rating, lead_rating FROM assessment WHERE draft = 1 AND role_id = ?;";
+        const query3 = "SELECT Desc_id, self_rating, lead_rating FROM assessment WHERE draft = 1 AND review_cycle_id = ?;";
+        const query4 = "SELECT Desc_id, self_rating, lead_rating FROM assessment WHERE draft = 1 AND role_id = ? AND review_cycle_id = ?;";
+        
         const ratingValue = [{name : 'A', value : 20}, 
                             {name : 'B', value : 15}, 
                             {name : 'C', value : 10}, 
                             {name : 'I', value : 5}];
         let final = [];     
-        let finalOutput = [];  
+        let finalOutput = []; 
+        let query = ''; 
+        let parameter = [];
         return new Promise(function (resolve, reject) {
-            db.query(query,(err,result)=>{
+            
+            if(roleId == 0 && reviewId == 0){
+                query = query1; 
+                parameter = [0];
+            }else if(roleId != 0 && reviewId == 0){
+                query = query2; 
+                parameter = [roleId];
+            }else if(roleId == 0 && reviewId != 0){
+                query = query3; 
+                parameter = [reviewId];
+            }else if(roleId != 0 && reviewId != 0){
+                query = query4; 
+                parameter = [roleId, reviewId];
+            }
+
+            db.query(query, parameter, (err,result)=>{
                 if(err){
                     console.log(err);
                     return reject(err);
                 }
                 else{
+                   // console.log('R ',result);
                     if(result.length > 0 ){
                         const descSelect = "SELECT Area_id FROM competency_descriptor WHERE Desc_id = ?";
                         for(let i = 0; i < result.length; i++){                             
@@ -41,32 +63,38 @@ class DashboardAction{
                                                 flag = 1;
                                                 ratingValue.forEach(item => {
                                                     if(result[i].self_rating === item.name){
-                                                        val.avgEmp = ((val.avgEmp * val.countEmp) + item.value)/ ++val.countEmp;
+                                                        avgEmp = ((val.avgEmp * val.countEmp) + item.value);
+                                                        val.countEmp += 1;
+                                                        val.avgEmp = avgEmp / val.countEmp;
                                                     }
                                                     if(result[i].lead_rating === item.name){
-                                                        val.avgLead = ((val.avgLead * val.countLead) + item.value)/ ++val.countLead;
+                                                        avgLead = ((val.avgLead * val.countLead) + item.value);
+                                                        val.countLead += 1;
+                                                        val.avgLead = avgLead / val.countLead;
                                                     }
                                                 });        
                                             }
                                         });
                                         if(flag == 0){
                                             elements.cid = res1[0].Area_id;
+                                            elements.avgEmp = 0;
+                                            elements.countEmp = 0;
+                                            elements.avgLead = 0;
+                                            elements.countLead = 0;
+
                                             ratingValue.forEach(item => {
                                                 if(result[i].self_rating === item.name){
-                                                    avgEmp = ((avgEmp * countEmp) + item.value)/ ++countEmp;
-                                                    elements.avgEmp = avgEmp;  
-                                                    elements.countEmp = countEmp;
+                                                    elements.avgEmp = item.value;  
+                                                    elements.countEmp = countEmp + 1;
                                                 }
                                                 if(result[i].lead_rating === item.name){
-                                                    avgLead = ((avgLead * countLead) + item.value)/ ++countLead;
-                                                    elements.avgLead = avgLead;  
-                                                    elements.countLead = countLead;
+                                                    elements.avgLead = item.value;  
+                                                    elements.countLead = countLead + 1;
                                                 }
                                             });
                                             final.push(elements);
                                         }  
                                         if(i == result.length-1){
-                                            //console.log('final:',final);
                                             for(let j = 0; j < final.length; j++)
                                             {
                                                 let element = {};
@@ -80,25 +108,18 @@ class DashboardAction{
                                                             element.Emp =  Math.round(final[j].avgEmp);
                                                             element.Lead = Math.round(final[j].avgLead);
                                                             finalOutput.push(element);
-                                                            if(j == final.length-1){                                                        
-                                                              //  console.log("finalOutput:",finalOutput);                                                                
+                                                            if(j == final.length-1){                                                                                      
                                                                 return resolve(finalOutput);
-                                                               // response.json({data : finalOutput});
                                                             }
                                                         }
                                                     }
                                                 });
                                             }                                    
                                         }
-                                    }else{
-                                        console.log('no data');
                                     }
                                 }
                             });
                         }
-                    }
-                    else{
-                        console.log('No data found!');
                     }
                 }
             });

@@ -84,7 +84,7 @@ function LeadAssessment() {
     const SubmitAssessment = () => {
         let flag = 0;
         assessmentArr.forEach(val => {
-            if(!val.rating || !val.comment){
+            if(val.rating == '' || val.rating == 'S' || val.comment == ''){
                 flag = 1;
             }
         });
@@ -149,7 +149,9 @@ function LeadAssessment() {
                                             
                             if(val1.Area_id === val.cid){                                           
                                 var element = {};
-                                element.id = val.did;  
+                                element.id = val.did; 
+                                element.rating = '';
+                                element.comment = '';
                                 if(val.leadRating || val.leadComment)
                                 {
                                     element.rating = val.leadRating;
@@ -160,8 +162,8 @@ function LeadAssessment() {
                                         <td>{val.des}</td>
                                         <td class='unselected'>{val.selfRating}</td>
                                         <td class='unselected'>{val.selfComment}</td>
-                                        <td width='80px'><select name='leadRating' defaultValue={val.leadRating} onChange = {e=> {element.rating = e.target.value}}>
-                                            <option>Select</option>
+                                        <td width='120px'><select name='leadRating' defaultValue={val.leadRating} onChange = {e=> {element.rating = e.target.value}}>
+                                            <option value='S'>Select</option>
                                             {
                                                 rating.map((val)=>{  
                                                 return(<option value={val.rating_name}>{val.rating_name}</option>)

@@ -1,7 +1,8 @@
 import '../../assests/css/Style.css';
 import React from 'react';
+import Stack from '@mui/material/Stack';
 import { DataGrid } from '@material-ui/data-grid';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Axios from 'axios';
 
  const columns = [
@@ -24,13 +25,15 @@ function AssignTemplate() {
 
   let a = [];
 
-  const[TempNames,setTempNames] = useState([]);
-  const[reviewNames,setReviewNames] = useState([]);
-  const[empNames,setEmpNames] = useState([]);
-  const[change,setChange] = useState(false);
-  const[value,setValue] = useState('');
+  const[TempNames, setTempNames] = useState([]);
+  const[reviewNames, setReviewNames] = useState([]);
+  const[empNames, setEmpNames] = useState([]);
+  const[change,  setChange] = useState(false);
+  const[value, setValue] = useState(0);
   const[tempValue, setTempValue] = useState(0);
-  const[empId,setEmpId] = useState([])
+  const[roleValue, setRoleValue] = useState(0);
+  const[RoleNames, setRoleNames] = useState([]);
+  const[empId, setEmpId] = useState([])
 
   useEffect(() => {
     Axios.get('http://localhost:3001/getTemplateNames')
@@ -46,30 +49,46 @@ function AssignTemplate() {
     })
   }, [])
 
+  //const[roleName, setRoleNames] = useState([]);
+    useEffect(() => {
+      Axios.get('http://localhost:3001/getRole')
+      .then(response =>{
+          setRoleNames(response.data.data);
+      })
+  }, [])
+
   useEffect(()=>{
     if(change){
-      Axios.post('http://localhost:3001/getEmpNames',{
-      reviewCId:value,
-      tempId:tempValue,})
-    .then(response =>{
-      setEmpNames(response.data.data);
-    });
+        Axios.post('http://localhost:3001/getEmpNames',{roleId : roleValue})
+      .then(response =>{
+        setEmpNames(response.data.data);
+      });
+      setChange(false);
     }  
-  },[value, tempValue]);
+  },[roleValue]);
 
   const assign = ()=>{
-    Axios.post('http://localhost:3001/assignTemplate',{
-      tempId:tempValue,
-      reviewCId:value,
-      empId:empId 
-    })
-    .then(res=>{
-      if(res.data.data.success === true){
-          alert('Template Assign Successfully');
-      }else{
-          alert("Unable to Assign Template");
-      }
-    })
+    if(tempValue != 0 && value != 0 && empId.length != 0 && value != 'R' && tempValue != 'T')
+    {
+      Axios.post('http://localhost:3001/assignTemplate',{
+        tempId : tempValue,
+        reviewCId : value,
+        empId : empId 
+      })
+      .then(res=>{
+        if(res.data.data.success === true){
+            alert('Template Assign Successfully');
+            setEmpId([]);
+            setValue('');
+            setTempValue('');
+            setRoleValue('');
+        }else{
+            alert("Unable to Assign Template");
+        }
+      })
+    }else{
+      alert('Please select all the fields');
+    }    
   }
 
     return (
@@ -82,9 +101,8 @@ function AssignTemplate() {
                 <div class="col-75">
                     <select id="level" name="level" 
                      onChange={e=> { 
-                      setChange(true)
                       setValue(e.target.value)}}>
-                        <option value="cycle">Select Review Cycle</option>
+                        <option value='R'>Select Review Cycle</option>
                         {
                         reviewNames.map((value)=>{  
                           return(
@@ -93,7 +111,6 @@ function AssignTemplate() {
                           })
                         }                     
                     </select>
-                    {console.log(value)}
                 </div>
             </div>
             <div class="row">
@@ -102,10 +119,10 @@ function AssignTemplate() {
                 </div>
                 <div class="col-75">
                     <select id="templates" name="templates"
-                    onChange={ e=> {setChange(true)
+                    onChange={ e=> {
                         setTempValue(e.target.value)}
                       }>
-                        <option value="selecttemplates">Select Template</option>
+                        <option value='T'>Select Template</option>
                         {
                         TempNames.map((val)=>{  
                         return(
@@ -114,38 +131,61 @@ function AssignTemplate() {
                           })
                         }  
                     </select>
-                    {console.log(tempValue)}
                 </div>
             </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="role">Select Role</label>  
+                </div>
+                <div class="col-75">
+                    <select id="roles" name="roles"
+                    onChange={ e=> {setChange(true)
+                        setRoleValue(e.target.value)}
+                      }>
+                        <option value="selectRole">Select Role</option>
+                        {
+                        RoleNames.map((v)=>{  
+                        return(
+                            <option value={v.role_id}>{v.role_name}</option>
+                            )
+                          })
+                        }  
+                    </select>
+                </div>
+            </div>           
+            <h3>Select the employees</h3> 
+                {
+                  empNames.map(value => {
+                    let b = {
+                      id: value.Emp_id,
+                      lastName : value.last_name,
+                      firstName : value.first_name
+                    }
+                    a.push(b);
+                  })
+                }
+                <div style={{ height: 650, width: '80%', background:'white' }}>
+                  <DataGrid
+                    rows={a}
+                    columns={columns}
+                    pageSize={10}
+                    checkboxSelection
+                    disableSelectionOnClick
+                    onSelectionModelChange={(id) => {
+                      setEmpId(id)
+                    }}
 
-           
- <h3>Select the employees</h3> 
-    {
-      empNames.map(value => {
-        let b = {
-          id: value.Emp_id,
-          lastName : value.last_name,
-          firstName : value.first_name
-        }
-        a.push(b);
-      })
-    }
-    <div style={{ height: 650, width: '80%', background:'white' }}>
-      <DataGrid
-        rows={a}
-        columns={columns}
-        pageSize={10}
-        checkboxSelection
-        disableSelectionOnClick
-        onSelectionModelChange={(id) => {
-        setEmpId(id)
-        }}
-      />
-      {console.log(empId)}
-    </div>        
-<br/>
-
-		 <button onClick={assign}>Save</button><br/></center><br/>
+                    components={{
+                      NoRowsOverlay: () => (
+                        <Stack height="100%" alignItems="center" justifyContent="center">
+                          No Employees found
+                        </Stack>
+                      )
+                    }}
+                  />
+                </div>        
+            <br/>
+		        <button onClick={assign}>Save</button><br/></center><br/>
         </div>
     )
 }

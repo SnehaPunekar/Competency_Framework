@@ -129,10 +129,10 @@ app.post('/addTemplate', async(request,response)=>{
 })
 
 app.post('/getEmpNames', async (request,response)=>{
-    const tempId = request.body.tempId;
-    const reviewCId = request.body.reviewCId;
-
-    let out = await new AdminServices().getAllEmpNames(reviewCId, tempId);
+    const roleId = request.body.roleId;
+   // const reviewCId = request.body.reviewCId;
+   
+    let out = await new AdminServices().getAllEmpNames(roleId);
     response.json({data:out})
 });
 
@@ -223,8 +223,11 @@ app.post("/leadAssessment/getEmployee", async (request, response) => {
     response.json({data:out});     
 });
 
-app.get('/getCompetencyAreaRating', async (request, response)=>{
-    let out = await new AdminServices().getRatingValue();
+app.post('/getCompetencyAreaRating', async (request, response)=>{
+    const roleId = request.body.roleId;
+    const reviewId = request.body.reviewId;
+
+    let out = await new AdminServices().getRatingValue(roleId, reviewId);
     response.json({data:out}); 
 })
 

@@ -20,14 +20,48 @@ const bull = (
 
 export default function Dashboard() {
     
-  const[AreaRating, setAreaRating] = useState([]);
-  //const[change,setChange] = useState(false);
+  const[roleValue, setRoleValue] = useState(0);
+  const[reviewValue, setReviewValue] = useState(0);
+  const[change, setChange] = useState(false);
 
+  const[AreaRating, setAreaRating] = useState([]);
   useEffect(() => {
-      Axios.get('http://localhost:3001/getCompetencyAreaRating')
+    if(change){
+      Axios.post('http://localhost:3001/getCompetencyAreaRating',{
+        roleId : roleValue,
+        reviewId : reviewValue
+      })
       .then(response =>{
           console.log(response.data);
           setAreaRating(response.data.data);
+      });
+      setChange(false);
+    }else { 
+      Axios.post('http://localhost:3001/getCompetencyAreaRating',{
+        roleId : roleValue,
+        reviewId : reviewValue
+      })
+      .then(response =>{
+          console.log(response.data);
+          setAreaRating(response.data.data);
+      });
+      setChange(false);
+    }
+  }, [roleValue, reviewValue])
+
+  const[reviewNames, setReviewNames] = useState([]);
+  useEffect(() => {
+    Axios.get('http://localhost:3001/getReview')
+    .then(response =>{
+        setReviewNames(response.data.data);
+    })
+  }, [])
+
+  const[roleNames, setRoleNames] = useState([]);
+    useEffect(() => {
+      Axios.get('http://localhost:3001/getRole')
+      .then(response =>{
+          setRoleNames(response.data.data);
       })
   }, [])
 
@@ -70,8 +104,53 @@ export default function Dashboard() {
     return (
         <div className="content">
         <center>
-        <h1>Dashboard</h1></center>
-          <h2>Average Rating</h2><center>
+        <h1>Dashboard</h1>
+          <h3>Average Rating</h3>
+            <div class="row">
+                <div class="col-25">
+                    <label for="cycles">Select Review Cycle</label>                                
+                </div>
+                <div class="col-75">
+                    <select id="level" name="level" 
+                     onChange={e=> { 
+                      setChange(true);
+                      if(e.target.value == 's')
+                          setReviewValue(0)
+                      else
+                          setReviewValue(e.target.value)}}>
+                        <option value='s'>Select Review Cycle</option>
+                        {
+                        reviewNames.map((value)=>{  
+                          return(
+                            <option value={value.review_cycle_id}>{value.review_cycle_name}</option>
+                            )
+                          })
+                        }                     
+                    </select>
+                </div>
+                <div class="col-25">
+                    <label for="role">Select Role</label>  
+                </div>
+                <div class="col-75">
+                    <select id="roles" name="roles"
+                    onChange={ e=> {setChange(true);
+                        if(e.target.value == 's')
+                          setRoleValue(0)
+                        else
+                          setRoleValue(e.target.value)}
+                      }>
+                        <option value='s'>Select Role</option>
+                        {
+                        roleNames.map((v)=>{  
+                        return(
+                            <option value={v.role_id}>{v.role_name}</option>
+                            )
+                          })
+                        }  
+                    </select>
+                </div>
+            </div>
+            <br/>
           <div class="row">
               <div class="col-70">
               <ResponsiveContainer width="70%" aspect={2}>
@@ -107,8 +186,8 @@ export default function Dashboard() {
               </div>
               <div class="col-10"></div>
         </div>
-        </center><br/>
-        <h2>Self Assessment</h2>
+        <br/>
+        <h3>Self Assessment</h3></center>
         <div class="row">
           <div class="col-50">
             <Card sx={{ minWidth: 200 }}>
@@ -140,7 +219,7 @@ export default function Dashboard() {
             </Card>
           </div>
         </div>
-        <h2>Lead Assessment</h2>
+        <center><h3>Lead Assessment</h3></center>
         <div class="row">
           <div class="col-50">
           <Card sx={{ minWidth: 200 }}>

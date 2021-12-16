@@ -147,7 +147,19 @@ class SelfAssessment{
     }
   
     AddSelfAssessment = async function(review_id, emp_id, assessmentArr, draft){
-        return new Promise(function (resolve, reject){           
+        return new Promise(function (resolve, reject){ 
+            let roleId = 0;
+            db.query('SELECT role_id FROM employee WHERE emp_id = ?', [emp_id], 
+                (err, roleID) => {  
+                    if(err) {
+                        return reject(err);
+                    }else{
+                        if(roleID.length > 0){
+                            roleId = roleID[0].role_id;
+                        }
+                    }
+                });
+            
             for(let i = 0; i < assessmentArr.length; i++){
                 db.query("SELECT Desc_id, draft FROM assessment WHERE review_cycle_id = ? AND emp_id = ?", 
                 [review_id, emp_id], (err, result) => {
@@ -167,14 +179,15 @@ class SelfAssessment{
                                 })
                             }
                         }else {
-                            const sqlInsert = "INSERT INTO assessment(review_cycle_id, emp_id, Desc_id, self_rating, self_comment, draft) VALUES (?, ?, ?, ?, ?, ?)"; 
-                            db.query(sqlInsert, [review_id, emp_id, assessmentArr[i].id, assessmentArr[i].rating, assessmentArr[i].comment, draft], 
+                            const sqlInsert = "INSERT INTO assessment(review_cycle_id, role_id, emp_id, Desc_id, self_rating, self_comment, draft) VALUES (?, ?, ?, ?, ?, ?, ?)"; 
+                            db.query(sqlInsert, [review_id, roleId, emp_id, assessmentArr[i].id, assessmentArr[i].rating, assessmentArr[i].comment, draft], 
                                 (error, result) => {  
                                 if(error) {
                                     return reject(error);
                                 }
                             });
-                        }
+                        }                         
+                        
                         if(i == assessmentArr.length - 1){
                             return resolve({data:result, success: true});
                         }
