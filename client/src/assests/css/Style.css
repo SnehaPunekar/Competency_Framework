@@ -110,6 +110,10 @@ option {
   width: 70%;
   margin-top: 6px;
 }
+
+.assessmentLable {
+  margin-left: 130px;
+}
 /* Floating column for inputs: 75% width */
 
 .inline-button {

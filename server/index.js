@@ -231,6 +231,20 @@ app.post('/getCompetencyAreaRating', async (request, response)=>{
     response.json({data:out}); 
 })
 
+app.post('/SelfAssessmentByRole', async (request, response)=>{
+    const roleId = request.body.roleId;
+
+    let out = await new AdminServices().getSelfAssessmentByRole(roleId);
+    response.json({data:out}); 
+})
+
+app.post('/LeadAssessmentByRole', async (request, response)=>{
+    const roleId = request.body.roleId;
+
+    let out = await new AdminServices().getLeadAssessmentByRole(roleId);
+    response.json({data:out}); 
+})
+
 app.get('/getTotalEmployees',async (request,response)=>{
     let out = await new AdminServices().getTotalEmployee();
     response.json({data:out}); 

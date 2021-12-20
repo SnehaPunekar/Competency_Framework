@@ -164,6 +164,16 @@ class AdminServices{
         return response;
     }
 
+    getSelfAssessmentByRole = async function (roleId) {
+        let response = await this.dashboard.GetSelfAssessmentByRole(roleId);
+        return response;
+    }
+
+    getLeadAssessmentByRole = async function (roleId) {
+        let response = await this.dashboard.GetLeadAssessmentByRole(roleId);
+        return response;
+    }
+
     getTotalEmployee = async function () {
         let response = await this.dashboard.GetTotalEmp();
         return response;
