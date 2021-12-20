@@ -9,6 +9,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { DataGrid } from '@material-ui/data-grid';
 import { useState,useEffect } from 'react';
 import Axios from 'axios';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import { DataGridPro, useGridApiRef } from '@mui/x-data-grid-pro';
+import { randomPrice } from '@mui/x-data-grid-generator';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 100 },
@@ -21,7 +25,7 @@ const columns = [
   },
   { field: 'role', headerName: 'Role', width: 110 },
   { field: 'track', headerName: 'Track', width: 130 },
-  { field: 'status', headerName: 'Status', width: 120},
+  { field: 'status', headerName: 'Status', width: 120,type: 'boolean', editable: true},
 ];
   
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +35,19 @@ const useStyles = makeStyles((theme) => ({
   heading: {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
+  },
+}));
+
+const StyledBox = styled(Box)(({ theme }) => ({
+  height: 400,
+  width: '100%',
+  '& .MuiDataGrid-cell--editing': {
+    backgroundColor: 'rgb(255,215,115, 0.19)',
+    color: '#1a3e72',
+  },
+  '& .Mui-error': {
+    backgroundColor: `rgb(126,10,15, ${theme.palette.mode === 'dark' ? 0 : 0.1})`,
+    color: theme.palette.error.main,
   },
 }));
 
@@ -44,7 +61,9 @@ export default function AddCompetencyDescriptor() {
     const[status, setStatus ] = useState('');
     const[descriptor,setDescriptor] = useState(true);
     const[details,setDetails] = useState([]);
+    const apiRef = useGridApiRef();
 
+    
     useEffect(() => {
         Axios.get('http://localhost:3001/getCompetencyAreaNames')
         .then(response =>{
@@ -92,8 +111,12 @@ export default function AddCompetencyDescriptor() {
         });
       }      
     }
-
+    // function ConditionalValidationGrid() {
+    //   const apiRef = useGridApiRef();
+    // }
+    
     return (
+     
       <div className="content"><br/><br/>
         <center><h1>Competency Descriptor</h1><br/>
           <div class="row">
@@ -210,6 +233,8 @@ export default function AddCompetencyDescriptor() {
             }  
           </div>
         </center><br/>
+        
       </div>
+
     );
 }
