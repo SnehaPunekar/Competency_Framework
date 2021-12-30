@@ -11,8 +11,19 @@ import { useState,useEffect } from 'react';
 import Axios from 'axios';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import { DataGridPro, useGridApiRef } from '@mui/x-data-grid-pro';
-import { randomPrice } from '@mui/x-data-grid-generator';
+import { useGridApiRef } from '@mui/x-data-grid-pro';
+// import { randomPrice } from '@mui/x-data-grid-generator';
+
+const changeStatus = (changeId, changeStatus) => {
+  //console.log('hey');
+  (changeStatus == 1) ? (changeStatus = 0):(changeStatus = 1)
+
+  //console.log(changeId, changeStatus);
+  Axios.post('http://localhost:3001/updateStatus',{descId : changeId, status : changeStatus})
+        .then(response =>{
+          // setDetails(response.data.data);        
+        });
+}
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 100 },
@@ -25,7 +36,7 @@ const columns = [
   },
   { field: 'role', headerName: 'Role', width: 110 },
   { field: 'track', headerName: 'Track', width: 130 },
-  { field: 'status', headerName: 'Status', width: 120,type: 'boolean', editable: true},
+  { field: 'status', headerName: 'Status', width: 120, type: 'boolean', editable: true, onclick: changeStatus },
 ];
   
 const useStyles = makeStyles((theme) => ({
@@ -62,8 +73,11 @@ export default function AddCompetencyDescriptor() {
     const[descriptor,setDescriptor] = useState(true);
     const[details,setDetails] = useState([]);
     const apiRef = useGridApiRef();
+    const [change, setChange] = useState(false);
+    const[DescId, setDescId] = useState(0);
+    const[newStatus, setNewStatus] = useState(0);
 
-    
+
     useEffect(() => {
         Axios.get('http://localhost:3001/getCompetencyAreaNames')
         .then(response =>{
@@ -72,10 +86,20 @@ export default function AddCompetencyDescriptor() {
     }, [])
     
     useEffect(()=>{
+      if(DescId){
+        console.log('set');
+        setChange(false);
+        Axios.post('http://localhost:3001/updateDescriptor',{descId : DescId, status : newStatus})
+        .then(response =>{
+          setDetails(response.data.data);        
+        });
+      }
+      else{
       Axios.get('http://localhost:3001/getDescriptor')
       .then(response =>{
         setDetails(response.data.data);
       })
+    }
     },[descriptor])
     
     const[roleName, setRoleNames] = useState([]);
@@ -180,7 +204,7 @@ export default function AddCompetencyDescriptor() {
               <select id="status" name="status" onChange={e=> setStatus(e.target.value)} >
                 <option value="status"> Select Status </option>
                 <option value="Active"> Active </option>                  
-                <option value="Inactive"> Inactive </option>  
+                <option value="Deactive"> Deactive </option>  
               </select>               
             </div>
           </div>        
@@ -208,6 +232,7 @@ export default function AddCompetencyDescriptor() {
                                 status : value1.Status
                               }
                               a.push(b);
+                              
                           }                              
                         })  
                       })  
@@ -218,12 +243,9 @@ export default function AddCompetencyDescriptor() {
                           rows = {a}
                           columns = {columns}
                           pageSize = {5}
-                          //  disableSelectionOnClick
-                          // onSelectionModelChange={(id) => {
-                          //   alert(id);
-                          //   //setValue();
-                          //   setDesc(descriptor);
-                          // }}
+                            onCellEditCommit={(id) => {
+                             changeStatus(id.row.id, id.row.status)
+                           }}
                           />
                       </div>
                     </AccordionDetails>

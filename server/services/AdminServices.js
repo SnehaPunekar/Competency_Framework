@@ -49,6 +49,11 @@ class AdminServices{
         return response;
     }
 
+    changeStatusById = async function (descriptorId, descriptorStatus) {
+        let response = await this.getCompetencyDescriptor.ChangeStatusById(descriptorId, descriptorStatus);
+        return response;
+    }
+
     getAllRating = async function(){
         let response = await this.getRating.GetRating();
         return response;

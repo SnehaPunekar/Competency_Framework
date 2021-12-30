@@ -62,6 +62,14 @@ app.post('/getDescriptorByRole', async (request, response)=>{
     response.json({data:out}); 
 });
 
+
+app.post('/updateStatus', async (request, response)=>{
+    const descriptorId = request.body.descId;
+    const descriptorStatus = request.body.status;
+    let out = await new AdminServices().changeStatusById(descriptorId, descriptorStatus);
+    response.json({data:out}); 
+});
+
 app.post('/addRatings',async (request,response)=>{
     const ratingName = request.body.ratingName;
     const ratingDesc = request.body.ratingDesc;
