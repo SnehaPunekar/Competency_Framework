@@ -92,7 +92,7 @@ class TemplateName{
     GetDescriptorByRole = async function(roleId){
         let output = [];
         return new Promise(function (resolve, reject){
-            db.query('SELECT Desc_id, Description, Area_id, Role_id, Track, Status FROM competency_descriptor where role_id=?;',[parseInt(roleId)],(err,result)=>{
+            db.query('SELECT Desc_id, Description, Area_id, Role_id, Track, Status FROM competency_descriptor where role_id=? AND Status = 1;',[parseInt(roleId)],(err,result)=>{
                 if(err){
                     console.log(err);
                     return reject(err);

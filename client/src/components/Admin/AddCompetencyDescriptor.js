@@ -36,7 +36,7 @@ const columns = [
   },
   { field: 'role', headerName: 'Role', width: 110 },
   { field: 'track', headerName: 'Track', width: 130 },
-  { field: 'status', headerName: 'Status', width: 120, type: 'boolean', editable: true, onclick: changeStatus },
+  { field: 'status', headerName: 'Status', width: 120, type: 'boolean', editable: true },
 ];
   
 const useStyles = makeStyles((theme) => ({
@@ -235,7 +235,8 @@ export default function AddCompetencyDescriptor() {
                               
                           }                              
                         })  
-                      })  
+                      }) 
+ 
                     }
                     <AccordionDetails>
                       <div style={{ height: 380, width: '100%', backgroundColor: 'white' }}>
@@ -244,6 +245,7 @@ export default function AddCompetencyDescriptor() {
                           columns = {columns}
                           pageSize = {5}
                             onCellEditCommit={(id) => {
+                              console.log(id.row.id);
                              changeStatus(id.row.id, id.row.status)
                            }}
                           />
