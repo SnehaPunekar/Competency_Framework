@@ -241,15 +241,15 @@ app.post('/getCompetencyAreaRating', async (request, response)=>{
 
 app.post('/SelfAssessmentByRole', async (request, response)=>{
     const roleId = request.body.roleId;
-
-    let out = await new AdminServices().getSelfAssessmentByRole(roleId);
+    const reviewId = request.body.reviewId;
+    let out = await new AdminServices().getSelfAssessmentByRole(roleId, reviewId);
     response.json({data:out}); 
 })
 
 app.post('/LeadAssessmentByRole', async (request, response)=>{
     const roleId = request.body.roleId;
-
-    let out = await new AdminServices().getLeadAssessmentByRole(roleId);
+    const reviewId = request.body.reviewId;
+    let out = await new AdminServices().getLeadAssessmentByRole(roleId, reviewId);
     response.json({data:out}); 
 })
 
@@ -258,9 +258,10 @@ app.get('/getTotalEmployees',async (request,response)=>{
     response.json({data:out}); 
 });
 
-app.get('/getTotalSelfAssessment',async (request,response)=>{
-    let out = await new AdminServices().getTotalSelfAssessment();
-    response.json({data:out}); 
+app.post('/getTotalSelfAssessment',async (request,response)=>{
+    const reviewId = request.body.reviewId;
+    let out = await new AdminServices().getTotalSelfAssessment(reviewId);
+    response.json({data:out});
 });
 
 app.get('/getTotalLeads',async (request,response)=>{
@@ -268,8 +269,9 @@ app.get('/getTotalLeads',async (request,response)=>{
     response.json({data:out}); 
 });
 
-app.get('/getTotalLeadAssessment',async (request,response)=>{
-    let out = await new AdminServices().getTotalLeadAssessment();
+app.post('/getTotalLeadAssessment',async (request,response)=>{
+    const reviewId = request.body.reviewId;
+    let out = await new AdminServices().getTotalLeadAssessment(reviewId);
     response.json({data:out}); 
 });
 

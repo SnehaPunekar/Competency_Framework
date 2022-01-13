@@ -169,13 +169,13 @@ class AdminServices{
         return response;
     }
 
-    getSelfAssessmentByRole = async function (roleId) {
-        let response = await this.dashboard.GetSelfAssessmentByRole(roleId);
+    getSelfAssessmentByRole = async function (roleId, reviewId) {
+        let response = await this.dashboard.GetSelfAssessmentByRole(roleId, reviewId);
         return response;
     }
 
-    getLeadAssessmentByRole = async function (roleId) {
-        let response = await this.dashboard.GetLeadAssessmentByRole(roleId);
+    getLeadAssessmentByRole = async function (roleId, reviewId) {
+        let response = await this.dashboard.GetLeadAssessmentByRole(roleId, reviewId);
         return response;
     }
 
@@ -184,8 +184,8 @@ class AdminServices{
         return response;
     }
 
-    getTotalSelfAssessment = async function () {
-        let response = await this.dashboard.GetSelfAssessmentCount();
+    getTotalSelfAssessment = async function (reviewId) {
+        let response = await this.dashboard.GetSelfAssessmentCount(reviewId);
         return response;
     }
 
@@ -194,8 +194,8 @@ class AdminServices{
         return response;
     }
 
-    getTotalLeadAssessment = async function () {
-        let response = await this.dashboard.GetLeadAssessmentCount();
+    getTotalLeadAssessment = async function (reviewId) {
+        let response = await this.dashboard.GetLeadAssessmentCount(reviewId);
         return response;
     }
 

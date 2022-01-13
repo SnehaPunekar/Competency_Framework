@@ -71,6 +71,13 @@ option {
   margin-bottom: 3px;
 }
 
+.searchButton {
+  float: left;
+  width: 25%;
+  margin-top: 25px;
+  margin-bottom: 8px;
+}
+
 .col-15 {
   float: right;
   width: 15%;
@@ -122,10 +129,11 @@ option {
 }
 
 .roleSearch{
-  margin-top: 7px;
-  float: right;
-  position: absolute;
-  margin-left: 1135px;
+  margin-top: 20px;
+  float: left;
+  align-self: center;
+  margin-left: 915px;
+  margin-bottom: 20px;
 }
 
 button {

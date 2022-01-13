@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import '../../assests/css/Style.css';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,13 +13,10 @@ import Axios from 'axios';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { useGridApiRef } from '@mui/x-data-grid-pro';
-// import { randomPrice } from '@mui/x-data-grid-generator';
 
 const changeStatus = (changeId, changeStatus) => {
-  //console.log('hey');
+  // eslint-disable-next-line eqeqeq
   (changeStatus == 1) ? (changeStatus = 0):(changeStatus = 1)
-
-  //console.log(changeId, changeStatus);
   Axios.post('http://localhost:3001/updateStatus',{descId : changeId, status : changeStatus})
         .then(response =>{
           // setDetails(response.data.data);        
@@ -77,7 +75,6 @@ export default function AddCompetencyDescriptor() {
     const[DescId, setDescId] = useState(0);
     const[newStatus, setNewStatus] = useState(0);
 
-
     useEffect(() => {
         Axios.get('http://localhost:3001/getCompetencyAreaNames')
         .then(response =>{
@@ -100,6 +97,7 @@ export default function AddCompetencyDescriptor() {
         setDetails(response.data.data);
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[descriptor])
     
     const[roleName, setRoleNames] = useState([]);
@@ -111,7 +109,6 @@ export default function AddCompetencyDescriptor() {
     }, [])
 
     const classes = useStyles();
-  
     let a = [];
 
     const AddDesc = ()=>{ 
@@ -135,12 +132,7 @@ export default function AddCompetencyDescriptor() {
         });
       }      
     }
-    // function ConditionalValidationGrid() {
-    //   const apiRef = useGridApiRef();
-    // }
-    
     return (
-     
       <div className="content"><br/><br/>
         <center><h1>Competency Descriptor</h1><br/>
           <div class="row">
@@ -155,7 +147,7 @@ export default function AddCompetencyDescriptor() {
                       return(<option value={value.Area_id}>{value.AreaName}</option>)
                     })
                   }
-              </select>                {/* /{console.log(value)} */}
+              </select>              
             </div>
           </div>          
         <div class="row">
@@ -181,7 +173,7 @@ export default function AddCompetencyDescriptor() {
                       return(<option value={roleNameValue.role_id}>{roleNameValue.role_name}</option>)
                     })
                   }
-              </select>                {/* /{console.log(value)} */}
+              </select>               
             </div>
           </div>
           <div class="row">
@@ -221,7 +213,9 @@ export default function AddCompetencyDescriptor() {
                       <Typography className={classes.heading}>{value.AreaName}</Typography>
                     </AccordionSummary>
                     {              
+                      // eslint-disable-next-line array-callback-return
                       roleName.map((val) => {  
+                        // eslint-disable-next-line array-callback-return
                         details.map((value1) => {
                           if(value1.Area_id === value.Area_id && val.role_id === value1.Role_id){                                                     
                               let b = {
@@ -236,7 +230,6 @@ export default function AddCompetencyDescriptor() {
                           }                              
                         })  
                       }) 
- 
                     }
                     <AccordionDetails>
                       <div style={{ height: 380, width: '100%', backgroundColor: 'white' }}>
@@ -245,9 +238,9 @@ export default function AddCompetencyDescriptor() {
                           columns = {columns}
                           pageSize = {5}
                             onCellEditCommit={(id) => {
-                              console.log(id.row.id);
                              changeStatus(id.row.id, id.row.status)
                            }}
+
                           />
                       </div>
                     </AccordionDetails>
@@ -257,8 +250,6 @@ export default function AddCompetencyDescriptor() {
             }  
           </div>
         </center><br/>
-        
       </div>
-
     );
 }

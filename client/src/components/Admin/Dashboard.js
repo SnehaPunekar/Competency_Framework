@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useState , useEffect} from 'react';
 import Axios from 'axios';
@@ -6,8 +6,6 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-//import AutorenewRoundedIcon from '@mui/icons-material/AutorenewRounded';
-//import { blue } from "@mui/material/colors";
 import { PieChart, Pie } from "recharts";
 
 const bull = (
@@ -100,39 +98,40 @@ export default function Dashboard() {
   }, [roleValue, reviewValue])
 
   const[newRoleValue, setNewRoleValue] = useState(0);
+  const[selectedReviewCycleId,setSelectedReviewCycleId] = useState(0);
   const[selfAssessmentData, setSelfAssessmentData] = useState([]);
   useEffect(() => {
     if(change){
-      Axios.post('http://localhost:3001/SelfAssessmentByRole', {roleId : newRoleValue})
+      Axios.post('http://localhost:3001/SelfAssessmentByRole', {roleId : newRoleValue, reviewId : selectedReviewCycleId })
       .then(response =>{
           setSelfAssessmentData(response.data.data);
           setChange(false);
       })
     }else{
-      Axios.post('http://localhost:3001/SelfAssessmentByRole', {roleId : newRoleValue})
+      Axios.post('http://localhost:3001/SelfAssessmentByRole', {roleId : newRoleValue, reviewId : selectedReviewCycleId})
       .then(response =>{
           setSelfAssessmentData(response.data.data);
           setChange(false);
       })
     }    
-  }, [newRoleValue])
+  }, [newRoleValue, selectedReviewCycleId])
 
   const[leadAssessmentData, setLeadAssessmentData] = useState([]);
   useEffect(() => {
     if(change){
-      Axios.post('http://localhost:3001/LeadAssessmentByRole', {roleId : newRoleValue})
+      Axios.post('http://localhost:3001/LeadAssessmentByRole', {roleId : newRoleValue, reviewId : selectedReviewCycleId})
       .then(response =>{
           setLeadAssessmentData(response.data.data);
           setChange(false);
       })
     }else{
-      Axios.post('http://localhost:3001/LeadAssessmentByRole', {roleId : newRoleValue})
+      Axios.post('http://localhost:3001/LeadAssessmentByRole', {roleId : newRoleValue, reviewId : selectedReviewCycleId})
       .then(response =>{
           setLeadAssessmentData(response.data.data);
           setChange(false);
       })
     }    
-  }, [newRoleValue])
+  }, [newRoleValue, selectedReviewCycleId])
 
   const[TotalEmp, setTotalEmp] = useState([]);
   useEffect(() => {
@@ -144,13 +143,24 @@ export default function Dashboard() {
   }, [])
 
   const[TotalSelfAssessment, setTotalSelfAssessment] = useState([]);
+  const[reviewValue1,setReviewValue1] = useState("");
   useEffect(() => {
-    Axios.get('http://localhost:3001/getTotalSelfAssessment')
+    if(change){
+    Axios.post('http://localhost:3001/getTotalSelfAssessment', {reviewId : reviewValue1})
     .then(response =>{
         console.log(response);
         setTotalSelfAssessment(response.data.data);
+        setChange(false);
     })
-  }, [])
+  } else {
+    Axios.post('http://localhost:3001/getTotalSelfAssessment', {reviewId : reviewValue1})
+    .then(response =>{
+        console.log(response);
+        setTotalSelfAssessment(response.data.data);
+        setChange(false);
+      })
+    }
+  }, [reviewValue1])
 
   const[TotalLead, setTotalLead] = useState([]);
   useEffect(() => {
@@ -163,12 +173,21 @@ export default function Dashboard() {
 
   const[TotalLeadAssessment, setTotalLeadAssessment] = useState([]);
   useEffect(() => {
-    Axios.get('http://localhost:3001/getTotalLeadAssessment')
+    if(change){
+    Axios.post('http://localhost:3001/getTotalLeadAssessment',{reviewId : reviewValue1})
     .then(response =>{
         console.log(response);
         setTotalLeadAssessment(response.data.data);
+        setChange(false);
     })
-  }, [])
+  } else {
+    Axios.post('http://localhost:3001/getTotalLeadAssessment',{reviewId : reviewValue1})
+    .then(response =>{
+        console.log(response);
+        setTotalLeadAssessment(response.data.data);
+        setChange(false);
+    })
+  }},[reviewValue1])
 
   return (
     <div className="content">
@@ -243,7 +262,26 @@ export default function Dashboard() {
           </div>
           <div class="col-10"></div>
         </div><br/>
-        <h3>Assessment based on Role</h3> 
+        <h3>Assessment Status</h3> 
+        <div class="row">
+          <div class="col-25">
+            <label for="cycles">Select Review Cycle</label>                                
+          </div>
+          <div class="col-75">
+            <select id="level" name="level" onChange={e=> { setChange(true);
+                if(e.target.value == 's')
+                  setSelectedReviewCycleId(0)
+                else
+                  setSelectedReviewCycleId(e.target.value)}}>
+              <option value='s'>Select Review Cycle</option>
+                {
+                  reviewNames.map((value)=>{  
+                    return(<option value={value.review_cycle_id}>{value.review_cycle_name}</option>)
+                  })
+                }                     
+            </select>
+          </div>
+        </div>
         <div class="row">          
           <div class="col-25">
             <label for="role">Select Role</label>  
@@ -292,8 +330,28 @@ export default function Dashboard() {
               <Legend />  
             </PieChart>
           </div>
-        </div>      
-        <center><h3>Total Self Assessment</h3></center>
+        </div>
+        <center><h3>Total Assessments</h3></center> 
+        <div class="row">
+          <div class="col-25">
+            <label for="cycles">Select Review Cycle</label>                                
+          </div>
+          <div class="col-75">
+            <select id="level" name="level" onChange={e=> { setChange(true);
+                 if(e.target.value == 's')
+                setReviewValue1(0)
+                 else
+                  setReviewValue1(e.target.value)}}>
+              <option value='s'>Select Review Cycle</option>
+                {
+                  reviewNames.map((value)=>{  
+                    return(<option value={value.review_cycle_id}>{value.review_cycle_name}</option>)
+                  })
+                }                     
+            </select>
+            </div>
+          </div>  
+        <center><h3>Self Assessment</h3></center>
         <div class="row">
           <div class="col-50">
             <Card sx={{ minWidth: 200 }}>
@@ -306,9 +364,6 @@ export default function Dashboard() {
                     {TotalEmp}
                   </Typography>
                 </div>
-                {/* <div class="col-15">
-                  <AutorenewRoundedIcon sx={{ position: 'absolute'}} sx={{ right: '20px' }} color="primary" sx={{ bgcolor: blue[200] }} fontSize="large" />       
-                </div>     */}
               </CardContent>
             </Card>
           </div>
@@ -319,13 +374,13 @@ export default function Dashboard() {
                   Completed Assessment
                 </Typography>
                 <Typography variant="h5" component="div">
-                  {Math.round(TotalSelfAssessment)}%
+                  {Math.round(TotalSelfAssessment)}
                 </Typography>        
               </CardContent>
             </Card>
           </div>
         </div>
-        <center><h3>Total Lead Assessment</h3></center>
+        <center><h3>Lead Assessment</h3></center>
         <div class="row">
           <div class="col-50">
           <Card sx={{ minWidth: 200 }}>
@@ -338,9 +393,6 @@ export default function Dashboard() {
                   {TotalLead}
                 </Typography> 
               </div>              
-              {/* <div class="col-15">
-                <AutorenewRoundedIcon  color="primary" sx={{ bgcolor: blue[200] }} fontSize="large" /> 
-              </div>       */}
             </CardContent>
           </Card>
           </div>
@@ -351,9 +403,8 @@ export default function Dashboard() {
                 Completed Assessment
               </Typography>
               <Typography variant="h5" component="div">                
-                {Math.round(TotalLeadAssessment)}%
+                {Math.round(TotalLeadAssessment)}
               </Typography> 
-              {/* <i class="cis-percent"></i> */}
             </CardContent>
           </Card>
           </div>

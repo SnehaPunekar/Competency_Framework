@@ -34,12 +34,10 @@ const useStyles = makeStyles((theme) => ({
 function CreateTemplate() {
   let a = [];
   let descId = [];
-  // const[idarr, setIdArr] = useState([]);
-  // const[descId, setDescId] = useState([]);
   const[tempnames,setTempNames] = useState([]); 
   const[tempValue, setTempValue ] = useState(0);
   const[roleValue, setRoleValue ] = useState(0);
-  const[change,setChange] = useState(false);
+  // const[change,setChange] = useState(false);
   const[details,setDetails] = useState([]);
   const[names,setNames] =useState([]);
   const[roles,setRoles] = useState([]);
@@ -137,19 +135,14 @@ function CreateTemplate() {
                   }
             </select>
           </div>
-          <div class="roleSearch">
-            <div class="col-25">
+            <div class="roleSearch">
               <button onClick={getDescriptorByRole}>Search</button>
             </div>
-          </div>
         </div>
         <div className={classes.root}>
           {               
             names.map((value)=>{ 
               a = [];
-              // descId.concat(idarr);                
-              // console.log('final',descId);
-
               return(
                 <Accordion>
                   <AccordionSummary
@@ -161,7 +154,6 @@ function CreateTemplate() {
                   </AccordionSummary>                     
                   {
                     details.map(value1=>{
-                      // {console.log("Value 001",value1)}
                         if(value1.Area_id === value.Area_id){
                           let b = {
                             id: value1.Desc_id,
@@ -180,7 +172,7 @@ function CreateTemplate() {
                         checkboxSelection = {true}
                         disableSelectionOnClick
                         onSelectionModelChange={(id) => {
-                          id.map(v=>{
+                          id.map(v => {
                             descId.push(v)
                           })
                           // setIdArr(id);
