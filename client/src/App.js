@@ -33,7 +33,7 @@ function App() {
           localStorage.getItem('id') && localStorage.getItem('role') ==='Admin' &&
             <div>             
                 <Navbarmenu />
-               
+                <Route path='/Dashboard' component={Dashboard}/>
                 <Route path='/AddCompetencyArea' component={AddCompetencyArea}/>
                 <Route path='/AddCompetencyDescriptor' component={AddCompetencyDescriptor}/>
                 <Route path='/AddRatings' component={AddRatings}/>
@@ -47,7 +47,6 @@ function App() {
                 
                 <Route path='/selfAssessment' component={SelfAssessment}/>
                 <Route path='/lastselfassessment' component={LastSelfAssessment}/>
-                <Route path='/Dashboard' component={Dashboard}/>
                 <Route path='/Logout' render={()=>{ localStorage.clear(); window.location.reload()}} />
             </div> 
          }

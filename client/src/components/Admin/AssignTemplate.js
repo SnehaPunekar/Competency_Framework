@@ -83,7 +83,7 @@ function AssignTemplate() {
             setTempValue('');
             setRoleValue('');
         }else{
-            alert("Unable to Assign Template");
+            alert(`This template is already assigned to ${empId}`);
         }
       })
     }else{

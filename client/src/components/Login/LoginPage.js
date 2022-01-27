@@ -26,7 +26,7 @@ function LoginPage() {
           localStorage.setItem('role','Admin');
           localStorage.setItem('first_name',res.data.data.data[0].first_name);
           localStorage.setItem('last_name',res.data.data.data[0].last_name);
-          window.location.href = '/AddCompetencyArea';
+          window.location.href = '/Dashboard';
         }
         else if (res.data.data.data[0].flogin === 1 && res.data.data.data[0].role === 'Lead'){
           //alert('Lead Login Successful');

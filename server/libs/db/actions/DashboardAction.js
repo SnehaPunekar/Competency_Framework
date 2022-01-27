@@ -126,7 +126,7 @@ class DashboardAction{
             });
         })
     }
-
+        
     GetSelfAssessmentByRole = async function (roleId, reviewId) {
         let output = [{ name: 'Completed', value: 0},
                       { name: 'Saved as draft', value: 0},
@@ -177,7 +177,8 @@ class DashboardAction{
                                             count = 0; 
                                         }                                        
                                     })           
-                                }                                
+                                }           
+                        console.log("Self assessmentc response");                    
                         console.log(output);
                         return resolve(output);
                     }
@@ -236,7 +237,8 @@ class DashboardAction{
                     count = 0; 
                     }                                        
                 })           
-            }                                
+            }   
+            console.log("Lead assessment response");                                
             console.log(output)
             return resolve(output);
                 }
