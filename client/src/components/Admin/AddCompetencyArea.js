@@ -2,11 +2,12 @@ import '../../assests/css/Style.css';
 import React from 'react';
 import { useState , useEffect} from 'react';
 import Axios from 'axios';
+import '../../assests/css/Preloader.css';
 
 function AddCompetencyArea() {
 
     const [AreaName,SetAreaName]=useState('');
-
+    
     const addcompetencyarea = ()=>{
         if(!AreaName)
         {
@@ -22,15 +23,37 @@ function AddCompetencyArea() {
 
     const[names,setNames] = useState([]);
     const[change,setChange] = useState(false);
+    const [loading, setloading] = useState(undefined);
+    const [completed, setcompleted] = useState(undefined);
 
     useEffect(() => {
+        setTimeout(()=> {
         Axios.get('http://localhost:3001/getCompetencyAreaNames')
         .then(response =>{
             setNames(response.data.data);
+            setloading(true);
+
+            setTimeout(() => {
+                 setcompleted(true);
+              }, 0);
         })
-    }, [change])
+    }, 1500);
+    }, [change]);
     
     return (
+        <>
+      {!completed ? (
+        <>
+          {!loading ? (
+            <div className="spinner">
+              <span>Loading...</span>
+              <div className="half-spinner"></div>
+            </div>
+          ) : (
+            <></>
+        )}
+        </>
+      ) : (
         <div className="content">
             <center>
                 <h1>Competency Area</h1>
@@ -42,7 +65,7 @@ function AddCompetencyArea() {
                         <input type="text" id="competencyarea" 
                         name="competencyarea" 
                         placeholder="Enter Competency Area" required onChange={(e)=>{
-              SetAreaName(e.target.value);
+                        SetAreaName(e.target.value);
             }}/>
                     </div>
                 </div>
@@ -60,7 +83,9 @@ function AddCompetencyArea() {
                 </table><br/><br/><br/><br/>
             </center> <br/><br/>
         </div>
-    )
+        )}
+       </>
+    ) 
 }
 
 export default AddCompetencyArea;

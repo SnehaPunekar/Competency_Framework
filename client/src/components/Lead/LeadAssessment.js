@@ -1,15 +1,26 @@
 import '../../assests/css/Style.css';
 import React from 'react'
 import { useState, useEffect } from 'react';
-import Axios from 'axios'; 
+import Axios from 'axios';
+import '../../assests/css/Preloader.css';
 
 function LeadAssessment() {
     const[review, SetReview] = useState([]);
+    const [loading, setloading] = useState(undefined);
+    const [completed, setcompleted] = useState(undefined);
+
     useEffect(() => {
+        setTimeout(()=> {
         Axios.get('http://localhost:3001/selfAssessment/getReview')
         .then(response =>{
             SetReview(response.data.data);
+            setloading(true);
+
+            setTimeout(() => {
+                 setcompleted(true);
+              }, 0);
         })
+    }, 1500);
     }, [])
 
     const[rating, SetRating] = useState([]);
@@ -84,10 +95,12 @@ function LeadAssessment() {
     const SubmitAssessment = () => {
         let flag = 0;
         assessmentArr.forEach(val => {
+            // eslint-disable-next-line eqeqeq
             if(val.rating == '' || val.rating == 'S' || val.comment == ''){
                 flag = 1;
             }
         });
+        // eslint-disable-next-line eqeqeq
         if(flag == 1){            
             alert("Please fill all the fields");
         }else{
@@ -110,6 +123,19 @@ function LeadAssessment() {
     let assessmentArr = [];
 
     return (
+        <>
+        {!completed ? (
+          <>
+            {!loading ? (
+              <div className="spinner">
+                <span>Loading...</span>
+                <div className="half-spinner"></div>
+              </div>
+            ) : (
+              <></>
+          )}
+          </>
+        ) : (
         <div className="content"><br/><br/>
             <center><h1>Lead Assessment</h1> 
             <div class="row">
@@ -145,8 +171,8 @@ function LeadAssessment() {
                 <tr><th>Competency Area</th><th>Competency Descriptor</th><th>Self Rating</th><th>Self Comment</th><th>Lead Rating</th><th>Lead Comment</th></tr>
                 {
                     competencyName.map((val1) => {
-                        return template.map((val) => {                        
-                                            
+                        // eslint-disable-next-line array-callback-return
+                        return template.map((val) => {                                    
                             if(val1.Area_id === val.cid){                                           
                                 var element = {};
                                 element.id = val.did; 
@@ -183,6 +209,8 @@ function LeadAssessment() {
                 <br/>
             </center>
         </div>
+        )}
+    </>
     )
 }
 

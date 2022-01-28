@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { DataGrid } from '@material-ui/data-grid';
 import { useState, useEffect } from 'react';
 import Axios from 'axios';
+import '../../assests/css/Preloader.css';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 100, type: 'rightAligned'},
@@ -34,15 +35,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ViewTemplate() {
+  // eslint-disable-next-line no-unused-vars
   const classes = useStyles();  
   let a =[];
-  let arr = [];
   const[TempNames,setTempNames] = useState([]);
   const[value,setValue] = useState('');
   const[roleName, setRoleName] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const[names,setNames] = useState([]);
   const[details,setDetails] = useState([]);
   const[change,setChange] = useState(false);
+  const [loading, setloading] = useState(undefined);
+  const [completed, setcompleted] = useState(undefined);
 
   useEffect(() => {
     Axios.get('http://localhost:3001/getTemplateNames')
@@ -52,10 +56,17 @@ export default function ViewTemplate() {
   }, [change])
 
   useEffect(() => {
+    setTimeout(()=> {
     Axios.get('http://localhost:3001/getCompetencyAreaNames')
     .then(response =>{
       setNames(response.data.data);
-    })
+      setloading(true);
+
+            setTimeout(() => {
+                 setcompleted(true);
+              }, 0);
+        })
+    }, 1500);
   }, [value])
 
   useEffect(() => {
@@ -68,6 +79,7 @@ export default function ViewTemplate() {
         setRoleName('');
       }         
     })}
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 
   useEffect(()=>{
@@ -81,9 +93,23 @@ export default function ViewTemplate() {
           }            
         });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[value])
 
   return (
+    <>
+      {!completed ? (
+        <>
+          {!loading ? (
+            <div className="spinner">
+              <span>Loading...</span>
+              <div className="half-spinner"></div>
+            </div>
+          ) : (
+            <></>
+        )}
+        </>
+      ) : (
     <div className="content">
       <center>
         <h1>View Template</h1>
@@ -136,5 +162,7 @@ export default function ViewTemplate() {
           </div>
       </center><br/>
     </div>
+      )}
+    </>
   );
 }

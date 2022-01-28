@@ -2,33 +2,25 @@ import '../../assests/css/Style.css';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import Axios from 'axios';
+import '../../assests/css/Preloader.css';
 
 function ReviewCycle() {
-  const[statusList, setStatusList] = useState([]);
- let statusListtemp = [];
-  let a = [];
   const[reviewName,SetReviewName] = useState('');
   const[start,SetStart] = useState('');
   const[end,SetEnd] = useState('');
   const[change,setChange] = useState(false);
   const[reviewDetails,setReviewDetails] = useState([]);
-
-  const[change1,setChange1] = useState(false);
   const[reviewId, setReviewId] = useState('');
   const[status, setStatus] = useState('');
-
-  const[checked, setChecked] = useState(false);
-    
+  const [loading, setloading] = useState(undefined);
+  const [completed, setcompleted] = useState(undefined);
+  
   const toggler = (e) => {
-    console.log('hey');
     setReviewId(e.target.id);
     (e.target.checked) ? setStatus(1) : setStatus(0);
     setChange(true);
   }
 
-  // useEffect(() => {
-  //   console.log(reviewId, status);
-  // }, [reviewId, status]) 
 
   const addReview = ()=>{
     if(!reviewName || !start || !end){
@@ -54,14 +46,35 @@ function ReviewCycle() {
         setReviewDetails(response.data.data);        
       });
     }else{
+      setTimeout(()=> {
       Axios.get('http://localhost:3001/getReview')
       .then(response =>{
         setReviewDetails(response.data.data);
-      })     
-    }    
+        setloading(true);
+
+            setTimeout(() => {
+                 setcompleted(true);
+              }, 0);
+        })
+    }, 1500);   
+  }    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [change])
 
   return (
+    <>
+      {!completed ? (
+        <>
+          {!loading ? (
+            <div className="spinner">
+              <span>Loading...</span>
+              <div className="half-spinner"></div>
+            </div>
+          ) : (
+            <></>
+        )}
+        </>
+      ) : (
     <div className="content">
       <center><h1>Review Cycle</h1> 
         <div class="row">
@@ -121,6 +134,8 @@ function ReviewCycle() {
         </table>
       </center><br/>
     </div>
+     )}
+    </>
   );
 }
 

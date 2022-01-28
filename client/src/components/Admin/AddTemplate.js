@@ -1,7 +1,8 @@
 import '../../assests/css/Style.css';
 import React from 'react';
 import Axios from 'axios';
-import {useState, useEffect} from 'react'
+import {useState, useEffect} from 'react';
+import '../../assests/css/Preloader.css';
 
 function AddTemplate() {   
       
@@ -20,16 +21,38 @@ function AddTemplate() {
     }
 
     const[change, setChange] = useState(false);
+    const [loading, setloading] = useState(undefined);
+    const [completed, setcompleted] = useState(undefined);
+    const[tempnames, setTempNames] = useState([]);
 
-    const[tempnames, setTempNames] = useState([]); 
     useEffect(() => {
+        setTimeout(()=> {
         Axios.get('http://localhost:3001/getTemplateNames')
         .then(response =>{
             setTempNames(response.data.data);
+            setloading(true);
+
+            setTimeout(() => {
+                 setcompleted(true);
+              }, 0);
         })
+    }, 1500);
     }, [change]);
     
     return (
+        <>
+      {!completed ? (
+        <>
+          {!loading ? (
+            <div className="spinner">
+              <span>Loading...</span>
+              <div className="half-spinner"></div>
+            </div>
+          ) : (
+            <></>
+        )}
+        </>
+      ) : (
         <div className="content">
             <center>
             <h1>Add Template</h1>
@@ -59,6 +82,8 @@ function AddTemplate() {
             </table><br/><br/><br/><br/>
             </center><br/>
         </div>
+         )}
+     </>
     )
 }
 

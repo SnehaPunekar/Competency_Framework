@@ -9,6 +9,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { DataGrid } from '@material-ui/data-grid';
 import { useState, useEffect } from 'react';
 import Axios from 'axios';
+import '../../assests/css/Preloader.css';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 120 },
@@ -37,11 +38,12 @@ function CreateTemplate() {
   const[tempnames,setTempNames] = useState([]); 
   const[tempValue, setTempValue ] = useState(0);
   const[roleValue, setRoleValue ] = useState(0);
-  // const[change,setChange] = useState(false);
   const[details,setDetails] = useState([]);
   const[names,setNames] =useState([]);
   const[roles,setRoles] = useState([]);
   const classes = useStyles();
+  const [loading, setloading] = useState(undefined);
+  const [completed, setcompleted] = useState(undefined);
 
   const AddCompDesc = ()=>{
     Axios.post('http://localhost:3001/addTemplate',{
@@ -60,10 +62,17 @@ function CreateTemplate() {
   }
 
   useEffect(() => {
+    setTimeout(()=> {
     Axios.get('http://localhost:3001/getTemplateNames')
     .then(response =>{
       setTempNames(response.data.data);
-    })
+      setloading(true);
+
+            setTimeout(() => {
+                 setcompleted(true);
+              }, 0);
+        })
+    }, 1500);
   }, []);
 
   useEffect(() => {
@@ -97,6 +106,19 @@ function CreateTemplate() {
   }
   
   return (
+    <>
+    {!completed ? (
+      <>
+        {!loading ? (
+          <div className="spinner">
+            <span>Loading...</span>
+            <div className="half-spinner"></div>
+          </div>
+        ) : (
+          <></>
+      )}
+      </>
+    ) : (
     <div className="content">
       <center>
         <h1>Create Template</h1>
@@ -180,11 +202,8 @@ function CreateTemplate() {
                       />               
                     </div>
                   </AccordionDetails>
-                  {/* { console.log('id',idarr)} */}
                 </Accordion>
-              );                      
-              // descId.concat(idarr);              
-              // console.log('final',idarr);    
+              );                         
             })
           }
         </div>       
@@ -192,6 +211,8 @@ function CreateTemplate() {
       <button onClick={AddCompDesc}>Save</button><br/>
       </center><br/>
     </div>
+    )}
+  </>
   )
 }
 

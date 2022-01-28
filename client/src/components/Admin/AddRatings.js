@@ -2,12 +2,15 @@ import '../../assests/css/Style.css';
 import React from 'react';
 import {useState, useEffect} from 'react';
 import Axios from 'axios';
+import '../../assests/css/Preloader.css';
 
 function AddRatings() {
 
     const[ratingSymbol, setRatingSymbol] = useState('');
     const[ratingDesc, setRatingDesc] = useState('');    
-    const[ratings, setRatings] = useState([]);    
+    const[ratings, setRatings] = useState([]); 
+    const [loading, setloading] = useState(undefined);
+    const [completed, setcompleted] = useState(undefined);   
 
     const addRatings = ()=>{
         if(!ratingSymbol || !ratingDesc){
@@ -27,16 +30,35 @@ function AddRatings() {
     const[change, setChange] = useState(false);
 
     useEffect(() => {
+        setTimeout(()=> {
         Axios.get('http://localhost:3001/getRatingDetails')
         .then(response =>{
             console.log('response');
             console.log(response);
             setRatings(response.data.data);
-           // setChange(false);
+            setloading(true);
+
+            setTimeout(() => {
+                 setcompleted(true);
+              }, 0);
         })
+    }, 1500);
     }, [change])
 
     return (
+        <>
+      {!completed ? (
+        <>
+          {!loading ? (
+            <div className="spinner">
+              <span>Loading...</span>
+              <div className="half-spinner"></div>
+            </div>
+          ) : (
+            <></>
+        )}
+        </>
+      ) : (
         <div className="content">
             <center><h1>Add Ratings</h1>
             <div class="row">
@@ -47,7 +69,6 @@ function AddRatings() {
                     <input type="text" id="ratingname" name="ratingname" 
                     placeholder="Rating Name" required
                     onChange={(e)=>{
-                      //  setChange(!change);
                     setRatingSymbol(e.target.value);
                       }}/>
                 </div>
@@ -78,6 +99,8 @@ function AddRatings() {
             </table><br/><br/><br/><br/>
             </center> 
         </div>
+        )}
+    </>
     )
 }
 

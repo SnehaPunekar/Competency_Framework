@@ -4,6 +4,7 @@ import Stack from '@mui/material/Stack';
 import { DataGrid } from '@material-ui/data-grid';
 import { useState, useEffect } from 'react';
 import Axios from 'axios';
+import '../../assests/css/Preloader.css';
 
  const columns = [
   { field: 'id', headerName: 'ID', width: 160 },
@@ -24,7 +25,6 @@ import Axios from 'axios';
 function AssignTemplate() {
 
   let a = [];
-
   const[TempNames, setTempNames] = useState([]);
   const[reviewNames, setReviewNames] = useState([]);
   const[empNames, setEmpNames] = useState([]);
@@ -33,7 +33,9 @@ function AssignTemplate() {
   const[tempValue, setTempValue] = useState(0);
   const[roleValue, setRoleValue] = useState(0);
   const[RoleNames, setRoleNames] = useState([]);
-  const[empId, setEmpId] = useState([])
+  const[empId, setEmpId] = useState([]);
+  const [loading, setloading] = useState(undefined);
+  const [completed, setcompleted] = useState(undefined);
 
   useEffect(() => {
     Axios.get('http://localhost:3001/getTemplateNames')
@@ -43,15 +45,21 @@ function AssignTemplate() {
   }, [])
 
   useEffect(() => {
+    setTimeout(()=> {
     Axios.get('http://localhost:3001/selfAssessment/getReview')
     .then(response =>{
         setReviewNames(response.data.data);
-    })
+        setloading(true);
+
+            setTimeout(() => {
+                 setcompleted(true);
+              }, 0);
+        })
+    }, 1500);
   }, [])
 
-  //const[roleName, setRoleNames] = useState([]);
-    useEffect(() => {
-      Axios.get('http://localhost:3001/getRole')
+  useEffect(() => {
+    Axios.get('http://localhost:3001/getRole')
       .then(response =>{
           setRoleNames(response.data.data);
       })
@@ -65,10 +73,11 @@ function AssignTemplate() {
       });
       setChange(false);
     }  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[roleValue]);
 
   const assign = ()=>{
-    if(tempValue != 0 && value != 0 && empId.length != 0 && value != 'R' && tempValue != 'T')
+    if(tempValue !== 0 && value !== 0 && empId.length !== 0 && value !== 'R' && tempValue !== 'T')
     {
       Axios.post('http://localhost:3001/assignTemplate',{
         tempId : tempValue,
@@ -92,6 +101,19 @@ function AssignTemplate() {
   }
 
     return (
+      <>
+      {!completed ? (
+        <>
+          {!loading ? (
+            <div className="spinner">
+              <span>Loading...</span>
+              <div className="half-spinner"></div>
+            </div>
+          ) : (
+            <></>
+        )}
+        </>
+      ) : (
         <div className="content">
             <center><h1>Assign Template</h1>
             <div class="row">
@@ -155,6 +177,7 @@ function AssignTemplate() {
             </div>           
             <h3>Select the employees</h3> 
                 {
+                  // eslint-disable-next-line array-callback-return
                   empNames.map(value => {
                     let b = {
                       id: value.Emp_id,
@@ -187,6 +210,8 @@ function AssignTemplate() {
             <br/>
 		        <button onClick={assign}>Save</button><br/></center><br/>
         </div>
+      )}
+      </>
     )
 }
 export default AssignTemplate;

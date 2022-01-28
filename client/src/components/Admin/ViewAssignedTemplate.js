@@ -3,6 +3,7 @@ import React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 import { useState,useEffect } from 'react';
 import Axios from 'axios';
+import '../../assests/css/Preloader.css';
 
  const columns = [
   { field: 'id', headerName: 'ID', width: 160 },
@@ -29,16 +30,24 @@ import Axios from 'axios';
 function AssignTemplate() {
 
   let a = [];
+  const[change,setChange] = useState(false);
+  const[reviewId,setReviewId] = useState('');
+  const[reviewNames,setReviewNames] = useState([]);
+  const [loading, setloading] = useState(undefined);
+  const [completed, setcompleted] = useState(undefined);
 
-    const[change,setChange] = useState(false);
-    const[reviewId,setReviewId] = useState('');
-
-    const[reviewNames,setReviewNames] = useState([]);
     useEffect(() => {
+      setTimeout(()=> {
         Axios.get('http://localhost:3001/getReview')
         .then(response =>{
             setReviewNames(response.data.data);
+            setloading(true);
+
+            setTimeout(() => {
+                 setcompleted(true);
+              }, 0);
         })
+    }, 1500);
     }, [])
 
     const[assignTemplate,setAssignTemplate] = useState([]);
@@ -54,9 +63,23 @@ function AssignTemplate() {
             }
         });
         }  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[reviewId]);
 
     return (
+      <>
+      {!completed ? (
+        <>
+          {!loading ? (
+            <div className="spinner">
+              <span>Loading...</span>
+              <div className="half-spinner"></div>
+            </div>
+          ) : (
+            <></>
+        )}
+        </>
+      ) : (
         <div className="content">
             <center><h1>View Assigned Template</h1>
             <div class="row">
@@ -80,6 +103,7 @@ function AssignTemplate() {
                 </div>
             </div>
             {
+                // eslint-disable-next-line array-callback-return
                 assignTemplate.map(value => {
                     let b = {
                     id: value.emp_id,
@@ -95,14 +119,15 @@ function AssignTemplate() {
                     rows={a}
                     columns={columns}
                     pageSize={5}
-                    disableSelectionOnClick
-                    
+                    disableSelectionOnClick   
                 />
             </div> 
             <br/>      
             </center>
         </div>
-    )
+      )}
+    </>
+  )
 }
 export default AssignTemplate;
 

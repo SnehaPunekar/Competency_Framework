@@ -13,6 +13,7 @@ import Axios from 'axios';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { useGridApiRef } from '@mui/x-data-grid-pro';
+import '../../assests/css/Preloader.css';
 
 const changeStatus = (changeId, changeStatus) => {
   // eslint-disable-next-line eqeqeq
@@ -74,12 +75,21 @@ export default function AddCompetencyDescriptor() {
     const [change, setChange] = useState(false);
     const[DescId, setDescId] = useState(0);
     const[newStatus, setNewStatus] = useState(0);
+    const [loading, setloading] = useState(undefined);
+    const [completed, setcompleted] = useState(undefined);
 
     useEffect(() => {
+      setTimeout(()=> {
         Axios.get('http://localhost:3001/getCompetencyAreaNames')
         .then(response =>{
             setNames(response.data.data);
+            setloading(true);
+
+            setTimeout(() => {
+                 setcompleted(true);
+              }, 0);
         })
+      }, 1500);
     }, [])
     
     useEffect(()=>{
@@ -133,6 +143,19 @@ export default function AddCompetencyDescriptor() {
       }      
     }
     return (
+      <>
+      {!completed ? (
+        <>
+          {!loading ? (
+            <div className="spinner">
+              <span>Loading...</span>
+              <div className="half-spinner"></div>
+            </div>
+          ) : (
+            <></>
+        )}
+        </>
+      ) : (
       <div className="content"><br/><br/>
         <center><h1>Competency Descriptor</h1><br/>
           <div class="row">
@@ -251,5 +274,7 @@ export default function AddCompetencyDescriptor() {
           </div>
         </center><br/>
       </div>
+      )}
+      </>
     );
 }
