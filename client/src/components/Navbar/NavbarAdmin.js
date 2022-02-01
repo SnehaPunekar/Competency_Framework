@@ -59,7 +59,13 @@ const Navbarmenu = () => {
                             <NavLink exact activeClassName='is-active' onClick={toggleClass} to={`/CompetencyArea`}> Competency Area </NavLink> 
                         </li>
                          <li className="menu-item " ><NavLink onClick={toggleClass} activeClassName='is-active' to={`/CompetencyDescriptor`}> Competency Descriptor </NavLink> </li>  */}
-                        <li className="menu-item " ><NavLink onClick={toggleClass} activeClassName='is-active' to={`/Dashboard`}> Dashboard </NavLink> </li>
+                      <li onClick={toggleSubmenu} className="menu-item sub__menus__arrows" > <Link to="#"> Dashboard <FiChevronDown /> </Link>
+                            <ul className={boxClassSubMenu.join(' ')} > 
+                            <li> <NavLink onClick={toggleClass} activeClassName='is-active'  to={`/AverageRatingDashboard`}> Average Rating </NavLink> </li>
+                            <li> <NavLink onClick={toggleClass} activeClassName='is-active'  to={`/AssessmentStatusDashboard`}> Assessment Status </NavLink> </li>
+                            <li><NavLink onClick={toggleClass} activeClassName='is-active' to={`/TotalAssessmentDashboard`}> Total Assessment</NavLink> </li>   
+                            </ul>
+                        </li>
                         
                         <li onClick={toggleSubmenu} className="menu-item sub__menus__arrows" > <Link to="#"> Add <FiChevronDown /> </Link>
                             <ul className={boxClassSubMenu.join(' ')} > 

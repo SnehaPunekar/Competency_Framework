@@ -7,7 +7,9 @@ const TemplateName = require('../libs/db/actions/TemplateNameAction');
 const AssignTemp = require('../libs/db/actions/AssignTemplateAction');
 const SelfAssessment = require('../libs/db/actions/SelfAssessmentAction');
 const LeadAssessment = require('../libs/db/actions/LeadAssessmentAction');
-const Dashboard = require('../libs/db/actions/DashboardAction');
+const AverageRatingDashboard = require('../libs/db/actions/DashboardAction');
+const TotalAssessmentDashboard = require('../libs/db/actions/TotalAssessmentDashboardAction');
+const AssessmentStatusDashboard = require('../libs/db/actions/AssessmentStatusDashboardAction');
 
 class AdminServices{
 
@@ -21,7 +23,9 @@ class AdminServices{
         this.getTemplate = new TemplateName();
         this.getSelfAssessment = new SelfAssessment();
         this.getLeadAssessment = new LeadAssessment();
-        this.dashboard = new Dashboard();
+        this.averageRatingDashboard = new AverageRatingDashboard();
+        this.totalAssessmentDashboard = new TotalAssessmentDashboard();
+        this.assessmentStatusDashboard = new AssessmentStatusDashboard();
     }
 
     getAllCompetencyAreas = async function() {
@@ -165,37 +169,37 @@ class AdminServices{
     }
 
     getRatingValue = async function (roleId, reviewId) {
-        let response = await this.dashboard.GetRatingValue(roleId, reviewId);
+        let response = await this.averageRatingDashboard.GetRatingValue(roleId, reviewId);
         return response;
     }
 
     getSelfAssessmentByRole = async function (roleId, reviewId) {
-        let response = await this.dashboard.GetSelfAssessmentByRole(roleId, reviewId);
+        let response = await this.assessmentStatusDashboard.GetSelfAssessmentByRole(roleId, reviewId);
         return response;
     }
 
     getLeadAssessmentByRole = async function (roleId, reviewId) {
-        let response = await this.dashboard.GetLeadAssessmentByRole(roleId, reviewId);
+        let response = await this.assessmentStatusDashboard.GetLeadAssessmentByRole(roleId, reviewId);
         return response;
     }
 
     getTotalEmployee = async function () {
-        let response = await this.dashboard.GetTotalEmp();
+        let response = await this.totalAssessmentDashboard.GetTotalEmp();
         return response;
     }
 
     getTotalSelfAssessment = async function (reviewId) {
-        let response = await this.dashboard.GetSelfAssessmentCount(reviewId);
+        let response = await this.totalAssessmentDashboard.GetSelfAssessmentCount(reviewId);
         return response;
     }
 
     getTotalLead = async function () {
-        let response = await this.dashboard.GetTotalLead();
+        let response = await this.totalAssessmentDashboard.GetTotalLead();
         return response;
     }
 
     getTotalLeadAssessment = async function (reviewId) {
-        let response = await this.dashboard.GetLeadAssessmentCount(reviewId);
+        let response = await this.totalAssessmentDashboard.GetLeadAssessmentCount(reviewId);
         return response;
     }
 

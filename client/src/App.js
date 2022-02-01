@@ -17,8 +17,10 @@ import SelfAssessment from './components/common/SelfAssessment';
 import LastSelfAssessment from './components/common/LastSelfAssessment';
 import LeadAssessment from './components/Lead/LeadAssessment';
 import LastLeadAssessment from './components/Lead/LastLeadAssessment';
-import NotFound from './components/common/NotFound';
-import Dashboard from './components/Admin/Dashboard';
+//import NotFound from './components/common/NotFound';
+import AverageRatingDashboard from './components/Admin/AverageRatingDashboard';
+import AssessmentStatusDashboard from './components/Admin/AssessmentStatusDashboard';
+import TotalAssessmentDashboard from './components/Admin/TotalAssessmentDashboard';
 
 function App() {
 
@@ -33,7 +35,9 @@ function App() {
           localStorage.getItem('id') && localStorage.getItem('role') ==='Admin' &&
             <div>             
                 <Navbarmenu />
-                <Route path='/Dashboard' component={Dashboard}/>
+                <Route path='/AverageRatingDashboard' component={AverageRatingDashboard}/>
+                <Route path='/AssessmentStatusDashboard' component={AssessmentStatusDashboard}/>
+                <Route path='/TotalAssessmentDashboard' component={TotalAssessmentDashboard}/>
                 <Route path='/AddCompetencyArea' component={AddCompetencyArea}/>
                 <Route path='/AddCompetencyDescriptor' component={AddCompetencyDescriptor}/>
                 <Route path='/AddRatings' component={AddRatings}/>
