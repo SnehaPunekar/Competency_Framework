@@ -7,7 +7,7 @@ const TemplateName = require('../libs/db/actions/TemplateNameAction');
 const AssignTemp = require('../libs/db/actions/AssignTemplateAction');
 const SelfAssessment = require('../libs/db/actions/SelfAssessmentAction');
 const LeadAssessment = require('../libs/db/actions/LeadAssessmentAction');
-const AverageRatingDashboard = require('../libs/db/actions/DashboardAction');
+const AverageRatingDashboard = require('../libs/db/actions/AverageRatingDashboardAction');
 const TotalAssessmentDashboard = require('../libs/db/actions/TotalAssessmentDashboardAction');
 const AssessmentStatusDashboard = require('../libs/db/actions/AssessmentStatusDashboardAction');
 
