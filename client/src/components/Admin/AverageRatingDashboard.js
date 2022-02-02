@@ -56,6 +56,7 @@ export default function AverageRatingDashboard() {
       });
       setChange(false);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roleValue, reviewValue])
 
   return (
@@ -83,6 +84,7 @@ export default function AverageRatingDashboard() {
           </div>
           <div class="col-75">
             <select id="level" name="level" onChange={e=> { setChange(true);
+                // eslint-disable-next-line eqeqeq
                 if(e.target.value == 's')
                   setReviewValue(0)
                 else
@@ -100,6 +102,7 @@ export default function AverageRatingDashboard() {
           </div>
           <div class="col-75">
             <select id="roles" name="roles" onChange={ e=> {setChange(true);
+                // eslint-disable-next-line eqeqeq
                 if(e.target.value == 's')
                   setRoleValue(0)
                 else

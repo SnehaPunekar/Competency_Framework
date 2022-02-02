@@ -88,6 +88,7 @@ export default function AssessmentStatusDashboard(){
           setChange(false);
       })
     }    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newRoleValue, selectedReviewCycleId])
 
   const[leadAssessmentData, setLeadAssessmentData] = useState([]);
@@ -105,6 +106,7 @@ export default function AssessmentStatusDashboard(){
           setChange(false);
       })
     }    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newRoleValue, selectedReviewCycleId])
 
     return(
@@ -132,6 +134,7 @@ export default function AssessmentStatusDashboard(){
                 <div class="col-75">
                     <select id="level" name="level" onChange={e => {
                         setChange(true);
+                        // eslint-disable-next-line eqeqeq
                         if (e.target.value == 's')
                             setSelectedReviewCycleId(0);
 
@@ -152,6 +155,7 @@ export default function AssessmentStatusDashboard(){
                 <div class="col-75">
                     <select id="roles" name="roles" onChange={e => {
                         setChange(true);
+                        // eslint-disable-next-line eqeqeq
                         if (e.target.value == 's')
                             setNewRoleValue(0);
 

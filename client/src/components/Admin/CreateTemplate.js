@@ -175,6 +175,7 @@ function CreateTemplate() {
                     <Typography className={classes.heading}>{value.AreaName}</Typography>
                   </AccordionSummary>                     
                   {
+                    // eslint-disable-next-line array-callback-return
                     details.map(value1=>{
                         if(value1.Area_id === value.Area_id){
                           let b = {
@@ -194,6 +195,7 @@ function CreateTemplate() {
                         checkboxSelection = {true}
                         disableSelectionOnClick
                         onSelectionModelChange={(id) => {
+                          // eslint-disable-next-line array-callback-return
                           id.map(v => {
                             descId.push(v)
                           })

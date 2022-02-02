@@ -144,6 +144,7 @@ export default function ViewTemplate() {
           </div>
           <br/><br/>
           {
+            // eslint-disable-next-line array-callback-return
             details.map(value => {  
               let b = {
                 id: value.Desc_id,

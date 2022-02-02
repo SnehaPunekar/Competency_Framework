@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
-import {NavLink, Link} from 'react-router-dom';
-import {FiAlignRight,FiXCircle,FiChevronDown } from "react-icons/fi";
+import {NavLink} from 'react-router-dom';
+import {FiAlignRight,FiXCircle } from "react-icons/fi";
 import '../../assests/css/Navbar.css';
 
  import logo from '../../assests/images/logo.png';
@@ -18,6 +18,7 @@ const NavbarEmployee = () => {
         boxClass.push('');
     }
     const [isMenuSubMenu, setMenuSubMenu] = useState(false);
+    // eslint-disable-next-line no-unused-vars
     const toggleSubmenu = () => {
       setMenuSubMenu(isMenuSubMenu === false ? true : false);
     };
@@ -45,10 +46,7 @@ const NavbarEmployee = () => {
                     `
                     }</h5>    
                     
-
-
-                
-                    if(localStorage.getItem('role')=== 'Developer'){
+            if(localStorage.getItem('role')=== 'Developer'){
                     
                  <div className="header__middle__menus">
                     <nav className="main-nav " >
