@@ -1,9 +1,7 @@
 const db = require('../../../config/config');
 
 class Roles{
-
     constructor(){
-
     }
 
     GetRoles = async function(){
