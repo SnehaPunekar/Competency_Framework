@@ -20,7 +20,7 @@ class AssessmentStatusDashboardAction{
         query3 = "SELECT assign.emp_id FROM assign_template assign, employee emp WHERE assign.emp_id = emp.emp_id AND assign.review_cycle_id = ? AND emp.role_id = ?;";
 
         return await new Promise(async function (resolve, reject) {
-          await  db.query(query1, [reviewId, roleId], (err1, res1) => {
+          await db.query(query1, [reviewId, roleId], (err1, res1) => {
                             if(err1){
                                 return reject(err1);
                             }else{
@@ -105,7 +105,7 @@ class AssessmentStatusDashboardAction{
                             })             
                         }
                        
-                        db.query(query3, [reviewId, roleId], (err3, res3) => {
+                await db.query(query3, [reviewId, roleId], async (err3, res3) => {
                                     if(err3){
                                         return reject(err3);
                                     }else{
