@@ -56,9 +56,10 @@ class SelfAssessment{
                                         template.push(elements);                                               
                                     });
                                     if(i == results.length - 1){  
-                                        output = template;                                    
+                                        output = template.sort(function(a, b) { 
+                                            return (a["did"] > b["did"]) ? 1 : ((a["did"] < b["did"]) ? -1 : 0);
+                                         });                               
                                         return resolve({data:output, success: true});
-                                        //res.json({data:template, success:true}) 
                                     }
                                 }                   
                             });                
@@ -101,7 +102,9 @@ class SelfAssessment{
                                         template.push(elements);                                               
                                     });
                                     if(i == results.length - 1){  
-                                        output = template;                                    
+                                        output = template.sort(function(a, b) { 
+                                            return (a["did"] > b["did"]) ? 1 : ((a["did"] < b["did"]) ? -1 : 0);
+                                         });                                     
                                         return resolve({data:output, success: true});
                                         //res.json({data:template, success:true}) 
                                     }

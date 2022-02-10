@@ -51,8 +51,10 @@ function SelfAssessment() {
                 review_cycle_id : review_id,
                 emp_id : localStorage.getItem('id'),
             }).then((response) => {
+                SetTemplate([]);
                 if(response.data.data.success === true)
                 {
+                    console.log(response.data.data.data);
                     SetTemplate(response.data.data.data);
                 }else if(response.data.data.update === true){
                     alert("Your Self assessment is already submitted");

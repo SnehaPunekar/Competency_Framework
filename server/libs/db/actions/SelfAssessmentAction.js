@@ -4,8 +4,8 @@ class SelfAssessment{
 
     GetActiveReviewCycle = async function(){
         let output = [];
-        return await new Promise( async function (resolve, reject) {
-           await db.query("SELECT review_cycle_id, review_cycle_name FROM review_cycle Where active = 1;",
+        return await new Promise(async function (resolve, reject) {
+         db.query("SELECT review_cycle_id, review_cycle_name FROM review_cycle Where active = 1;",
           (err,result)=>{
                 if(err){
                     console.log(err);
@@ -23,13 +23,13 @@ class SelfAssessment{
             });
         })
     }
-    
+
     GetSelfAssessment = async function(review_id, emp_id){
         let flag = 0;
         let output = [];
         return await new Promise(async function (resolve, reject) {
-           await db.query("SELECT Desc_id, self_rating, self_comment, draft FROM assessment WHERE review_cycle_id = ? AND emp_id = ?",
-                [review_id, emp_id], async (err2, res2) => {  
+            db.query("SELECT Desc_id, self_rating, self_comment, draft FROM assessment WHERE review_cycle_id = ? AND emp_id = ?",
+                [review_id, emp_id],  (err2, res2) => {  
                 if(err2){                
                     return reject(err2);
                 }else{
@@ -39,6 +39,7 @@ class SelfAssessment{
                         }
                     }
                 }
+                //console.log(output);
             });
 
             const sqlSelect = "SELECT Temp_id FROM assign_template WHERE review_cycle_id = ? AND emp_id = ?";
@@ -46,12 +47,12 @@ class SelfAssessment{
             const descSelect = "SELECT Desc_id, Description, Area_id FROM competency_descriptor WHERE Desc_id = ?";
                 
             let final = [];
-            await db.query(sqlSelect, [review_id, emp_id], async (error, result) => {
+             db.query(sqlSelect, [review_id, emp_id], (error, result) => {
                 if(result.length > 0 && !error){                        
-                    await db.query(descIdSelect, [result[0].Temp_id], async (err3, descArr) => {                            
+                 db.query(descIdSelect, [result[0].Temp_id], (err3, descArr) => {                            
                         if(descArr.length > 0 && !err3){                        
                             for(let i = 0; i < descArr.length; i++){  
-                                await db.query(descSelect, [descArr[i].Desc_id], async (err1, res1) => {                                        
+                                db.query(descSelect, [descArr[i].Desc_id], (err1, res1) => {                                        
                                     if(res1.length > 0 && !err1){
                                         db.query("SELECT Desc_id, self_rating, self_comment, draft FROM assessment WHERE review_cycle_id = ? AND emp_id = ? AND Desc_id = ?",
                                             [review_id, emp_id, descArr[i].Desc_id], (err2, res2) => {  
@@ -74,7 +75,10 @@ class SelfAssessment{
                                                     final.push(element2);
                                                 }                                                
                                                 if(i == descArr.length-1){  
-                                                    output = final;
+                                                     output = final.sort(function(a, b) { 
+                                                        return (a["did"] > b["did"]) ? 1 : ((a["did"] < b["did"]) ? -1 : 0);
+                                                     });
+                                                    // console.log(output);
                                                     flag = 1;
                                                     return resolve({data:output, success: true});
                                                 }
@@ -97,7 +101,7 @@ class SelfAssessment{
     ViewSelfAssessment = async function(review_id, emp_id){
         let flag = 0;
         let output = [];
-        return new Promise(function (resolve, reject) {
+        return await new Promise(async function (resolve, reject) {
             db.query("SELECT Desc_id, self_rating, self_comment, draft, lead_rating, lead_comment, lead_draft FROM assessment WHERE review_cycle_id = ? AND emp_id = ?",
             [review_id, emp_id], (err, results) => {                
                 const descSelect = "SELECT Desc_id, Description, Area_id FROM competency_descriptor WHERE Desc_id = ?";
@@ -129,7 +133,10 @@ class SelfAssessment{
                                             }
                                             template.push(elements); 
                                             if(i == results.length - 1){   
-                                                output = template;
+                                                output = template.sort(function(a, b) { 
+                                                    return (a["did"] > b["did"]) ? 1 : ((a["did"] < b["did"]) ? -1 : 0);
+                                                 });
+                                                 console.log(output);
                                                 return resolve({data:output, success: true});
                                             }
                                         }
@@ -146,10 +153,10 @@ class SelfAssessment{
     }
   
     AddSelfAssessment = async function(review_id, emp_id, assessmentArr, draft){
-        return new Promise(function (resolve, reject){ 
+        return await new Promise(async function (resolve, reject){ 
             let roleId = 0;
-            db.query('SELECT role_id FROM employee WHERE emp_id = ?', [emp_id], 
-                (err, roleID) => {  
+             db.query('SELECT role_id FROM employee WHERE emp_id = ?', [emp_id], 
+             (err, roleID) => {  
                     if(err) {
                         return reject(err);
                     }else{
