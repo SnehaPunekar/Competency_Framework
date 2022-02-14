@@ -84,14 +84,41 @@ app.get('/getRatingDetails',async (request, response)=>{
     response.json({data:out}); 
 });
 
+const checkIfDuplicate = async (reviewName)=>{
+    return new Promise(function (resolve, reject){
+        let c = db.query('select review_cycle_name from review_cycle where review_cycle_name = ?',[reviewName],(err,result)=>{
+            if(err){
+                console.log(err);
+                return reject(err)
+            }
+            else{
+                if(result.length === 0){   // When we receive empty array as a result 
+                   return resolve(true); 
+                }
+                else{
+                    return resolve(false);
+                }
+            }
+        })
+        return c;
+    }
+)}
+
 app.post('/addReview',async (request,response)=>{  
     const reviewName = request.body.reviewName;
     const start = request.body.start;
     const end = request.body.end;
     const status = request.body.status;
     
-    let out = await new AdminServices().addReview(reviewName,start,end,status);
-    response.json({data:out}); 
+    let flag = await checkIfDuplicate(reviewName);
+    console.log(flag)
+    if(flag === true){
+        let out = await new AdminServices().addReview(reviewName,start,end,status);
+        response.json({data:out}); 
+    }
+    else{
+        response.json({flag:flag}); 
+    } 
 });
 
 app.get('/getReview',async (request,response)=>{

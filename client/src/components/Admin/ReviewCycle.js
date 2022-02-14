@@ -17,7 +17,14 @@ function ReviewCycle() {
   
   const toggler = (e) => {
     setReviewId(e.target.id);
-    (e.target.checked) ? setStatus(1) : setStatus(0);
+    if(status === 0){
+      alert("Warning : Activation of the Review Cycle is only Restricted to completion of assessments. One cannot ASSIGN or CREATE NEW TEMPLATES!");
+      setStatus(1);
+    }
+    else{
+      setStatus(0);
+    }
+    // (e.target.checked) ?  :
     setChange(true);
   }
 
@@ -25,17 +32,23 @@ function ReviewCycle() {
   const addReview = ()=>{
     if(!reviewName || !start || !end){
       alert('Please fill all the fields');
-    }else{
+    } 
       Axios.post('http://localhost:3001/addReview',{
-        reviewName:reviewName,
-        start:start,
-        end:end,
-        status:1
+      reviewName:reviewName,
+      start:start,
+      end:end,
+      status:1,
       }).then(res => {
+        console.log(res.data.flag);
+        if(res.data.flag === false){
+          alert('Duplicate review name not allowed!')
+        }
+        else{
+          alert('Added successfully!')
+        }
         setChange(!change);
       });
-    }
-  };
+     }
 
   useEffect(() => {
     if(reviewId){
@@ -57,7 +70,7 @@ function ReviewCycle() {
               }, 0);
         })
     }, 1500);   
-  }    
+  }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [change])
 
