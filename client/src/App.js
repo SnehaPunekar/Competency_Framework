@@ -11,6 +11,7 @@ import CreateTemplate from './components/Admin/CreateTemplate';
 import ViewTemplate from './components/Admin/ViewTemplate';
 import AssignTemplate from './components/Admin/AssignTemplate';
 import ViewAssignedTemplate from './components/Admin/ViewAssignedTemplate';
+import UpdateTemplate from'./components/Admin/UpdateTemplate';
 import AddRatings from './components/Admin/AddRatings';
 import ReviewCycle from './components/Admin/ReviewCycle';
 import SelfAssessment from './components/common/SelfAssessment';
@@ -46,6 +47,7 @@ function App() {
                 <Route path='/AddTemplate' component={AddTemplate}/>
                 <Route path='/createTemplate' component={CreateTemplate}/>
                 <Route path='/viewTemplate' component={ViewTemplate}/>
+                <Route path='/updateTemplate' component={UpdateTemplate}/>
                 <Route path='/AssignTemplate' component={AssignTemplate}/> 
                 <Route path='/viewAssignedTemplate' component={ViewAssignedTemplate}/>
                 

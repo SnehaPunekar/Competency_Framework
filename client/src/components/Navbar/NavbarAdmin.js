@@ -79,9 +79,10 @@ const Navbarmenu = () => {
 
                         <li onClick={toggleSubmenu} className="menu-item sub__menus__arrows" > <Link to="#"> Template <FiChevronDown /> </Link>
                             <ul className={boxClassSubMenu.join(' ')} >
-                                <li> <NavLink onClick={toggleClass} activeClassName='is-active'  to={`/AddTemplate`}> Add Template </NavLink> </li>
+                                <li> <NavLink onClick={toggleClass} activeClassName='is-active'  to={`/AddTemplate`}> Add Template Name </NavLink> </li>
                                 <li> <NavLink onClick={toggleClass} activeClassName='is-active'  to={`/CreateTemplate`}> Create Template </NavLink> </li>
                                 <li><NavLink onClick={toggleClass} activeClassName='is-active' to={`/ViewTemplate`}> View Template </NavLink> </li>
+                                <li><NavLink onClick={toggleClass} activeClassName='is-active' to={`/UpdateTemplate`}> Update Template </NavLink> </li>
                                 <li> <NavLink onClick={toggleClass} activeClassName='is-active'  to={`/AssignTemplate`}> Assign Template </NavLink> </li>
                                 <li><NavLink onClick={toggleClass} activeClassName='is-active' to={`/ViewAssignedTemplate`}> View Assigned Template </NavLink> </li> 
                             </ul>

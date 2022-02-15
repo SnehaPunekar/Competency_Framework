@@ -41,7 +41,7 @@ function ReviewCycle() {
       }).then(res => {
         console.log(res.data.flag);
         if(res.data.flag === false){
-          alert('Duplicate review name not allowed!')
+          alert('This Name already exits. Please enter new name.')
         }
         else{
           alert('Added successfully!')

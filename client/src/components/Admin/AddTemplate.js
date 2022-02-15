@@ -14,7 +14,14 @@ function AddTemplate() {
         }else{
             Axios.post('http://localhost:3001/addTemplateName',
                 {tempName:tempName,
-            }).then(response => {
+            }).then(res => {
+                console.log(res.data.flag);
+                if(res.data.flag === false){
+                  alert('This Name already exits. Please enter new name.')
+                }
+                else{
+                  alert('Added successfully!')
+                }
                 setChange(!change);
             });
         }               

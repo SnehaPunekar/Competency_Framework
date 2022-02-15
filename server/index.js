@@ -24,10 +24,37 @@ app.post('/setPassword', async (request,response)=>{
     response.json({data:out});  
 });
 
+const checkIfDuplicateCompetencyArea = async (AreaName)=>{
+    return new Promise(function (resolve, reject){
+        let c = db.query('select AreaName from competency_area where AreaName = ?',[AreaName],(err,result)=>{
+            if(err){
+                console.log(err);
+                return reject(err)
+            }
+            else{
+                if(result.length === 0){   // When we receive empty array as a result 
+                   return resolve(true); 
+                }
+                else{
+                    return resolve(false);
+                }
+            }
+        })
+        return c;
+    }
+)}
+
 app.post('/addCompetencyArea', async (request,response)=>{
     const AreaName = request.body.AreaName;
-    let out = await new AdminServices().addCompetencyAreas(AreaName);
-    response.json({data:out}); 
+    let flag = await checkIfDuplicateCompetencyArea(AreaName);
+    console.log(flag)
+    if(flag === true){
+        let out = await new AdminServices().addCompetencyAreas(AreaName);
+        response.json({data:out}); 
+    }
+    else{
+        response.json({flag:flag}); 
+    } 
 });
 
 app.get('/getCompetencyAreaNames', async (request,response)=>{
@@ -70,12 +97,39 @@ app.post('/updateStatus', async (request, response)=>{
     response.json({data:out}); 
 });
 
+const checkIfDuplicateRating = async (ratingName)=>{
+    return new Promise(function (resolve, reject){
+        let c = db.query('select rating_name from rating where rating_name = ?',[ratingName],(err,result)=>{
+            if(err){
+                console.log(err);
+                return reject(err)
+            }
+            else{
+                if(result.length === 0){   // When we receive empty array as a result 
+                   return resolve(true); 
+                }
+                else{
+                    return resolve(false);
+                }
+            }
+        })
+        return c;
+    }
+)}
+
 app.post('/addRatings',async (request,response)=>{
     const ratingName = request.body.ratingName;
     const ratingDesc = request.body.ratingDesc;
 
-    let out = await new AdminServices().addRating(ratingName, ratingDesc);
-    response.json({data:out}); 
+    let flag = await checkIfDuplicateRating(ratingName);
+    console.log(flag)
+    if(flag === true){
+        let out = await new AdminServices().addRating(ratingName, ratingDesc);
+        response.json({data:out}); 
+    }
+    else{
+        response.json({flag:flag}); 
+    }   
 });
 
 app.get('/getRatingDetails',async (request, response)=>{
@@ -146,11 +200,38 @@ app.post('/getRoleName',async(request,response)=>{
     response.json({data:out}); 
 });
 
+const checkIfDuplicateTemplateName = async (tempName)=>{
+    return new Promise(function (resolve, reject){
+        let c = db.query('select TempName from template where TempName = ?',[tempName],(err,result)=>{
+            if(err){
+                console.log(err);
+                return reject(err)
+            }
+            else{
+                if(result.length === 0){   // When we receive empty array as a result 
+                   return resolve(true); 
+                }
+                else{
+                    return resolve(false);
+                }
+            }
+        })
+        return c;
+    }
+)}
+
 app.post('/addTemplateName', async(request,response)=>{
     const tempName = request.body.tempName;
 
-    let out = await new AdminServices().addTemplateName(tempName);
-    response.json({data:out})
+    let flag = await checkIfDuplicateTemplateName(tempName);
+    console.log(flag)
+    if(flag === true){
+        let out = await new AdminServices().addTemplateName(tempName);
+        response.json({data:out})  
+    }
+    else{
+        response.json({flag:flag}); 
+    } 
 });
 
 app.post('/addTemplate', async(request,response)=>{
