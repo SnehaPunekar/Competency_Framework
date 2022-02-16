@@ -11,13 +11,21 @@ import { useState, useEffect } from 'react';
 import Axios from 'axios';
 import '../../assests/css/Preloader.css';
 
+
 const columns = [
-  { field: 'id', headerName: 'ID', width: 120 },
+  { field: 'id', headerName: 'ID', width: 100, type: 'rightAligned'},
+  {
+    field: 'AreaName',
+    headerName: 'AreaName',
+    width: 150,
+    sortable: true,
+    editable: false,
+  },
   {
     field: 'descriptor',
     headerName: 'Descriptor',
-    width: 920,
-    sortable:true,
+    width: 800,
+    sortable: true,
     editable: true,
   },
 ];
@@ -35,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 function UpdateTemplate() {
   let a = [];
   let descId = [];
-  const[tempnames,setTempNames] = useState([]); 
+  const[TempNames,setTempNames] = useState([]); 
   const[tempValue, setTempValue ] = useState(0);
   const[roleValue, setRoleValue ] = useState(0);
   const[details,setDetails] = useState([]);
@@ -44,6 +52,13 @@ function UpdateTemplate() {
   const classes = useStyles();
   const [loading, setloading] = useState(undefined);
   const [completed, setcompleted] = useState(undefined);
+  // eslint-disable-next-line no-unused-vars
+  const[roleName, setRoleName] = useState('');
+  // eslint-disable-next-line no-unused-vars
+  const[change,setChange] = useState(false);
+  const[value,setValue] = useState('');
+  const [viewAddDescriptor, setViewAddDescriptor] = useState(false);
+  const[viewDeleteDescriptor, setViewDeleteDescriptor] = useState(false);
 
   const AddCompDesc = ()=>{
     Axios.post('http://localhost:3001/addTemplate',{
@@ -58,7 +73,9 @@ function UpdateTemplate() {
         alert("Unable to Create Template");
         setDetails([]);
       }
-    })      
+    })  
+    alert('Template Updated.');
+    setViewAddDescriptor(false);    
   }
 
   useEffect(() => {
@@ -89,6 +106,44 @@ function UpdateTemplate() {
     })
   }, [])
 
+  useEffect(() => {
+    if(change){
+    Axios.post('http://localhost:3001/getRoleName',{temp_id:value})
+    .then(response =>{
+      if(response.data.data.success === true){  
+        setRoleName(response.data.data.data);
+      }else{
+        setRoleName('');
+      }         
+    })}
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value])
+
+  useEffect(()=>{
+    if(change){
+      Axios.post('http://localhost:3001/getTemplateDescriptor', {temp_id:value,
+        }).then(response =>{
+          if(response.data.data.success === true){  
+            setDetails(response.data.data.data);//setAssignTemplate(response.data.data.data);
+          }else{
+            setDetails([]);
+          }            
+        });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[value])
+
+  const AddDescriptor = ()=> {
+    if(!tempValue)
+    {        
+      alert('Please fill the field');
+    }
+    else{
+       setViewAddDescriptor(true);
+       setViewDeleteDescriptor(false);
+    }  
+  }
+
   const getDescriptorByRole = ()=>{
     if(!roleValue)
     {        
@@ -103,6 +158,17 @@ function UpdateTemplate() {
         }
       });
     }      
+  }
+
+  const DeleteDescriptor = ()=> {
+    if(!tempValue){
+      alert('Please select the field');
+    }
+    else{
+      setViewDeleteDescriptor(true);
+    }
+    // alert('Template Updated.');
+    setViewAddDescriptor(false); 
   }
   
   return (
@@ -128,38 +194,73 @@ function UpdateTemplate() {
           </div>
           <div class="col-75">
             <select id="template_name" name="template_name"
-              onChange={e=> setTempValue(e.target.value)}>
+              onChange={
+                e=> {
+                  setTempValue(e.target.value);
+                  setValue(e.target.value);
+                  }
+                }>
                 <option value="template_1">Select Template Name </option>
-                {
+                {/* {
                   tempnames.map((value)=>{  
                     return(
                       <option value={value.Temp_id}>{value.TempName}</option>
                     )
                   })
-                }
+                } */}
+                {
+                    TempNames.map((value)=>{  
+                      return(
+                        <option value={value.Temp_id}>{value.TempName}</option>
+                      )
+                    })
+                  }
             </select>
           </div>
         </div>
         <br/> 
         <div class="row">
             <div>
-                <button className="inline-button " onClick={getDescriptorByRole}>Add Descriptors</button>
-                <button className="inline-button " onClick={getDescriptorByRole}>Delete Descriptors</button>
+                <button className="inline-button" onClick={AddDescriptor}>Add Descriptors</button>
+                <button className="inline-button" onClick={DeleteDescriptor}>Delete Descriptors</button>
             </div>
         </div>
         <br/>
-        {/* <div className={classes.root}>
-          {               
-            names.map((value)=>{ 
-              a = [];
-              return(
-                <Accordion>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"                     
-                    id="panel1a-header"
-                  >
-                    <Typography className={classes.heading}>{value.AreaName}</Typography>
+        {
+          viewAddDescriptor === true && 
+          <section>
+            <div class="row">
+              <div class="col-25">
+                <label for="role_name">Select Role</label>  
+              </div>
+              <div class="col-75">
+                <select id="role_name" name="role_name"
+                  onChange={e=> setRoleValue(e.target.value)}>
+                    <option value="role_1">Select Role</option>
+                      {
+                        roles.map((value)=>{  
+                          return(
+                            <option value={value.role_id}>{value.role_name}</option>
+                          )
+                        })
+                      }
+                </select>
+              </div>
+              <div class="roleSearch">
+                <button onClick={getDescriptorByRole}>Search</button>
+              </div>
+            </div>
+            <div className={classes.root}>
+              {               
+                names.map((value)=>{ 
+                a = [];
+                return(
+                  <Accordion>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1a-content"                     
+                      id="panel1a-header">
+                      <Typography className={classes.heading}>{value.AreaName}</Typography>
                   </AccordionSummary>                     
                   {
                     // eslint-disable-next-line array-callback-return
@@ -173,36 +274,70 @@ function UpdateTemplate() {
                         }
                       }) 
                   }
-                  <AccordionDetails>
-                    <div style={{ height: 400, width: '100%', backgroundColor: 'white' }}>
-                      <DataGrid
-                        rows={a}
-                        columns={columns}
-                        pageSize={5}
-                        checkboxSelection = {true}
-                        disableSelectionOnClick
-                        onSelectionModelChange={(id) => {
-                          // eslint-disable-next-line array-callback-return
-                          id.map(v => {
-                            descId.push(v)
-                          })
-                          // setIdArr(id);
-                        }}
-                      />               
-                    </div>
-                  </AccordionDetails>
-                </Accordion>
-              );                         
+                    <AccordionDetails>
+                        <div style={{ height: 400, width: '100%', backgroundColor: 'white' }}>
+                        <DataGrid
+                          rows={a}
+                          columns={columns}
+                          pageSize={5}
+                          checkboxSelection = {true}
+                          disableSelectionOnClick
+                          onSelectionModelChange={(id) => {
+                            // eslint-disable-next-line array-callback-return
+                            id.map(v => {
+                              descId.push(v)
+                            })
+                          }}
+                        />               
+                      </div>
+                    </AccordionDetails>
+                  </Accordion>
+                );                         
+             })
+            }
+            </div>
+              <br/><br/>
+              <button onClick={AddCompDesc}>Save</button><br/>
+          </section>
+        } 
+        {
+          viewDeleteDescriptor === true && 
+          <section>
+            <div class="row">
+            <div class="col-25">
+              <label for="competency_area">Role Name</label>  
+            </div>
+            <div class="col-25">
+              <label for="competency_area">{roleName}</label> 
+            </div>
+          </div>
+          <br/><br/>
+          {
+            // eslint-disable-next-line array-callback-return
+            details.map(value => {  
+              let b = {
+                id: value.Desc_id,
+                AreaName : value.AreaName,
+                descriptor:value.Description
+              }
+              a.push(b);
             })
           }
-        </div>        */}
-      <br/><br/>
-      {/* <button onClick={AddCompDesc}>Save</button><br/> */}
+          <div style={{ height: 385, width: '85%', background:'white' }}>
+            <DataGrid
+              rows={a}
+              columns={columns}
+              pageSize={5}
+              disableSelectionOnClick/>
+          </div>
+    </section>
+        }      
       </center><br/>
     </div>
     )}
   </>
   )
 }
+
 
 export default UpdateTemplate;
