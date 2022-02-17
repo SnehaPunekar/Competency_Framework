@@ -11,6 +11,16 @@ import { useState, useEffect } from 'react';
 import Axios from 'axios';
 import '../../assests/css/Preloader.css';
 
+const column = [
+  { field: 'id', headerName: 'ID', width: 120 },
+  {
+    field: 'descriptor',
+    headerName: 'Descriptor',
+    width: 920,
+    sortable:true,
+    editable: true,
+  },
+];
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 100, type: 'rightAligned'},
@@ -24,7 +34,7 @@ const columns = [
   {
     field: 'descriptor',
     headerName: 'Descriptor',
-    width: 800,
+    width: 650,
     sortable: true,
     editable: true,
   },
@@ -43,8 +53,9 @@ const useStyles = makeStyles((theme) => ({
 function UpdateTemplate() {
   let a = [];
   let descId = [];
-  const[TempNames,setTempNames] = useState([]); 
+  const[TempNames, setTempNames] = useState([]); 
   const[tempValue, setTempValue ] = useState(0);
+  const[templatenames, setTemplateNames] = useState([]);
   const[roleValue, setRoleValue ] = useState(0);
   const[details,setDetails] = useState([]);
   const[names,setNames] =useState([]);
@@ -82,6 +93,7 @@ function UpdateTemplate() {
     setTimeout(()=> {
     Axios.get('http://localhost:3001/getTemplateNames')
     .then(response =>{
+      setTemplateNames(response.data.data);
       setTempNames(response.data.data);
       setloading(true);
 
@@ -95,6 +107,7 @@ function UpdateTemplate() {
   useEffect(() => {
     Axios.get('http://localhost:3001/getCompetencyAreaNames')
       .then(response =>{
+        setNames(response.data.data);
         setNames(response.data.data);
     })
   }, [])
@@ -196,18 +209,20 @@ function UpdateTemplate() {
             <select id="template_name" name="template_name"
               onChange={
                 e=> {
-                  setTempValue(e.target.value);
-                  setValue(e.target.value);
+                  setChange(true);
+                    setTempValue(e.target.value);
+                    setValue(e.target.value);
+                  
                   }
                 }>
                 <option value="template_1">Select Template Name </option>
-                {/* {
-                  tempnames.map((value)=>{  
+                 {
+                  templatenames.map((value)=>{  
                     return(
                       <option value={value.Temp_id}>{value.TempName}</option>
                     )
                   })
-                } */}
+                } 
                 {
                     TempNames.map((value)=>{  
                       return(
@@ -251,6 +266,7 @@ function UpdateTemplate() {
               </div>
             </div>
             <div className={classes.root}>
+              {console.log(names)}
               {               
                 names.map((value)=>{ 
                 a = [];
@@ -261,7 +277,9 @@ function UpdateTemplate() {
                       aria-controls="panel1a-content"                     
                       id="panel1a-header">
                       <Typography className={classes.heading}>{value.AreaName}</Typography>
-                  </AccordionSummary>                     
+                  </AccordionSummary>
+                                     
+                  {console.log(details)}
                   {
                     // eslint-disable-next-line array-callback-return
                     details.map(value1=>{
@@ -274,11 +292,12 @@ function UpdateTemplate() {
                         }
                       }) 
                   }
+                
                     <AccordionDetails>
                         <div style={{ height: 400, width: '100%', backgroundColor: 'white' }}>
                         <DataGrid
                           rows={a}
-                          columns={columns}
+                          columns={column}
                           pageSize={5}
                           checkboxSelection = {true}
                           disableSelectionOnClick
@@ -292,7 +311,7 @@ function UpdateTemplate() {
                       </div>
                     </AccordionDetails>
                   </Accordion>
-                );                         
+                );                           
              })
             }
             </div>
@@ -328,8 +347,11 @@ function UpdateTemplate() {
               rows={a}
               columns={columns}
               pageSize={5}
+              checkboxSelection = {true}
               disableSelectionOnClick/>
           </div>
+          <br></br>
+          <button onClick={AddCompDesc}>Delete</button><br/>
     </section>
         }      
       </center><br/>
