@@ -69,6 +69,25 @@ class TemplateName{
         });
     }
 
+    DeleteDescriptor = async function(tid, s){
+        return new Promise(function (resolve, reject){
+            s.forEach(key => {
+                db.query('Delete from comp_temp where Temp_id=? AND Desc_id=?',
+                [tid, key],(err,result)=>{
+                    if(err){
+                        console.log(err);
+                        return reject(err);
+                    }else{
+                        if(result.length > 0){
+                            output = result;
+                        }
+                        return resolve({data:result, success: true});
+                    }
+                });
+            });
+        });
+    }
+    
     GetTemplateDescriptor = async function(temp_id){
         let output = [];
         return new Promise(function (resolve, reject){

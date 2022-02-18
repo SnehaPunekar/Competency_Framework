@@ -103,6 +103,11 @@ class AdminServices{
         return response;
     }
 
+    deleteTemplate = async function(tid,s){
+        let response = await this.getTemplate.DeleteDescriptor(tid, s);
+        return response;
+    }
+
     getAllTemplateDescriptor = async function(temp_id){
         let response = await this.getTemplate.GetTemplateDescriptor(temp_id);
         return response;

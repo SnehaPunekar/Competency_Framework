@@ -53,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
 function UpdateTemplate() {
   let a = [];
   let descId = [];
+  let descDeleteId =[];
   const[TempNames, setTempNames] = useState([]); 
   const[tempValue, setTempValue ] = useState(0);
   const[templatenames, setTemplateNames] = useState([]);
@@ -89,14 +90,30 @@ function UpdateTemplate() {
     setViewAddDescriptor(false);    
   }
 
+  const DeleteCompDesc = ()=> {
+    Axios.post('http://localhost:3001/deleteTemplate',{
+      tid : tempValue,
+      descDeleteId : descDeleteId
+    }).then(response =>{
+      if(response.data.data.success === true){
+        alert('Descriptors from the Template deleted Successfully');
+        setDetails([]);
+      }else{
+        alert("Unable to Delete Descriptors");
+        setDetails([]);
+      }
+    })  
+    alert('Template Updated.');
+    setViewDeleteDescriptor(false);
+  }
+
   useEffect(() => {
     setTimeout(()=> {
     Axios.get('http://localhost:3001/getTemplateNames')
     .then(response =>{
-      setTemplateNames(response.data.data);
-      setTempNames(response.data.data);
+        setTempNames(response.data.data);
+        setTemplateNames(response.data.data);
       setloading(true);
-
             setTimeout(() => {
                  setcompleted(true);
               }, 0);
@@ -147,14 +164,8 @@ function UpdateTemplate() {
   },[value])
 
   const AddDescriptor = ()=> {
-    if(!tempValue)
-    {        
-      alert('Please fill the field');
-    }
-    else{
        setViewAddDescriptor(true);
-       setViewDeleteDescriptor(false);
-    }  
+       setViewDeleteDescriptor(false); 
   }
 
   const getDescriptorByRole = ()=>{
@@ -174,13 +185,7 @@ function UpdateTemplate() {
   }
 
   const DeleteDescriptor = ()=> {
-    if(!tempValue){
-      alert('Please select the field');
-    }
-    else{
       setViewDeleteDescriptor(true);
-    }
-    // alert('Template Updated.');
     setViewAddDescriptor(false); 
   }
   
@@ -201,7 +206,21 @@ function UpdateTemplate() {
     <div className="content">
       <center>
         <h1>Update Template</h1>
+        <br/>
         <div class="row">
+          <h4>Please click the button below to add or delete a descriptor</h4>
+        </div>
+        <div class="row">
+            <div>
+                <button className="inline-button" onClick={AddDescriptor}>Add Descriptors</button>
+                <button className="inline-button" onClick={DeleteDescriptor}>Delete Descriptors</button>
+            </div>
+        </div>
+        <br/>
+        {
+          viewAddDescriptor === true && 
+          <section>
+            <div class="row">
           <div class="col-25">
             <label for="template_name">Template Name</label>  
           </div>
@@ -216,13 +235,13 @@ function UpdateTemplate() {
                   }
                 }>
                 <option value="template_1">Select Template Name </option>
-                 {
+                 {/* {
                   templatenames.map((value)=>{  
                     return(
                       <option value={value.Temp_id}>{value.TempName}</option>
                     )
                   })
-                } 
+                }  */}
                 {
                     TempNames.map((value)=>{  
                       return(
@@ -233,17 +252,6 @@ function UpdateTemplate() {
             </select>
           </div>
         </div>
-        <br/> 
-        <div class="row">
-            <div>
-                <button className="inline-button" onClick={AddDescriptor}>Add Descriptors</button>
-                <button className="inline-button" onClick={DeleteDescriptor}>Delete Descriptors</button>
-            </div>
-        </div>
-        <br/>
-        {
-          viewAddDescriptor === true && 
-          <section>
             <div class="row">
               <div class="col-25">
                 <label for="role_name">Select Role</label>  
@@ -266,7 +274,6 @@ function UpdateTemplate() {
               </div>
             </div>
             <div className={classes.root}>
-              {console.log(names)}
               {               
                 names.map((value)=>{ 
                 a = [];
@@ -323,6 +330,38 @@ function UpdateTemplate() {
           viewDeleteDescriptor === true && 
           <section>
             <div class="row">
+          <div class="col-25">
+            <label for="template_name">Template Name</label>  
+          </div>
+          <div class="col-75">
+            <select id="template_name" name="template_name"
+              onChange={
+                e=> {
+                  setChange(true);
+                    setTempValue(e.target.value);
+                    setValue(e.target.value);
+                  
+                  }
+                }>
+                <option value="template_1">Select Template Name </option>
+                 {
+                  templatenames.map((value)=>{  
+                    return(
+                      <option value={value.Temp_id}>{value.TempName}</option>
+                    )
+                  })
+                } 
+                {/* {
+                    TempNames.map((value)=>{  
+                      return(
+                        <option value={value.Temp_id}>{value.TempName}</option>
+                      )
+                    })
+                  } */}
+            </select>
+          </div>
+        </div>
+            <div class="row">
             <div class="col-25">
               <label for="competency_area">Role Name</label>  
             </div>
@@ -348,10 +387,15 @@ function UpdateTemplate() {
               columns={columns}
               pageSize={5}
               checkboxSelection = {true}
-              disableSelectionOnClick/>
+              onSelectionModelChange={(id) => {
+                // eslint-disable-next-line array-callback-return
+                id.map(v => {
+                  descDeleteId.push(v)
+                })
+              }}/>
           </div>
           <br></br>
-          <button onClick={AddCompDesc}>Delete</button><br/>
+          <button onClick={DeleteCompDesc}>Delete</button><br/>
     </section>
         }      
       </center><br/>
@@ -360,6 +404,5 @@ function UpdateTemplate() {
   </>
   )
 }
-
 
 export default UpdateTemplate;

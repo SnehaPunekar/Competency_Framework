@@ -244,6 +244,15 @@ app.post('/addTemplate', async(request,response)=>{
     response.json({data:out})
 })
 
+app.post('/deleteTemplate', async(request,response)=>{
+    const tid = request.body.tid;
+    const idArray = request.body.descDeleteId;
+    const s = new Set(idArray)
+
+    let out = await new AdminServices().deleteTemplate(tid, s);
+    response.json({data:out})
+})
+
 app.post('/getEmpNames', async (request,response)=>{
     const roleId = request.body.roleId;
    // const reviewCId = request.body.reviewCId;
