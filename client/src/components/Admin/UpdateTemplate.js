@@ -59,6 +59,7 @@ function UpdateTemplate() {
   const[templatenames, setTemplateNames] = useState([]);
   const[roleValue, setRoleValue ] = useState(0);
   const[details,setDetails] = useState([]);
+  const[descriptorDetails,setDescriptorDetails] = useState([]);
   const[names,setNames] =useState([]);
   const[roles,setRoles] = useState([]);
   const classes = useStyles();
@@ -79,14 +80,13 @@ function UpdateTemplate() {
       descId : descId
     }).then(response =>{
       if(response.data.data.success === true){
-        alert('Template Created Successfully');
+        alert('Template Updated.');
         setDetails([]);
       }else{
         alert("Unable to Create Template");
         setDetails([]);
       }
     })  
-    alert('Template Updated.');
     setViewAddDescriptor(false);    
   }
 
@@ -97,10 +97,10 @@ function UpdateTemplate() {
     }).then(response =>{
       if(response.data.data.success === true){
         alert('Descriptors from the Template deleted Successfully');
-        setDetails([]);
+        setDescriptorDetails([]);
       }else{
         alert("Unable to Delete Descriptors");
-        setDetails([]);
+        setDescriptorDetails([]);
       }
     })  
     alert('Template Updated.');
@@ -154,9 +154,11 @@ function UpdateTemplate() {
       Axios.post('http://localhost:3001/getTemplateDescriptor', {temp_id:value,
         }).then(response =>{
           if(response.data.data.success === true){  
-            setDetails(response.data.data.data);//setAssignTemplate(response.data.data.data);
+            setDetails(response.data.data.data);
+            setDescriptorDetails(response.data.data.data);
           }else{
             setDetails([]);
+            setDescriptorDetails([]);
           }            
         });
     }
@@ -177,7 +179,8 @@ function UpdateTemplate() {
         role : roleValue
       }).then(res =>{
         if(res.data){
-          setDetails(res.data.data);
+          viewAddDescriptor ?
+          setDetails(res.data.data) : setDescriptorDetails(res.data.data);
           alert('Descriptors fetched.');
         }
       });
@@ -186,7 +189,7 @@ function UpdateTemplate() {
 
   const DeleteDescriptor = ()=> {
       setViewDeleteDescriptor(true);
-    setViewAddDescriptor(false); 
+      setViewAddDescriptor(false); 
   }
   
   return (
@@ -230,18 +233,10 @@ function UpdateTemplate() {
                 e=> {
                   setChange(true);
                     setTempValue(e.target.value);
-                    setValue(e.target.value);
-                  
+                    // setValue(e.target.value);
                   }
                 }>
                 <option value="template_1">Select Template Name </option>
-                 {/* {
-                  templatenames.map((value)=>{  
-                    return(
-                      <option value={value.Temp_id}>{value.TempName}</option>
-                    )
-                  })
-                }  */}
                 {
                     TempNames.map((value)=>{  
                       return(
@@ -285,8 +280,6 @@ function UpdateTemplate() {
                       id="panel1a-header">
                       <Typography className={classes.heading}>{value.AreaName}</Typography>
                   </AccordionSummary>
-                                     
-                  {console.log(details)}
                   {
                     // eslint-disable-next-line array-callback-return
                     details.map(value1=>{
@@ -338,9 +331,8 @@ function UpdateTemplate() {
               onChange={
                 e=> {
                   setChange(true);
-                    setTempValue(e.target.value);
+                    // setTempValue(e.target.value);
                     setValue(e.target.value);
-                  
                   }
                 }>
                 <option value="template_1">Select Template Name </option>
@@ -351,13 +343,6 @@ function UpdateTemplate() {
                     )
                   })
                 } 
-                {/* {
-                    TempNames.map((value)=>{  
-                      return(
-                        <option value={value.Temp_id}>{value.TempName}</option>
-                      )
-                    })
-                  } */}
             </select>
           </div>
         </div>
@@ -372,7 +357,7 @@ function UpdateTemplate() {
           <br/><br/>
           {
             // eslint-disable-next-line array-callback-return
-            details.map(value => {  
+            descriptorDetails.map(value => {  
               let b = {
                 id: value.Desc_id,
                 AreaName : value.AreaName,
