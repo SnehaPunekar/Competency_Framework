@@ -331,7 +331,7 @@ function UpdateTemplate() {
               onChange={
                 e=> {
                   setChange(true);
-                    // setTempValue(e.target.value);
+                    setTempValue(e.target.value);
                     setValue(e.target.value);
                   }
                 }>
