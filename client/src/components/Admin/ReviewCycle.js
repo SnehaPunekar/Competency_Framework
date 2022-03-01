@@ -14,6 +14,7 @@ function ReviewCycle() {
   const[status, setStatus] = useState('');
   const [loading, setloading] = useState(undefined);
   const [completed, setcompleted] = useState(undefined);
+  const today = new Date();
   
   const toggler = (e) => {
     setReviewId(e.target.id);
@@ -32,14 +33,14 @@ function ReviewCycle() {
   const addReview = ()=>{
     if(!reviewName || !start || !end){
       alert('Please fill all the fields');
-    } 
+    }
+    
       Axios.post('http://localhost:3001/addReview',{
       reviewName:reviewName,
       start:start,
       end:end,
-      status:1,
+      status: new Date(String(end)) > today ? 1 : 0,
       }).then(res => {
-        console.log(res.data.flag);
         if(res.data.flag === false){
           alert('This Name already exits. Please enter new name.')
         }
