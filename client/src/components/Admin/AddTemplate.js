@@ -62,7 +62,7 @@ function AddTemplate() {
       ) : (
         <div className="content">
             <center>
-            <h1>Add Template</h1>
+            <h1>Add Template Name</h1>
             <div class="row">
                 <div class="col-25">
                     <label for="tname">Template Name</label>

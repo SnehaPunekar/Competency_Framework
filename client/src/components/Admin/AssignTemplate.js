@@ -187,11 +187,11 @@ function AssignTemplate() {
                     a.push(b);
                   })
                 }
-                <div style={{ height: 650, width: '80%', background:'white' }}>
+                <div style={{ height: 890, width: '80%', background:'white' }}>
                   <DataGrid
                     rows={a}
                     columns={columns}
-                    pageSize={10}
+                    pageSize={15}
                     checkboxSelection
                     disableSelectionOnClick
                     onSelectionModelChange={(id) => {

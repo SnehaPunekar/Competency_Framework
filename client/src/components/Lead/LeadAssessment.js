@@ -96,7 +96,7 @@ function LeadAssessment() {
         let flag = 0;
         assessmentArr.forEach(val => {
             // eslint-disable-next-line eqeqeq
-            if(val.rating == '' || val.rating == 'S' || val.comment == ''){
+            if(val.rating == '' || val.rating == 'S'){
                 flag = 1;
             }
         });
